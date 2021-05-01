@@ -109,14 +109,10 @@
 							<div class="col-lg-12">
 								<div class="inp-field">
 									<select class="text-ligth" id="categoria_doacao" name="categoria_doacao">
-										<option selected>Escolha uma categoria</option>
-										<option class="alimentos" value="Produtos Alimenticios">Alimentos</option>
-										<option class="alimentos" value="Produtos Alimenticios">Produtos Enlatados</option>
-										<option value="Produtos de Higiene">Produtos de Higiene</option>
-										<option value="Medicamentos">Medicamentos</option>
-										<option value="Electrodomésticos">Electrodomésticos</option>
-										<option value="Matériais Escolar">Matérias Escolar</option>
-										<option value="Roupas">Roupas</option>
+										<option selected disabled>Selecione uma Necessidade</option>
+										@foreach($cat as $c)
+										<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
+										@endforeach
 									</select>
 									<span id="categoria_doacao_erro" style="color: red"></span>
 								</div>
