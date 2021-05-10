@@ -50,7 +50,9 @@
 						</div>
 					</form>
 				</div>
+
 				<!--post-project-fields end-->
+				
 				<a href="#" title="Fechar"><i class="la la-times-circle-o"></i></a>
 			</div><!--post-project end-->
 		</div><!--post-project-popup end-->
@@ -108,10 +110,10 @@
 							</div>
 							<div class="col-lg-12">
 								<div class="inp-field">
-									<select class="text-ligth" id="categoria_doacao" name="categoria_doacao">
-										<option selected disabled>Selecione uma Necessidade</option>
+									<select class="text-ligth" id="categoria_ida" name="categoria_ida">
+										<option selected disabled>Selecione uma Necessidades</option>
 										@foreach($cat as $c)
-										<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
+											<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
 										@endforeach
 									</select>
 									<span id="categoria_doacao_erro" style="color: red"></span>
@@ -121,7 +123,7 @@
 								<div class="col-lg-6 data_validade">
 									<span class="data text-muted">Data de Validade</span>
 									<br>
-									<input type="date" id="data_expitacao" name="data_expitacao">
+									<input type="date" id="data_expiracao" name="data_expiracao">
 								</div>
 								<div class="col-lg-6">
 									<br>
@@ -132,17 +134,17 @@
 							<div class="col-lg-12 estado_pergunta">
 								<br>
 								<span class="estado_p text-muted">Em que estado se encontra o item?</span> <br>
-								<input class="text-muted" type="radio" name="estado" id="muito_bom_estado" value="Muito bom estado">
+								<input class="text-muted" type="radio" name="classificacao" id="muito_bom_estado" value="Muito bom estado">
 								<span class="text-muted" for="muito_bom_estado">Muito bom estado</span><img src="assets/images/star.svg" height="18px">
 
-								<input class="text-muted" type="radio" name="estado" id="boa_condicao" value="Boa condição">
+								<input class="text-muted" type="radio" name="classificacao" id="boa_condicao" value="Boa condição">
 								<span class="text-muted" for="boa_condicao">Boa condição</span><img src="assets/images/star4.svg" height="18px">
 
-								<input class="text-muted" type="radio" name="estado" id="condicao_intermediaria" value="Condição intermediária">
+								<input class="text-muted" type="radio" name="classificacao" id="condicao_intermediaria" value="Condição intermediária">
 								<span class="text-muted" for="condicao_intermediaria">Condição intermediária</span><img src="assets/images/star2.svg" height="18px">
 
-								<input class="text-muted" type="radio" name="estado" id="condição_ruim" value="Condição ruim">
-								<span class="text-muted" for="condição_ruim">Condição ruim</span><img src="assets/images/star3.svg" height="18px">
+								<input class="text-muted" type="radio" name="classificacao" id="condicao_ruim" value="Condição ruim">
+								<span class="text-muted" for="condicao_ruim">Condição ruim</span><img src="assets/images/star3.svg" height="18px">
 
 								<span id="estado_erro" style="color: red"></span>
 							</div>
@@ -154,7 +156,7 @@
 							</div>
 							<div class="col-lg-12">
 								<textarea class="text-dark" name="descricao_doacao" id="descricao_doacao" placeholder="Descreve detalhadamente o item que quer doar"></textarea>
-								<span id="descricao_doacao_erro" style="color: red"></span>
+								<span id="descricaoError" style="color: red"></span>
 							</div>
 							<div class="col-lg-12">
 								<input type="file" id="imagem" name="imagem" value="" placeholder="selecione a imagem do item">
@@ -162,7 +164,7 @@
 							<br>
 							<div class="col-lg-12">
 								<ul>
-									<li><button class="active" id="Doar" type="submit" value="post">Doar</button></li>
+									<li><button class="active" id="doar_people" type="submit" value="post">Doar</button></li>
 								</ul>
 							</div>
 						</div>
@@ -181,6 +183,9 @@
 			$('.alimentos').css('visibility', 'visible');
 		});
 	</script>
+
+	<!-- Inicio Scrim Ajax para Publicar doação da Instituição -->
+
 	<script>
 		$('#publicar').on('click', function(element){
 			element.preventDefault();
@@ -223,6 +228,81 @@
 			});
 		});
 	</script>
+
+	<!-- Fim do Scrim Ajax para Publicar doação da Instituição -->
+
+	<!-- Inicio do Scrim Ajax para Publicar doação do User -->
+	<script>
+		$('#doar_people').on('click', function(element){
+			element.preventDefault();
+
+			let titulo =  $('#titulo_doacao').val()
+			let categoria_id =  $('#categoria_ida').val()
+			let data_expiracao =  $('#data_expiracao').val()
+			let quantidade_doacao =  $('#quantidade_doacao').val()
+			let muito_bom_estado =  $('#muito_bom_estado').val()
+			let boa_condicao =  $('#boa_condicao').val()
+			let condicao_intermediaria =  $('#condicao_intermediaria').val()
+			let condicao_ruim =  $('#condicao_ruim').val()
+			let local_doacao =  $('#local_doacao').val()
+			let descricao =  $('#descricao_doacao').val()
+			let imagem =  $('#imagem').val()
+			let estado_item = null
+
+		
+			if (document.getElementById("muito_bom_estado").checked) {
+				estado_item = muito_bom_estado;				
+			} else if (document.getElementById("boa_condicao").checked) {
+				estado_item = boa_condicao;		
+			} else if (document.getElementById("condicao_intermediaria").checked) {
+				estado_item = condicao_intermediaria;	
+			} else if (document.getElementById("condicao_ruim").checked) {
+			  	estado_item = condicao_ruim;	
+			}
+
+			//let descricao =  $('#descricao_doacao').val()
+				// let imagem =  $('#imagem').val()
+			let _token =   $('meta[name="csrf-token"]').attr('content')
+				
+			console.log(titulo, categoria_id, descricao,data_expiracao,quantidade_doacao,estado_item,local_doacao, _token);
+
+			$.ajax({
+				url: "/publicar",
+				type: "POST",
+				data: {
+					titulo: titulo,
+					categoria_id: categoria_id,
+					descricao: descricao,
+					data_expiracao: data_expiracao,
+					quantidade_doacao: quantidade_doacao, 
+					estado_item: estado_item, 
+					local_doacao: local_doacao, 					
+					_token: _token
+				},
+				dataType: "json",
+				success: function(response) {
+
+					console.log('Dar res: ', response);
+
+					if(response.mensagem){
+						toastr.success(response.mensagem, 'Publicar!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
+							timeOut: 3000, onHidden: function () {
+								window.location.reload();
+							} 
+						});
+					}else { 
+						$('#titulo_doacao_erro').text(response.erro[0]);
+						$('#categoria_doacao_erro').text(response.erro[1]);
+
+						toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
+					}
+				}
+			});
+		});
+	</script>
+
+	<!-- Fim do Scrim Ajax para Publicar doação do User -->
+
 	<script>
 		$('#doar').on('click', function(element){
 

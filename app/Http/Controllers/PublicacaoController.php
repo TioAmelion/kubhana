@@ -52,7 +52,7 @@ class PublicacaoController extends Controller
             'descricao' => 'required'
             // 'imagem' => 'image|max:2048'
         );
-
+        
         $erro = Validator::make($request->all(), $validacao);
 
         if ($erro->fails()) {
@@ -62,13 +62,32 @@ class PublicacaoController extends Controller
         // $image    = $request->file('imagem');
         // $new_name = rand() . '.' . $image->getClientOriginalExtension();
         // $image->move(public_path('images'), $new_name);
+        $size = count(collect($request));
+                
+        if($size > 4){
+            
+            $post = publicacao::create([
+                'usuario_id' => Auth::user()->id,
+                'titulo' => $request->titulo,
+                'categoria_id' => $request->categoria_id,
+                'texto' => $request->descricao, 
+                'estado_item' => $request->estado_item,
+                'quantidade_item' => $request->quantidade_doacao,
+                'localizacao' => $request->local_doacao,
+                'data_validade' => $request->data_expiracao
+            ]);
 
-        $post = publicacao::create([
-            'usuario_id' => Auth::user()->id,
-            'titulo' => $request->titulo,
-            'categoria_id' => $request->categoria_id,
-            'texto' => $request->descricao
-        ]);
+        }else{
+            
+            $post = publicacao::create([
+                'usuario_id' => Auth::user()->id,
+                'titulo' => $request->titulo,
+                'categoria_id' => $request->categoria_id,
+                'texto' => $request->descricao
+            ]);
+        }
+
+        
 
         return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
     }
