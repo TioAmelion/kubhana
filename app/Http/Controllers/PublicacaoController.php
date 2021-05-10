@@ -62,9 +62,8 @@ class PublicacaoController extends Controller
         // $image    = $request->file('imagem');
         // $new_name = rand() . '.' . $image->getClientOriginalExtension();
         // $image->move(public_path('images'), $new_name);
-        $size = count(collect($request));
                 
-        if($size > 4){
+        if(count(collect($request)) > 4){
             
             $post = publicacao::create([
                 'usuario_id' => Auth::user()->id,
