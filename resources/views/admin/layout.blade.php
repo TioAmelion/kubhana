@@ -267,7 +267,7 @@
 			console.log(titulo, categoria_id, descricao,data_expiracao,quantidade_doacao,estado_item,local_doacao, _token);
 
 			$.ajax({
-				url: "/publicar",
+				url: "/publicarUser",
 				type: "POST",
 				data: {
 					titulo: titulo,

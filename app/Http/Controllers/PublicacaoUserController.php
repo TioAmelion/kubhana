@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use DB;
 
-
-class PublicacaoController extends Controller
+class PublicacaoUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,11 +19,7 @@ class PublicacaoController extends Controller
      */
     public function index()
     {
-        $idPessoas = pessoa::all();
-        $pub = DB::table('publicacaos')
-            ->join('users', 'publicacaos.usuario_id', '=', 'users.id')
-            ->select('users.name', 'publicacaos.*')->get();
-            return view('welcome')->with(['pub'=> $pub, 'idPessoas' => $idPessoas]);
+        //
     }
 
     /**
@@ -45,7 +40,6 @@ class PublicacaoController extends Controller
      */
     public function store(Request $request)
     {
-        
         $validacao = array(
             'titulo'       => 'required|max:50',
             'categoria_id' => 'required',
@@ -58,21 +52,18 @@ class PublicacaoController extends Controller
         if ($erro->fails()) {
             return response()->json(['erro' => $erro->errors()->all()]);
         }
-
-        // $image    = $request->file('imagem');
-        // $new_name = rand() . '.' . $image->getClientOriginalExtension();
-        // $image->move(public_path('images'), $new_name);
-            
+        
             
         $post = publicacao::create([
             'usuario_id' => Auth::user()->id,
             'titulo' => $request->titulo,
             'categoria_id' => $request->categoria_id,
-            'texto' => $request->descricao
+            'texto' => $request->descricao, 
+            'estado_item' => $request->estado_item,
+            'quantidade_item' => $request->quantidade_doacao,
+            'localizacao' => $request->local_doacao,
+            'data_validade' => $request->data_expiracao
         ]);
-    
-
-        
 
         return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
     }
@@ -85,8 +76,7 @@ class PublicacaoController extends Controller
      */
     public function show($id)
     {
-        $pub = publicacao::all();
-        return view('welcome')->with('pub', $pub);
+        //
     }
 
     /**
