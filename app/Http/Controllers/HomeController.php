@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\publicacao;
+use App\Models\instituicao;
 use App\Models\pessoa;
 use App\Models\Categoria;
 use Illuminate\Support\Facades\Auth;
@@ -19,18 +20,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $teste = Categoria::all();
 
+        $estadoPessoa = publicacao::with('estadoPessoa');
+        $pub = publicacao::with('show');
+
+        $teste = Categoria::all();
+        $instituicao = instituicao::all();
         $idPessoas = pessoa::all();
 
         if(Auth::check()){
             $idPessoas = pessoa::where('usuario_id', Auth::user()->id)->first();
         }
         
-        $pub = DB::table('publicacaos')
-            ->join('users', 'publicacaos.usuario_id', '=', 'users.id')
-            ->select('users.name', 'publicacaos.*')->get();
-        return view('admin.includes.feedSite')->with(['pub'=> $pub, 'idPessoas' => $idPessoas, 'cat' => $teste]);
+        return view('admin.includes.feedSite')->with(['pub'=> $pub, 'idPessoas' => $idPessoas, 'cat' => $teste, 'estadoPessoa' => $estadoPessoa, 'instituicao' => $instituicao]);
     }
 
     /**

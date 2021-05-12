@@ -104,44 +104,17 @@
 					<i class="la la-ellipsis-v"></i>
 				</div>
 				<div class="profiles-slider">
-					<div class="user-profy">
-						<img src="images/resources/user1.png" alt="">
-						<h3>Lar do Beiral</h3>
-						<span>Lar de Idosos</span>
-						<ul>
-							<li><a href="#" title="" class="followw">Doar</a></li>
-							
-						</ul>
-						<a href="#" title="">Ver mais</a>
-					</div><!--user-profy end-->
-					<div class="user-profy">
-						<img src="images/resources/user2.png" alt="">
-						<h3>Centro ABC</h3>
-						<span>Centro de acolhimento</span>
-						<ul>
-							<li><a href="#" title="" class="followw">Doar</a></li>
+					@foreach ($instituicao as $item)
+						<div class="user-profy">
+							<img src="images/resources/user1.png" alt="">
+							<h3>{{$item->nome_instituicao}}</h3>
+							<span>Lar de Idosos</span>
+							<ul>
+								<li><a href="#" title="" class="followw">Doar</a></li>
 							</ul>
-						<a href="#" title="">Ver mais</a>
-					</div><!--user-profy end-->
-					<div class="user-profy">
-						<img src="images/resources/user3.png" alt="">
-						<h3>Centro Infantil</h3>
-						<span>Centro de acolhimento</span>
-						<ul>
-							<li><a href="#" title="" class="followw">Doar</a></li>
-							</ul>
-						<a href="#" title="">Ver mais</a>
-					</div><!--user-profy end-->
-					<div class="user-profy">
-						<img src="images/resources/user1.png" alt="">
-						<h3>Centro de Viana</h3>
-						<span>Centro de acolhimento</span>
-						<ul>
-							<li><a href="#" title="" class="followw">Doar</a></li>
-							</ul>
-						<a href="#" title="">Ver mais</a>
-					</div><!--user-profy end-->
-					
+							<a href="#" title="">Ver mais</a>
+						</div><!--user-profy end-->
+					@endforeach
 				</div><!--profiles-slider end-->
 			</div><!--top-profiles end-->
 			<div class="posty">

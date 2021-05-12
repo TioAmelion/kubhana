@@ -24,16 +24,18 @@
 		<i class="la la-ellipsis-v"></i>
 	</div><!--sd-title end-->
 	<div class="suggestions-list">
-		<div class="suggestion-usd">
-			<img src="images/resources/s1.png" alt="">
-			<div class="sgt-text">
-				<h4>Jessica William</h4>
-				<span>Estudante</span>
+		@foreach ($estadoPessoa as $item)
+			<div class="suggestion-usd">
+					<img src="images/resources/s1.png" alt="">
+					<div class="sgt-text">
+						<h4>{{$item->titulo}}</h4>
+						<span>{{$item->texto}}</span>
+					</div>
 			</div>
-x											</div>
-		<div class="view-more">
-			<a href="#" title="">Ver mais</a>
-		</div>
+			<div class="view-more">
+				<a href="#" title="">Ver mais</a>
+			</div>
+		@endforeach
 	</div><!--suggestions-list end-->
 </div>
 </div><!--right-sidebar end-->
