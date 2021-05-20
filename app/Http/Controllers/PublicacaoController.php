@@ -45,7 +45,7 @@ class PublicacaoController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $validacao = array(
             'titulo'       => 'required|max:50',
             'categoria_id' => 'required',
@@ -62,15 +62,15 @@ class PublicacaoController extends Controller
         // $image    = $request->file('imagem');
         // $new_name = rand() . '.' . $image->getClientOriginalExtension();
         // $image->move(public_path('images'), $new_name);
-
+        
         $post = publicacao::create([
             'usuario_id' => Auth::user()->id,
             'titulo' => $request->titulo,
             'categoria_id' => $request->categoria_id,
             'texto' => $request->descricao
         ]);
-
-        return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
+        
+        return response()->json([ 'mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
     }
 
     /**
