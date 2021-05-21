@@ -23,6 +23,8 @@ Route::resource('doador', 'App\Http\Controllers\DoadorController');
 
 Route::resource('publicar', 'App\Http\Controllers\PublicacaoController')->middleware(['auth']);
 
+Route::resource('publicarUser', 'App\Http\Controllers\PublicacaoUserController')->middleware(['auth']);
+
 Route::get('municipio/{id}', [MunicipioController::class, 'getMunicipio']);
 
 Route::get('provincia/{id}', [ProvinciaController::class, 'getProvincia']);
