@@ -6,9 +6,12 @@
 			</div><!--logo end-->
 			<div class="search-bar">
 				<form>
-					<input type="text" name="search" placeholder="pesquisar...">
+					<input type="text" name="search-g" id="search-g" placeholder="pesquisar...">
 					<button type="submit"><i class="la la-search"></i></button>
 				</form>
+				<div id="teste">
+					<div class="res"></div>
+				</div>
 			</div><!--search-bar end-->
 			<nav>
 				<ul>
@@ -83,4 +86,30 @@
 			@endauth
 		</div><!--header-data end-->
 	</div>
+	@include('admin.includes.script')
+	<script>
+		$(document).ready(function () {
+			fetch_data();
+			
+			function fetch_data(query = '') {
+				$.ajax({
+					url: '{{ route('autocomplete') }}',
+					type: "GET",
+					data: {query: query},
+					dataType: "json",
+					success: function (response) {
+						console.log("QUERY", response);
+						$('#result-search').empty();
+						$('#result-search').prepend(response);
+					}
+				});
+			}
+
+			$(document).on('keyup', '#search-g', function () {
+				var query = $(this).val();
+				console.log(query);
+				fetch_data(query);
+			});	
+		});
+	</script>
 </header>

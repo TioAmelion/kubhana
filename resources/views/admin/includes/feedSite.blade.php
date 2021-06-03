@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('conteudo')
-
+<div id="result-search"></div>
 <main>
 	<div class="main-section">
 		<div class="container">
@@ -52,10 +52,12 @@
 						</div>
 					</div>
 					<div class="ed-opts">
-						<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-						<ul class="ed-options">
-							<li><a href="#" title="">Editar</a></li>
-						</ul>
+						@if (Auth::check())
+							<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+							<ul class="ed-options">
+								<li><a href="#" title="">Editar</a></li>
+							</ul>
+						@endif
 					</div>
 				</div> 
 				<div class="epi-sec">
@@ -70,30 +72,42 @@
 				<div class="job_descp">
 					<h3>{{$dados->titulo}}</h3>
 					<p>{{$dados->texto}}</p>
+					<img src="images/{{$dados->image}}" alt="">
 				</div>
 				<div class="job-status-bar">
+					@if (Auth::check())
+						<ul class="like-com">
+							<li class="reaction-container">
+								<a href="#"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+								<span>25</span>
+								<div class="reaction-box">
+									<div class="reaction-icon">
+										<label>gostar</label>
+										<img class="teste" name="gostar" src="assets/images/reactions_love.png" alt="">
+									</div>
+									<div class="reaction-icon">
+										<label>urgente</label>
+										<img class="" name="urgente" src="assets/images/reactions_wow.png" alt="">
+									</div>
+									<div class="reaction-icon">
+										<label>mais urgente</label>
+										<img class="" name="mais urgente" src="assets/images/reactions_sad.png" alt="">
+									</div>
+								</div>
+							</li>
+							<li><a href="#" title="" id="{{$dados->usuario_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a></li>
+							<li> </li>
+						</ul>
+					@else
 					<ul class="like-com">
 						<li class="reaction-container">
-							<a href="#"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+							<a href="{{route('login')}}"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
 							<span>25</span>
-							<div class="reaction-box">
-								<div class="reaction-icon">
-									<label>gostar</label>
-									<img class="teste" name="gostar" src="assets/images/reactions_love.png" alt="">
-								</div>
-								<div class="reaction-icon">
-									<label>urgente</label>
-									<img class="" name="urgente" src="assets/images/reactions_wow.png" alt="">
-								</div>
-								<div class="reaction-icon">
-									<label>mais urgente</label>
-									<img class="" name="mais urgente" src="assets/images/reactions_sad.png" alt="">
-								</div>
-							</div>
 						</li>
-						<li><a href="#" title="" id="{{$dados->usuario_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a></li>
+						<li><a href="{{route('login')}}" title="" class="comm post_projectt" style="position: relative; top: -5px;"><img src="assets/images/heart.svg" height="18px"></a></li>
 						<li> </li>
 					</ul>
+					@endif
 					<a><i class="la la-eye"></i>Visualizou 50</a>
 				</div>
 			</div><!--post-bar end-->
@@ -138,7 +152,8 @@
 @include('admin.includes.script')
 <script>
 	$(function() {
-
+		$('#search').hide();
+		
 		$(".reaction-container").hover(function() {
 			_this = $(this);
 			_this.find(".reaction-box .reaction-icon").each( function(index, element) {
@@ -152,9 +167,9 @@
 	})
 </script>
 							
-						</div>
-					</div><!-- main-section-data end-->
 				</div>
-			</div>
-		</main>
+			</div><!-- main-section-data end-->
+		</div>
+	</div>
+</main>
 @endsection

@@ -49,8 +49,8 @@ class PublicacaoController extends Controller
         $validacao = array(
             'titulo'       => 'required|max:50',
             'categoria_id' => 'required',
-            'descricao' => 'required'
-            // 'imagem' => 'image|max:2048'
+            'descricao' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         );
 
         $erro = Validator::make($request->all(), $validacao);
@@ -59,15 +59,15 @@ class PublicacaoController extends Controller
             return response()->json(['erro' => $erro->errors()->all()]);
         }
 
-        // $image    = $request->file('imagem');
-        // $new_name = rand() . '.' . $image->getClientOriginalExtension();
-        // $image->move(public_path('images'), $new_name);
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
 
         $post = publicacao::create([
             'usuario_id' => Auth::user()->id,
             'titulo' => $request->titulo,
             'categoria_id' => $request->categoria_id,
-            'texto' => $request->descricao
+            'texto' => $request->descricao,
+            'image' => $imageName
         ]);
 
         return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);

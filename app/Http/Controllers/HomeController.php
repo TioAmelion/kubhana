@@ -21,8 +21,9 @@ class HomeController extends Controller
     public function index()
     {
 
-        $estadoPessoa = publicacao::with('estadoPessoa');
-        $pub = publicacao::with('show');
+        $result = new publicacao;
+        $pub = $result->show();
+        $estadoPessoa = $result->estadoPessoa();     
 
         $teste = Categoria::all();
         $instituicao = instituicao::all();
