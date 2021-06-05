@@ -3,18 +3,20 @@
 
 <div class="widget widget-jobs">
 	<div class="sd-title">
-		<h3>Urgências</h3>
+		<h3>Centros Sem Ajudas</h3>
 		<i class="la la-ellipsis-v"></i>
 	</div>
 	<div class="jobs-list">
 		<div class="job-info">
-			<div class="job-details">
-				<h3>Doação de sangue</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
+			@foreach ($instSemAjudas as $ajuda)
+				<div class="job-details">
+				<h3>{{$ajuda->nome_instituicao}}</h3>
+				<p>Doe alguma coisa para ajudar essa instituição</p>
 			</div>
 			<div class="hr-rate">
 				<!-- <span>250 gostos</span> -->
 			</div>
+			@endforeach
 		</div><!--job-info end-->
 	</div><!--jobs-list end-->
 </div><!--widget-jobs end-->

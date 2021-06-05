@@ -267,6 +267,31 @@
 			$('#nome').text(element.currentTarget.getAttribute('nomeInst'));
 		})
 	</script>
+	<script>
+		$(document).ready(function () {
+			fetch_data();
+			
+			function fetch_data(query = '') {
+				$.ajax({
+					url: '{{ route('autocomplete') }}',
+					type: "GET",
+					data: {query: query},
+					dataType: "json",
+					success: function (response) {
+						console.log("QUERY", response);
+						$('#result-search').empty();
+						$('#result-search').prepend(response);
+					}
+				});
+			}
+
+			$(document).on('keyup', '#search-g', function () {
+				var query = $(this).val();
+				console.log(query);
+				fetch_data(query);
+			});	
+		});
+	</script>
 </body>
 <script>
 	'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0235'}) 

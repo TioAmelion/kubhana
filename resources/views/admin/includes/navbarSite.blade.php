@@ -9,9 +9,7 @@
 					<input type="text" name="search-g" id="search-g" placeholder="pesquisar...">
 					<button type="submit"><i class="la la-search"></i></button>
 				</form>
-				<div id="teste">
-					<div class="res"></div>
-				</div>
+				<div id="result-search"></div>				
 			</div><!--search-bar end-->
 			<nav>
 				<ul>
@@ -68,10 +66,10 @@
 			</nav><!--nav end-->
 			@auth
 				<div class="user-account">
-				<div class="user-info" style="width: 160px">
+				<div class="user-info" style="width: 260px">
 					<img src="assets/images/resources/user.png" alt="">
-					<a href="#" title="">{{ Auth::user()->name}}</a>
-					<i class="la la-sort-down"></i>
+					<a href="#" class="dropdown-toggle" title="">{{ Auth::user()->name}}</a>
+					{{-- <i class="la la-sort-down"></i> --}}
 				</div>
 				<div class="user-account-settingss">
 					<ul class="us-links">
@@ -86,8 +84,8 @@
 			@endauth
 		</div><!--header-data end-->
 	</div>
-	@include('admin.includes.script')
-	<script>
+	{{-- @include('admin.includes.script') --}}
+	{{-- <script>
 		$(document).ready(function () {
 			fetch_data();
 			
@@ -111,5 +109,5 @@
 				fetch_data(query);
 			});	
 		});
-	</script>
+	</script> --}}
 </header>

@@ -32,18 +32,13 @@ class PessoaController extends Controller
             if ($total_row > 0) {
                 foreach ($data as $row) {
                     $output .=  '
-                        <div class="search" id="search">
-                            <div class="post-bar-search">
-                                <div class="post_topbar-search">
-                                    <div class="usy-dt-search">
-                                        <img src="assets/images/resources/us-pic.png" alt="">
-                                        <div class="usy-name-search">
-                                            <h3>'. $row->name .'</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>';
+                    <div id="teste" style="position: absolute;width: 306px;height: 59px;background: #fdfdfd;top: 54px;">
+                        <div class="res">
+                            <img src="assets/images/resources/us-pic.png" alt="" style="position: relative;top: 5px;left: 8px;">
+                            <span style="margin-left: 19px;float: left;position: relative;top: 20px;">'.$row->name.'</span>
+                        </div>
+                    </div>
+                    ';
                 }
                 
             } else {

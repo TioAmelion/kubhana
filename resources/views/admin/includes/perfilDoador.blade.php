@@ -6,15 +6,8 @@
 		<div class="container">
 			<div class="main-section-data">
 				<div class="row">
-					{{-- @auth --}}
 						@include('admin.includes.sectionLeft')
-					{{-- @endauth --}}
-
-					{{-- @if(Auth::check()) --}}
 						<div class="col-lg-6 col-md-6 no-pd">
-					{{-- @else
-						<div class="col-lg-7 col-md-6 mx-auto">
-					@endif --}}
 						<div class="main-ws-sec">
 					@auth
 						<div class="post-topbar">
@@ -71,7 +64,7 @@
 				<div class="job_descp">
 					<h3>{{$dados->titulo}}</h3>
 					<p>{{$dados->texto}}</p>
-					<img class="img-publicacao" src="images/{{$dados->image}}" style="object-fit: fill;height: 400px;width: 400px;" alt="">
+					<img src="images/{{$dados->image}}" alt="">
 				</div>
 				<div class="job-status-bar">
 					@if (Auth::check())

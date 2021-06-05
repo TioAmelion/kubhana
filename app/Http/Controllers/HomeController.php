@@ -7,9 +7,11 @@ use App\Models\publicacao;
 use App\Models\instituicao;
 use App\Models\pessoa;
 use App\Models\Categoria;
+use App\Models\doacao;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DB;
+use Illuminate\Support\Facades\Date;
 
 class HomeController extends Controller
 {
@@ -23,17 +25,19 @@ class HomeController extends Controller
 
         $result = new publicacao;
         $pub = $result->show();
-        $estadoPessoa = $result->estadoPessoa();     
+        $estadoPessoa = $result->estadoPessoa(); 
+        $doacoes = $result->doacoesSemana();    
+        $instSemAjudas = $result->instSemAjudas();
 
         $teste = Categoria::all();
         $instituicao = instituicao::all();
-        $idPessoas = pessoa::all();
+        $idPessoas = pessoa::all(); 
 
         if(Auth::check()){
             $idPessoas = pessoa::where('usuario_id', Auth::user()->id)->first();
         }
         
-        return view('admin.includes.feedSite')->with(['pub'=> $pub, 'idPessoas' => $idPessoas, 'cat' => $teste, 'estadoPessoa' => $estadoPessoa, 'instituicao' => $instituicao]);
+        return view('admin.includes.feedSite')->with(['pub'=> $pub, 'idPessoas' => $idPessoas, 'cat' => $teste, 'estadoPessoa' => $estadoPessoa, 'instituicao' => $instituicao, 'doacoes' => $doacoes, 'instSemAjudas' => $instSemAjudas]);
     }
 
     /**
