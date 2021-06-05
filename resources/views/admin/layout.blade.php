@@ -24,7 +24,6 @@
 							</div>
 							<div class="col-lg-12">
 								<div class="inp-field inst">
-									<br>
 									<select class="text-ligth" id="categoria_id" name="categoria_id">
 										<option selected disabled>Selecione uma Necessidade</option>
 										@foreach($cat as $c)
@@ -120,14 +119,12 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6 data_validade">
-									<span class="data text-muted">Data de Validade</span>
-									<br>
-									<input type="date" id="data_expiracao" name="data_expiracao">
+								<div id="data_validar">
+
 								</div>
 								<div class="col-lg-6">
 									<br>
-									<input type="number" id="quantidade_doacao" name="quantidade_doacao" placeholder="Quantidade do item">
+									<input type="number" id="quantidade_doacao" name="quantidade_doacao" placeholder="Quantidade do item" min="0">
 									<span id="quantidade_doacao_erro" style="color: red"></span>
 								</div>
 							</div>
@@ -153,10 +150,11 @@
 								<span class="estado_l text-muted">Local de doação</span>
 								<img src="assets/images/placeholder.svg">
 								<input type="text" id="local_doacao" name="local_doacao" placeholder="Ex: Provincia: Luanda - kilamba kiaxi, bairro palanca, rua f1, casa nº 23">
+								<span id="local_doacaoError" style="color: red"></span>
 							</div>
 							<div class="col-lg-12">
 								<textarea class="text-dark" name="descricao_doacao" id="descricao_doacao" placeholder="Descreve detalhadamente o item que quer doar"></textarea>
-								<span id="descricaoError" style="color: red"></span>
+								<span id="descricao_doacaoError" style="color: red"></span>
 							</div>
 							<div class="col-lg-12">
 								<input type="file" id="imagem" name="imagem" value="" placeholder="selecione a imagem do item">
@@ -214,18 +212,33 @@
 
 					if(response.mensagem){
 					    toastr.success(response.mensagem, 'Publicar!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
-					        timeOut: 3000, onHidden: function () {
+					        timeOut: 2000, onHidden: function () {
 					            window.location.reload();
 					        } 
 						});
 					}else { 
-						$('#tituloError').text(response.erro[0]);
-						$('#descricaoError').text(response.erro[1]);
+						//$.inArray(response.erro, ["O campo titulo é obrigatório."]);
+						switch (response.erro[0]) {
+							case "O campo titulo é obrigatório.":
+								$('#titulo').addClass("border border-danger");
+								break;
 
+							case "O campo categoria id é obrigatório.":
+								$('#categoria_id').addClass("border border-danger");
+								break;
+						
+							case "O campo descricao é obrigatório.":
+								$('#descricao').addClass("border border-danger");
+								break;
+
+							default:
+								break;
+						}
 					    toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
 					}
 				}
 			});
+			document.getElementById("form-publicacao").reset();
 		});
 	</script>
 
@@ -281,23 +294,28 @@
 				},
 				dataType: "json",
 				success: function(response) {
-
+					
 					console.log('Dar res: ', response);
 
 					if(response.mensagem){
 						toastr.success(response.mensagem, 'Publicar!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
-							timeOut: 3000, onHidden: function () {
+							timeOut: 2000, onHidden: function () {
 								window.location.reload();
 							} 
 						});
-					}else { 
+					}else {
 						$('#titulo_doacao_erro').text(response.erro[0]);
 						$('#categoria_doacao_erro').text(response.erro[1]);
+						$('#local_doacaoError').text(response.erro[2]);
+						$('#descricao_doacaoError').text(response.erro[3]);
 
 						toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
 					}
 				}
 			});
+			//Limpar dos dados do form
+			document.getElementById("form-doador").reset();
+form-doacao
 		});
 	</script>
 
@@ -352,6 +370,36 @@
 			$('#nome').text(element.currentTarget.getAttribute('nomeInst'));
 		})
 	</script>
+
+	<!-- Script para adicionar a data das categorias especificas  -->
+		<script>
+
+			$(document).ready(function(){
+				$('#categoria_ida').change(function(e){
+					var key  = $(this).val();
+					var html = '';
+
+					if (key >= 1 && key <3 || key == 4){
+						//alert('chamar data');
+						$('#data_validar').empty();		
+						html += '<div class="col-lg-12" id="conteudo">';
+						html += '<span class="data text-muted">Data de Validade</span>';
+						html += '<br>';
+						html += '<input type="date" id="data_expiracao" name="data_expiracao">';
+						html += '</div>';
+						$('#data_validar').append(html);
+
+					}else{
+						$('#conteudo').remove();		
+						
+					}
+					//alert(id_categoria);
+				});
+			});
+
+		</script>
+	<!-- ******************************************************** -->
+	
 </body>
 <script>
 	'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0235'}) 

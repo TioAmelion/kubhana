@@ -43,6 +43,7 @@ class PublicacaoUserController extends Controller
         $validacao = array(
             'titulo'       => 'required|max:50',
             'categoria_id' => 'required',
+            'local_doacao' => 'required',
             'descricao' => 'required'
             // 'imagem' => 'image|max:2048'
         );
@@ -52,18 +53,24 @@ class PublicacaoUserController extends Controller
         if ($erro->fails()) {
             return response()->json(['erro' => $erro->errors()->all()]);
         }
-        
+
+        try{
+
+            $post = publicacao::create([
+                'usuario_id' => Auth::user()->id,
+                'titulo' => $request->titulo,
+                'categoria_id' => $request->categoria_id,
+                'texto' => $request->descricao, 
+                'estado_item' => $request->estado_item,
+                'quantidade_item' => $request->quantidade_doacao,
+                'localizacao' => $request->local_doacao,
+                'data_validade' => $request->data_expiracao
+            ]);
             
-        $post = publicacao::create([
-            'usuario_id' => Auth::user()->id,
-            'titulo' => $request->titulo,
-            'categoria_id' => $request->categoria_id,
-            'texto' => $request->descricao, 
-            'estado_item' => $request->estado_item,
-            'quantidade_item' => $request->quantidade_doacao,
-            'localizacao' => $request->local_doacao,
-            'data_validade' => $request->data_expiracao
-        ]);
+          }catch(\Exception $e){
+            //redirecionar para alguma página de erros padronizada
+            //renderizar uma página anterior, mostrando alguma mensagem (mostro como trabalhar com mensagem mais a frente)
+          }
 
         return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
     }

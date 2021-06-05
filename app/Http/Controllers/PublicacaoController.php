@@ -64,13 +64,17 @@ class PublicacaoController extends Controller
         // $image->move(public_path('images'), $new_name);
             
             
-        $post = publicacao::create([
-            'usuario_id' => Auth::user()->id,
-            'titulo' => $request->titulo,
-            'categoria_id' => $request->categoria_id,
-            'texto' => $request->descricao
-        ]);
-    
+        try{
+            $post = publicacao::create([
+                'usuario_id' => Auth::user()->id,
+                'titulo' => $request->titulo,
+                'categoria_id' => $request->categoria_id,
+                'texto' => $request->descricao
+            ]);
+          }catch(\Exception $e){
+            //redirecionar para alguma página de erros padronizada
+            //renderizar uma página anterior, mostrando alguma mensagem (mostro como trabalhar com mensagem mais a frente)
+          }
 
         
 
