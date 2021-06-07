@@ -217,29 +217,51 @@
 					        } 
 						});
 					}else { 
-						//$.inArray(response.erro, ["O campo titulo é obrigatório."]);
-						switch (response.erro[0]) {
-							case "O campo titulo é obrigatório.":
-								$('#titulo').addClass("border border-danger");
-								break;
+					
+						//var erro1 = $.inArray(response, ['O campo titulo é obrigatório.']);	
+						//var erro1 = response.indexOf('O campo titulo é obrigatório.');
+						var erro1 = jQuery.inArray("O campo titulo é obrigatório.", response.erro);
+						var erro2 = jQuery.inArray("O campo categoria id é obrigatório.", response.erro);
+						var erro3 = jQuery.inArray("O campo descricao é obrigatório.", response.erro);
 
-							case "O campo categoria id é obrigatório.":
-								$('#categoria_id').addClass("border border-danger");
-								break;
-						
-							case "O campo descricao é obrigatório.":
-								$('#descricao').addClass("border border-danger");
-								break;
+						if (erro1 > -1 )
+							$('#titulo').addClass('border border-danger');
 
-							default:
-								break;
-						}
+						if (erro2 > -1 )
+						$('#categoria_id').addClass('border border-danger');	
+
+						if (erro3 > -1 )
+							$('#descricao').addClass('border border-danger');		
+
 					    toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
 					}
 				}
 			});
 			document.getElementById("form-publicacao").reset();
 		});
+
+		//------------------------------------------------------
+
+	//** Script para Remover a class Danger dos input da modal Instituição **//
+
+		$('#titulo').keyup(function(){
+			$( "#titulo" ).removeClass( "border border-danger" );
+
+        });
+
+		$(function() {
+			$('#categoria_id').click(function(event) {
+				$( "#categoria_id" ).removeClass( "border border-danger" );
+			});
+    	});
+
+		$('#descricao').keyup(function(){
+			$( "#descricao" ).removeClass( "border border-danger" );
+
+	//** ------------------------------------------------------------------ **//
+
+        });
+
 	</script>
 
 	<!-- Fim do Scrim Ajax para Publicar doação da Instituição -->
@@ -304,10 +326,24 @@
 							} 
 						});
 					}else {
-						$('#titulo_doacao_erro').text(response.erro[0]);
-						$('#categoria_doacao_erro').text(response.erro[1]);
-						$('#local_doacaoError').text(response.erro[2]);
-						$('#descricao_doacaoError').text(response.erro[3]);
+					
+						var erro4 = jQuery.inArray("O campo titulo é obrigatório.", response.erro);
+						var erro5 = jQuery.inArray("O campo categoria id é obrigatório.", response.erro);
+						var erro6 = jQuery.inArray("O campo local doacao é obrigatório.", response.erro);
+						var erro7 = jQuery.inArray("O campo descricao é obrigatório.", response.erro);
+
+						if (erro4 > -1 )
+							$('#titulo_doacao').addClass('border border-danger');
+
+						if (erro5 > -1 )
+						$('#categoria_ida').addClass('border border-danger');	
+
+						if (erro6 > -1 )
+							$('#local_doacao').addClass('border border-danger');	
+
+						if (erro7 > -1 )
+							$('#descricao_doacao').addClass('border border-danger');	
+
 
 						toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
 					}
@@ -315,8 +351,31 @@
 			});
 			//Limpar dos dados do form
 			document.getElementById("form-doador").reset();
-form-doacao
 		});
+
+	//** Script para Remover a class Danger dos input da modal Instituição **//
+
+		$('#titulo_doacao').keyup(function(){
+			$( "#titulo_doacao" ).removeClass( "border border-danger" );
+
+		});
+
+		$(function() {
+			$('#categoria_ida').click(function(event) {
+				$( "#categoria_ida" ).removeClass( "border border-danger" );
+			});
+		});
+			
+		$('#local_doacao').keyup(function(){
+			$( "#local_doacao" ).removeClass( "border border-danger" );
+
+		});
+
+		$('#descricao_doacao').keyup(function(){
+			$( "#descricao_doacao" ).removeClass( "border border-danger" );
+
+		});
+
 	</script>
 
 	<!-- Fim do Scrim Ajax para Publicar doação do User -->
