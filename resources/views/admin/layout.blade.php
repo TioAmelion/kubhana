@@ -15,8 +15,8 @@
 			<div class="post-project">
 				<h3>Publicar</h3>
 				<div class="post-project-fields">
-					<form id="form-publicacao">
-
+					<form method="POST" id="form-publicacao" enctype="multipart/form-data">
+						@csrf
 						<div class="row">
 							<div class="col-lg-12">
 								<input type="text" class="text-ligth" id="titulo" name="titulo" placeholder="Título">
@@ -38,7 +38,8 @@
 								<span id="descricaoError" style="color: red"></span>
 							</div>
 							<div class="col-lg-12">
-								<!-- <input type="file" id="imagem" name="imagem" value="" placeholder=""> -->
+								<input type="file" id="image" name="image" value="" placeholder="" onchange="previewFile()">
+								<img id="previewImg" src="/examples/images/transparent.png" style="height: 100px; weight:100px" alt="">
 							</div>
 							<br>
 							<div class="col-lg-12">
@@ -61,7 +62,8 @@
 			<div class="post-project">
 				<h3>Ajude com a sua doação - <span style="font-weight: bold" id="nome"></span></h3>
 				<div class="post-project-fields">
-                    <form id="form-doacao">
+                    <form method="POST" id="form-doacao" enctype="multipart/form-data">
+						@csrf
 						<div class="row">
 							<div class="col-lg-12">
 								<input type="text" id="textoDoacao" name="textoDoacao" placeholder="O que pretende doar">
@@ -179,32 +181,36 @@
 		$(function () {
 			$('.alimentos').css('background-image', 'url(assets/images/vegetable.svg)');
 			$('.alimentos').css('visibility', 'visible');
+			$('#previewImg').hide();
 		});
 	</script>
 
 	<!-- Inicio Scrim Ajax para Publicar doação da Instituição -->
 
 	<script>
-		$('#publicar').on('click', function(element){
+		//Funcao para previsualizar imagem
+		function previewFile(){
+
+			var file = $('input[type=file]').get(0).files[0];
+			if (file) {
+				var reader = new FileReader(); 
+				reader.onload = function(){
+					$("#previewImg").attr("src", reader.result);
+				}
+				$('#previewImg').show();
+				reader.readAsDataURL(file);				
+			}
+		}
+
+		$('#form-publicacao').on('submit', function(element){
 			element.preventDefault();
-
-			let titulo =  $('#titulo').val()
-			let categoria_id =  $('#categoria_id').val()
-			let descricao =  $('#descricao').val()
-				// let imagem =  $('#imagem').val()
-			let _token =   $('meta[name="csrf-token"]').attr('content')
-				
-			console.log(titulo, categoria_id, descricao, _token);
-
+			
 			$.ajax({
 				url: "/publicar",
 				type: "POST",
-				data: {
-					titulo: titulo,
-					categoria_id: categoria_id,
-					descricao: descricao,
-					_token: _token
-				},
+				data: new FormData(this),
+				contentType: false,
+           		processData: false,
 				dataType: "json",
 				success: function(response) {
 
@@ -325,7 +331,7 @@
 								window.location.reload();
 							} 
 						});
-					}else {
+					}else if(response.erro){
 					
 						var erro4 = jQuery.inArray("O campo titulo é obrigatório.", response.erro);
 						var erro5 = jQuery.inArray("O campo categoria id é obrigatório.", response.erro);
@@ -344,8 +350,11 @@
 						if (erro7 > -1 )
 							$('#descricao_doacao').addClass('border border-danger');	
 
-
 						toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
+
+					} else {
+						toastr.error(response.falhou, 'Erro ao publicar!', { "timeOut": 5000 });
+
 					}
 				}
 			});
@@ -381,26 +390,15 @@
 	<!-- Fim do Scrim Ajax para Publicar doação do User -->
 
 	<script>
-		$('#doar').on('click', function(element){
-
+		$('#form-doacao').on('submit', function(element){
 			element.preventDefault();
-
-			let textoDoacao =  $('#textoDoacao').val();
-			let quantidade =  $('#quantidade').val();
-			let instId =  $('#instId').val();
-			let _token =   $('meta[name="csrf-token"]').attr('content');
-				
-			console.log(textoDoacao, instId, quantidade, _token);
 
 			$.ajax({
 				url: "/doacao", 
 				type: "POST",
-				data: {
-					textoDoacao: textoDoacao,
-					quantidade: quantidade,
-					instId: instId,
-					_token: _token
-				},
+				data: new FormData(this),
+				contentType: false,
+           		processData: false,
 				dataType: "json",
 				success: function(response) {
 
@@ -457,12 +455,35 @@
 			});
 
 		</script>
-	<!-- ******************************************************** -->
 	
+	<script>
+		$(document).ready(function () {
+			fetch_data();
+			
+			function fetch_data(query = '') {
+				$.ajax({
+					url: '{{ route('autocomplete') }}',
+					type: "GET",
+					data: {query: query},
+					dataType: "json",
+					success: function (response) {
+						console.log("QUERY", response);
+						$('#result-search').empty();
+						$('#result-search').prepend(response);
+					}
+				});
+			}
+
+			$(document).on('keyup', '#search-g', function () {
+				var query = $(this).val();
+				console.log(query);
+				fetch_data(query);
+			});	
+		});
+	</script>
 </body>
 <script>
 	'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0235'}) 
 </script>
 <script src='assets/img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'></script>
-
 </html>

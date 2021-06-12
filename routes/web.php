@@ -5,11 +5,14 @@ use App\Models\User;
 use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\ProvinciaController;
 use App\Http\Controllers\PublicacaoController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PessoaController;
+// use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DoacaoController;
 use App\Models\publicacao;
 
 Route::resource('/feed', 'App\Http\Controllers\HomeController');
+
+Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
 
 Route::get('/perfil', function () {
     return view('auth/profile');

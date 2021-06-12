@@ -6,9 +6,10 @@
 			</div><!--logo end-->
 			<div class="search-bar">
 				<form>
-					<input type="text" name="search" placeholder="pesquisar...">
+					<input type="text" name="search-g" id="search-g" placeholder="pesquisar...">
 					<button type="submit"><i class="la la-search"></i></button>
 				</form>
+				<div id="result-search"></div>				
 			</div><!--search-bar end-->
 			<nav>
 				<ul>
@@ -65,10 +66,10 @@
 			</nav><!--nav end-->
 			@auth
 				<div class="user-account">
-				<div class="user-info" style="width: 160px">
+				<div class="user-info" style="width: 260px">
 					<img src="assets/images/resources/user.png" alt="">
-					<a href="#" title="">{{ Auth::user()->name}}</a>
-					<i class="la la-sort-down"></i>
+					<a href="#" class="dropdown-toggle" title="">{{ Auth::user()->name}}</a>
+					{{-- <i class="la la-sort-down"></i> --}}
 				</div>
 				<div class="user-account-settingss">
 					<ul class="us-links">
@@ -83,4 +84,30 @@
 			@endauth
 		</div><!--header-data end-->
 	</div>
+	{{-- @include('admin.includes.script') --}}
+	{{-- <script>
+		$(document).ready(function () {
+			fetch_data();
+			
+			function fetch_data(query = '') {
+				$.ajax({
+					url: '{{ route('autocomplete') }}',
+					type: "GET",
+					data: {query: query},
+					dataType: "json",
+					success: function (response) {
+						console.log("QUERY", response);
+						$('#result-search').empty();
+						$('#result-search').prepend(response);
+					}
+				});
+			}
+
+			$(document).on('keyup', '#search-g', function () {
+				var query = $(this).val();
+				console.log(query);
+				fetch_data(query);
+			});	
+		});
+	</script> --}}
 </header>
