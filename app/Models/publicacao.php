@@ -12,7 +12,7 @@ class publicacao extends Model
     use HasFactory;
 
     protected $guardad = ['id'];
-    protected $fillable = ['usuario_id', 'titulo','categoria_id','texto', 'image'];
+    protected $fillable = ['usuario_id', 'titulo','categoria_id','texto', 'estado_item', 'quantidade_item', 'localizacao', 'data_validade', 'image'];
 
     public function show(){
         $query = DB::table('publicacaos')

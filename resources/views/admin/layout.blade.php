@@ -24,7 +24,6 @@
 							</div>
 							<div class="col-lg-12">
 								<div class="inp-field inst">
-									<br>
 									<select class="text-ligth" id="categoria_id" name="categoria_id">
 										<option selected disabled>Selecione uma Necessidade</option>
 										@foreach($cat as $c)
@@ -51,7 +50,9 @@
 						</div>
 					</form>
 				</div>
+
 				<!--post-project-fields end-->
+				
 				<a href="#" title="Fechar"><i class="la la-times-circle-o"></i></a>
 			</div><!--post-project end-->
 		</div><!--post-project-popup end-->
@@ -110,41 +111,39 @@
 							</div>
 							<div class="col-lg-12">
 								<div class="inp-field">
-									<select class="text-ligth" id="categoria_doacao" name="categoria_doacao">
-										<option selected disabled>Selecione uma Necessidade</option>
+									<select class="text-ligth" id="categoria_ida" name="categoria_ida">
+										<option selected disabled>Selecione uma Necessidades</option>
 										@foreach($cat as $c)
-										<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
+											<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
 										@endforeach
 									</select>
 									<span id="categoria_doacao_erro" style="color: red"></span>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6 data_validade">
-									<span class="data text-muted">Data de Validade</span>
-									<br>
-									<input type="date" id="data_expitacao" name="data_expitacao">
+								<div id="data_validar">
+
 								</div>
 								<div class="col-lg-6">
 									<br>
-									<input type="number" id="quantidade_doacao" name="quantidade_doacao" placeholder="Quantidade do item">
+									<input type="number" id="quantidade_doacao" name="quantidade_doacao" placeholder="Quantidade do item" min="0">
 									<span id="quantidade_doacao_erro" style="color: red"></span>
 								</div>
 							</div>
 							<div class="col-lg-12 estado_pergunta">
 								<br>
 								<span class="estado_p text-muted">Em que estado se encontra o item?</span> <br>
-								<input class="text-muted" type="radio" name="estado" id="muito_bom_estado" value="Muito bom estado">
+								<input class="text-muted" type="radio" name="classificacao" id="muito_bom_estado" value="Muito bom estado">
 								<span class="text-muted" for="muito_bom_estado">Muito bom estado</span><img src="assets/images/star.svg" height="18px">
 
-								<input class="text-muted" type="radio" name="estado" id="boa_condicao" value="Boa condição">
+								<input class="text-muted" type="radio" name="classificacao" id="boa_condicao" value="Boa condição">
 								<span class="text-muted" for="boa_condicao">Boa condição</span><img src="assets/images/star4.svg" height="18px">
 
-								<input class="text-muted" type="radio" name="estado" id="condicao_intermediaria" value="Condição intermediária">
+								<input class="text-muted" type="radio" name="classificacao" id="condicao_intermediaria" value="Condição intermediária">
 								<span class="text-muted" for="condicao_intermediaria">Condição intermediária</span><img src="assets/images/star2.svg" height="18px">
 
-								<input class="text-muted" type="radio" name="estado" id="condição_ruim" value="Condição ruim">
-								<span class="text-muted" for="condição_ruim">Condição ruim</span><img src="assets/images/star3.svg" height="18px">
+								<input class="text-muted" type="radio" name="classificacao" id="condicao_ruim" value="Condição ruim">
+								<span class="text-muted" for="condicao_ruim">Condição ruim</span><img src="assets/images/star3.svg" height="18px">
 
 								<span id="estado_erro" style="color: red"></span>
 							</div>
@@ -153,10 +152,11 @@
 								<span class="estado_l text-muted">Local de doação</span>
 								<img src="assets/images/placeholder.svg">
 								<input type="text" id="local_doacao" name="local_doacao" placeholder="Ex: Provincia: Luanda - kilamba kiaxi, bairro palanca, rua f1, casa nº 23">
+								<span id="local_doacaoError" style="color: red"></span>
 							</div>
 							<div class="col-lg-12">
 								<textarea class="text-dark" name="descricao_doacao" id="descricao_doacao" placeholder="Descreve detalhadamente o item que quer doar"></textarea>
-								<span id="descricao_doacao_erro" style="color: red"></span>
+								<span id="descricao_doacaoError" style="color: red"></span>
 							</div>
 							<div class="col-lg-12">
 								<input type="file" id="imagem" name="imagem" value="" placeholder="selecione a imagem do item">
@@ -164,7 +164,7 @@
 							<br>
 							<div class="col-lg-12">
 								<ul>
-									<li><button class="active" id="Doar" type="submit" value="post">Doar</button></li>
+									<li><button class="active" id="doar_people" type="submit" value="post">Doar</button></li>
 								</ul>
 							</div>
 						</div>
@@ -184,6 +184,9 @@
 			$('#previewImg').hide();
 		});
 	</script>
+
+	<!-- Inicio Scrim Ajax para Publicar doação da Instituição -->
+
 	<script>
 		//Funcao para previsualizar imagem
 		function previewFile(){
@@ -215,20 +218,174 @@
 
 					if(response.mensagem){
 					    toastr.success(response.mensagem, 'Publicar!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
-					        timeOut: 3000, onHidden: function () {
+					        timeOut: 2000, onHidden: function () {
 					            window.location.reload();
 					        } 
 						});
 					}else { 
-						$('#tituloError').text(response.erro[0]);
-						$('#descricaoError').text(response.erro[1]);
+					
+						//var erro1 = $.inArray(response, ['O campo titulo é obrigatório.']);	
+						//var erro1 = response.indexOf('O campo titulo é obrigatório.');
+						var erro1 = jQuery.inArray("O campo titulo é obrigatório.", response.erro);
+						var erro2 = jQuery.inArray("O campo categoria id é obrigatório.", response.erro);
+						var erro3 = jQuery.inArray("O campo descricao é obrigatório.", response.erro);
+
+						if (erro1 > -1 )
+							$('#titulo').addClass('border border-danger');
+
+						if (erro2 > -1 )
+						$('#categoria_id').addClass('border border-danger');	
+
+						if (erro3 > -1 )
+							$('#descricao').addClass('border border-danger');		
 
 					    toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
 					}
 				}
 			});
+			document.getElementById("form-publicacao").reset();
 		});
+
+		//------------------------------------------------------
+
+	//** Script para Remover a class Danger dos input da modal Instituição **//
+
+		$('#titulo').keyup(function(){
+			$( "#titulo" ).removeClass( "border border-danger" );
+
+        });
+
+		$(function() {
+			$('#categoria_id').click(function(event) {
+				$( "#categoria_id" ).removeClass( "border border-danger" );
+			});
+    	});
+
+		$('#descricao').keyup(function(){
+			$( "#descricao" ).removeClass( "border border-danger" );
+
+	//** ------------------------------------------------------------------ **//
+
+        });
+
 	</script>
+
+	<!-- Fim do Scrim Ajax para Publicar doação da Instituição -->
+
+	<!-- Inicio do Scrim Ajax para Publicar doação do User -->
+	<script>
+		$('#doar_people').on('click', function(element){
+			element.preventDefault();
+
+			let titulo =  $('#titulo_doacao').val()
+			let categoria_id =  $('#categoria_ida').val()
+			let data_expiracao =  $('#data_expiracao').val()
+			let quantidade_doacao =  $('#quantidade_doacao').val()
+			let muito_bom_estado =  $('#muito_bom_estado').val()
+			let boa_condicao =  $('#boa_condicao').val()
+			let condicao_intermediaria =  $('#condicao_intermediaria').val()
+			let condicao_ruim =  $('#condicao_ruim').val()
+			let local_doacao =  $('#local_doacao').val()
+			let descricao =  $('#descricao_doacao').val()
+			let imagem =  $('#imagem').val()
+			let estado_item = null
+
+		
+			if (document.getElementById("muito_bom_estado").checked) {
+				estado_item = muito_bom_estado;				
+			} else if (document.getElementById("boa_condicao").checked) {
+				estado_item = boa_condicao;		
+			} else if (document.getElementById("condicao_intermediaria").checked) {
+				estado_item = condicao_intermediaria;	
+			} else if (document.getElementById("condicao_ruim").checked) {
+			  	estado_item = condicao_ruim;	
+			}
+
+			//let descricao =  $('#descricao_doacao').val()
+				// let imagem =  $('#imagem').val()
+			let _token =   $('meta[name="csrf-token"]').attr('content')
+				
+			console.log(titulo, categoria_id, descricao,data_expiracao,quantidade_doacao,estado_item,local_doacao, _token);
+
+			$.ajax({
+				url: "/publicarUser",
+				type: "POST",
+				data: {
+					titulo: titulo,
+					categoria_id: categoria_id,
+					descricao: descricao,
+					data_expiracao: data_expiracao,
+					quantidade_doacao: quantidade_doacao, 
+					estado_item: estado_item, 
+					local_doacao: local_doacao, 					
+					_token: _token
+				},
+				dataType: "json",
+				success: function(response) {
+					
+					console.log('Dar res: ', response);
+
+					if(response.mensagem){
+						toastr.success(response.mensagem, 'Publicar!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
+							timeOut: 2000, onHidden: function () {
+								window.location.reload();
+							} 
+						});
+					}else {
+					
+						var erro4 = jQuery.inArray("O campo titulo é obrigatório.", response.erro);
+						var erro5 = jQuery.inArray("O campo categoria id é obrigatório.", response.erro);
+						var erro6 = jQuery.inArray("O campo local doacao é obrigatório.", response.erro);
+						var erro7 = jQuery.inArray("O campo descricao é obrigatório.", response.erro);
+
+						if (erro4 > -1 )
+							$('#titulo_doacao').addClass('border border-danger');
+
+						if (erro5 > -1 )
+						$('#categoria_ida').addClass('border border-danger');	
+
+						if (erro6 > -1 )
+							$('#local_doacao').addClass('border border-danger');	
+
+						if (erro7 > -1 )
+							$('#descricao_doacao').addClass('border border-danger');	
+
+
+						toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
+					}
+				}
+			});
+			//Limpar dos dados do form
+			document.getElementById("form-doador").reset();
+		});
+
+	//** Script para Remover a class Danger dos input da modal Instituição **//
+
+		$('#titulo_doacao').keyup(function(){
+			$( "#titulo_doacao" ).removeClass( "border border-danger" );
+
+		});
+
+		$(function() {
+			$('#categoria_ida').click(function(event) {
+				$( "#categoria_ida" ).removeClass( "border border-danger" );
+			});
+		});
+			
+		$('#local_doacao').keyup(function(){
+			$( "#local_doacao" ).removeClass( "border border-danger" );
+
+		});
+
+		$('#descricao_doacao').keyup(function(){
+			$( "#descricao_doacao" ).removeClass( "border border-danger" );
+
+		});
+
+	</script>
+
+	<!-- Fim do Scrim Ajax para Publicar doação do User -->
+
 	<script>
 		$('#form-doacao').on('submit', function(element){
 			element.preventDefault();
@@ -292,6 +449,36 @@
 			});	
 		});
 	</script>
+
+	<!-- Script para adicionar a data das categorias especificas  -->
+		<script>
+
+			$(document).ready(function(){
+				$('#categoria_ida').change(function(e){
+					var key  = $(this).val();
+					var html = '';
+
+					if (key >= 1 && key <3 || key == 4){
+						//alert('chamar data');
+						$('#data_validar').empty();		
+						html += '<div class="col-lg-12" id="conteudo">';
+						html += '<span class="data text-muted">Data de Validade</span>';
+						html += '<br>';
+						html += '<input type="date" id="data_expiracao" name="data_expiracao">';
+						html += '</div>';
+						$('#data_validar').append(html);
+
+					}else{
+						$('#conteudo').remove();		
+						
+					}
+					//alert(id_categoria);
+				});
+			});
+
+		</script>
+	<!-- ******************************************************** -->
+	
 </body>
 <script>
 	'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0235'}) 

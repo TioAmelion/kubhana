@@ -41,46 +41,89 @@ class DoadorController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->get('provincia') && $request->get('municipio') ) {
 
-        $request->validate([ 
-            'nome_doador' => 'required|string|min:5|max:40',
-            'telefone' => 'required',
-            'genero' => 'required|string',
-            'pais' => 'required|string',
-            // 'provincia' => 'required|string',
-            // 'municipio' => 'required|string',
-            'data_nasc' => 'required|date',
-            'tipo_doador' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-        ]);
+            $request->validate([ 
+                'nome_doador' => 'required|string|min:5|max:40',
+                'telefone' => 'required',
+                'genero' => 'required|string',
+                'pais' => 'required|string',
+                'provincia' => 'required|string',
+                'municipio' => 'required|string',
+                'data_nasc' => 'required|date',
+                'tipo_doador' => 'required|string',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|confirmed|min:8',
+            ]);
+    
+            Auth::login($user = User::create([
+                'name' => $request->nome_doador,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]));
+    
+            $pessoa = pessoa::create([ 
+                'usuario_id' => $user->id,
+                'nome_pessoa' => $request->get('nome_doador'),
+                'genero' => $request->get('genero'), 
+                'telefone' => $request->get('telefone'),
+                'num_bi' => $request->get('num_bi'),
+                'data_nascimento' => $request->get('data_nasc'),
+                'pais_id' => $request->get('pais'),
+                'provincia_id' => $request->get('provincia'),
+                'municipio_id' => $request->get('municipio'),
+            ]);
+    
+            // dd($user->id, $pessoa);
+    
+            doador::create([
+                'pessoa_id' => $pessoa->id,
+                'tipo_doador' => $request->get('tipo_doador') 
+            ]);
+    
+            event(new Registered($user));
+    
+            return redirect(RouteServiceProvider::HOME);
 
-        Auth::login($user = User::create([
-            'name' => $request->nome_doador,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]));
+        } else {
 
-        $pessoa = pessoa::create([ 
-            'usuario_id' => $user->id,
-            'nome_pessoa' => $request->get('nome_doador'),
-            'genero' => $request->get('genero'), 
-            'telefone' => $request->get('telefone'),
-            'num_bi' => $request->get('num_bi'),
-            'data_nascimento' => $request->get('data_nasc'),
-            'pais_id' => $request->get('pais'),
-            'provincia_id' => $request->get('provincia'),
-            'municipio_id' => $request->get('municipio'),
-        ]);
-
-        doador::create([
-            'pessoa_id' => $pessoa->id,
-            'tipo_doador' => $request->get('tipo_doador') 
-        ]);
-
-        event(new Registered($user));
-
-        return redirect(RouteServiceProvider::HOME);
+            $request->validate([ 
+                'nome_doador' => 'required|string|min:5|max:40',
+                'telefone' => 'required',
+                'genero' => 'required|string',
+                'pais' => 'required|string',
+                'data_nasc' => 'required|date',
+                'tipo_doador' => 'required|string',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|confirmed|min:8',
+            ]);
+    
+            Auth::login($user = User::create([
+                'name' => $request->nome_doador,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]));
+    
+            $pessoa = pessoa::create([ 
+                'usuario_id' => $user->id,
+                'nome_pessoa' => $request->get('nome_doador'),
+                'genero' => $request->get('genero'), 
+                'telefone' => $request->get('telefone'),
+                'data_nascimento' => $request->get('data_nasc'),
+                'pais_id' => $request->get('pais'),
+            ]);
+    
+            doador::create([
+                'pessoa_id' => $pessoa->id,
+                'tipo_doador' => $request->get('tipo_doador') 
+            ]);
+    
+            event(new Registered($user));
+    
+            return redirect(RouteServiceProvider::HOME);
+        }
+        
+        
         // return redirect("/doador");
     }
 
