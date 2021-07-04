@@ -10,7 +10,7 @@ class publicacao extends Model
     use HasFactory;
 
     protected $guardad = ['id'];
-    protected $fillable = ['usuario_id', 'titulo','categoria_id','texto'];
+    protected $fillable = ['usuario_id', 'titulo','categoria_id','texto', 'estado_item', 'quantidade_item', 'localizacao', 'data_validade'];
 
     public function show(){
         $pub = DB::table('publicacaos')
