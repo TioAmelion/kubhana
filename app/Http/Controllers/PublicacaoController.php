@@ -46,6 +46,7 @@ class PublicacaoController extends Controller
     public function store(Request $request)
     {
 
+
         try{
 
             $validacao = array(
@@ -75,9 +76,6 @@ class PublicacaoController extends Controller
 
           }
 
-        
-
-        return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
     }
 
     /**
