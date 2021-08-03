@@ -61,6 +61,7 @@ class PublicacaoController extends Controller
     public function store(Request $request)
     {
 
+
         try{
             
             $validacao = array(
@@ -95,7 +96,12 @@ class PublicacaoController extends Controller
             return response()->json(['falhou' => 'Ocorreu um erro ao publicar']);
           } 
 
+<<<<<<< HEAD
          
+=======
+          }
+
+>>>>>>> 1361112573be71db31e127d8023bb438e1639f32
     }
 
     /**
