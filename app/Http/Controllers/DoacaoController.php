@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\doacao;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 
 class DoacaoController extends Controller
 {
@@ -38,9 +39,10 @@ class DoacaoController extends Controller
     public function store(Request $request)
     {
         $formDoar = array(
-            'textoDoacao' => 'required|max:50',
-            'quantidade' => 'required',
-            'instId' => 'required' 
+            'descricaoDoar' => 'required|max:250',
+            'quantidade' => 'required|integer',
+            'instId' => 'required|integer',
+            'estado' => 'required|string'
             );
 
         $erro = Validator::make($request->all(), $formDoar);
@@ -52,9 +54,10 @@ class DoacaoController extends Controller
         $dados = doacao::create([
             'doador_id' => Auth::user()->id, 
             'instituicao_id' => $request->instId,
-            'descricao' => $request->textoDoacao,
+            'descricao' => $request->descricaoDoar,
             'quantidade' => $request->quantidade,
-            'data' => "2021-02-14" 
+            'estado' => $request->estado,
+            'data' => date('Y-m-d')
         ]);
 
         return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'dados' => $dados ]);

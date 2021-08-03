@@ -88,7 +88,7 @@
 							<div class="col-lg-12">
 								<div class="inp-field">
 									<select name="categoria">
-										<option>Categorias</option>
+										<option>Estado do Produto</option>
 										<option value="urgencia">Produtos Alimenticios</option>
 										<option value="nao_urgencia">Roupas</option>
 									</select>
@@ -154,7 +154,7 @@
 							</div>
 							<div class="col-lg-12 estado_pergunta">
 								<br>
-								<span class="estado_p text-muted">Em que estado se encontra o item?</span> <br>
+								<span class="estado_p text-muted">Em que estado se encontra o produto?</span> <br>
 								<input class="text-muted" type="radio" name="estado" id="muito_bom_estado" value="Muito bom estado">
 								<span class="text-muted" for="muito_bom_estado">Muito bom estado</span><img src="assets/images/star.svg" height="18px">
 

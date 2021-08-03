@@ -62,30 +62,30 @@
 											<div class="job_descp">
 												<h3>{{$dados->titulo}}</h3>
 												<p>{{$dados->texto}}</p>
-												<img class="img-publicacao" src="images/{{$dados->image}}" style="object-fit: fill;height: 400px;width: 400px;" alt="">
+												@if($dados->imagem) <img class="img-publicacao" src="images/{{$dados->imagem}}" style="object-fit: fill;height: 400px;width: 500px;" alt=""> @endif
 											</div>
 											<div class="job-status-bar">
 												@if (Auth::check())
 													<ul class="like-com">
 														<li class="reaction-container">
 															<a href="#"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-															<span>25</span>
+															<span>{{$dados->votos ? $dados->votos : 0}}</span>
 															<div class="reaction-box">
 																<div class="reaction-icon">
 																	<label>gostar</label>
-																	<img class="teste" id="gostar" name="gostar" src="assets/images/reactions_love.png" alt="">
+																	<img class="gostar" id="gostar" name="gostar" publicacao-id="{{$dados->id}}" src="assets/images/reactions_love.png" alt="">
 																</div>
 																<div class="reaction-icon">
 																	<label>urgente</label>
-																	<img class="" id="urgente" name="urgente" src="assets/images/reactions_wow.png" alt="">
+																	<img class="urgente" id="urgente" name="urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_wow.png" alt="">
 																</div>
 																<div class="reaction-icon">
 																	<label>mais urgente</label>
-																	<img class="" id="mais urgente" name="mais urgente" src="assets/images/reactions_sad.png" alt="">
+																	<img class="maisUrgente" id="mais urgente" name="mais urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_sad.png" alt="">
 																</div>
 															</div>
 														</li>
-														<li><a href="#" title="" id="{{$dados->usuario_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a></li>
+														<li><a href="#" title="" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a></li>
 														<li> </li>
 													</ul>
 												@else

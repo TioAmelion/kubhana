@@ -15,16 +15,16 @@ class CreatePublicacaosTable extends Migration
     {
         Schema::create('publicacaos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
 
             $table->string('titulo', 50);
             $table->string('estado_item', 50)->nullable();
             $table->string('quantidade_item', 50)->nullable();
             $table->string('localizacao', 50)->nullable();
-            $table->string('data_validade', 50)->nullable();
+            $table->date('data_validade', 50)->nullable();
             $table->string('texto');
-            $table->string('image')->nullable();  
+            $table->string('imagem')->nullable();  
             $table->timestamps();
         });
     }

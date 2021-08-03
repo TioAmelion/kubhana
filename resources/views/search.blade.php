@@ -11,6 +11,11 @@
 <div class="container">
     <h1>Laravel 8 Autocomplete Search using Bootstrap Typeahead JS - ItSolutionStuff.com</h1>   
     <input class="typeahead form-control" type="text">
+
+    <h1>{{ $details['title'] }}</h1>
+    <p>{{ $details['body'] }}</p>
+   
+    <p>Thank you</p>
 </div>
    
 <script type="text/javascript">

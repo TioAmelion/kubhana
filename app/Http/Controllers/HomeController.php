@@ -7,10 +7,7 @@ use App\Models\publicacao;
 use App\Models\instituicao;
 use App\Models\pessoa;
 use App\Models\Categoria;
-use App\Models\doacao;
 use Illuminate\Support\Facades\Auth;
-use Validator;
-use DB;
 use Illuminate\Support\Facades\Date;
 
 class HomeController extends Controller
@@ -25,13 +22,18 @@ class HomeController extends Controller
 
         $result = new publicacao;
         $pub = $result->show();
+        // dd($pub);
+
         $estadoPessoa = $result->estadoPessoa(); 
-        $doacoes = $result->doacoesSemana();    
+        $doacoes = $result->doacoesSemana();
         $instSemAjudas = $result->instSemAjudas();
 
         $teste = Categoria::all();
         $instituicao = instituicao::all();
-        $idPessoas = pessoa::all(); 
+        $idPessoas = pessoa::all();
+
+        // $d = publicacao::withCount('classiPublicacao')->get();
+        $d = publicacao::with('classiPublicacao')->count();
 
         if(Auth::check()){
             $idPessoas = pessoa::where('usuario_id', Auth::user()->id)->first();

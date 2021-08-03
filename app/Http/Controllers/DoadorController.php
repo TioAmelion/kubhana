@@ -41,6 +41,7 @@ class DoadorController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         if ($request->get('provincia') && $request->get('municipio') ) {
 
             $request->validate([ 

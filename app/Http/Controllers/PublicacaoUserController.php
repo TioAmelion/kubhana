@@ -40,39 +40,50 @@ class PublicacaoUserController extends Controller
      */
     public function store(Request $request)
     {
-        $validacao = array(
-            'titulo'       => 'required|max:50',
-            'categoria_id' => 'required',
-            'local_doacao' => 'required',
-            'descricao' => 'required'
-            // 'imagem' => 'image|max:2048'
-        );
-        
-        $erro = Validator::make($request->all(), $validacao);
-
-        if ($erro->fails()) {
-            return response()->json(['erro' => $erro->errors()->all()]);
-        }
+        // return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $request->all()]);
 
         try{
 
+            $validacao = array(
+                'titulo_doacao' => 'required|max:50',
+                'categoria_id_doador' => 'required',
+                'local_doacao' => 'required',
+                'quantidade_doacao' => 'required',
+                // 'data_expiracao' => 'required',
+                'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'descricao_doacao' => 'required',
+                'local_doacao' => 'required',
+                'classificacao' => 'required'
+            );
+            
+            $erro = Validator::make($request->all(), $validacao);
+    
+            if ($erro->fails()) {
+                return response()->json(['erro' => $erro->errors()->all()]);
+            }
+    
+            if($request->imagem) {
+                $imageName = time().'.'.$request->imagem->extension();
+                $request->imagem->move(public_path('images'), $imageName);
+            }
+
             $post = publicacao::create([
-                'usuario_id' => Auth::user()->id,
-                'titulo' => $request->titulo,
-                'categoria_id' => $request->categoria_id,
-                'texto' => $request->descricao, 
-                'estado_item' => $request->estado_item,
+                'user_id' => Auth::user()->id,
+                'titulo' => $request->titulo_doacao,
+                'categoria_id' => $request->categoria_id_doador,
+                'texto' => $request->descricao_doacao, 
+                'estado_item' => $request->classificacao,
                 'quantidade_item' => $request->quantidade_doacao,
                 'localizacao' => $request->local_doacao,
-                'data_validade' => $request->data_expiracao
+                // 'data_validade' => $request->data_expiracao,
+                'imagem' => $request->imagemName
             ]);
+
+            return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
             
           }catch(\Exception $e){
-            //redirecionar para alguma página de erros padronizada
-            //renderizar uma página anterior, mostrando alguma mensagem (mostro como trabalhar com mensagem mais a frente)
+            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e]);
           }
-
-        return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
     }
 
     /**

@@ -10,6 +10,18 @@ use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\DoacaoController;
 use App\Models\publicacao;
 
+Route::get('send-mail', function () {
+   
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+   
+    \Mail::to('amelionjorge2012@gmail.com')->send(new \App\Mail\MyTestMail($details));
+   
+    dd("Email is Sent.");
+});
+
 Route::resource('/feed', 'App\Http\Controllers\HomeController');
 
 Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
@@ -25,6 +37,8 @@ Route::get('/logout', 'App\Http\Controllers\Auth\AuthenticatedSessionController@
 Route::resource('doador', 'App\Http\Controllers\DoadorController');
 
 Route::resource('publicar', 'App\Http\Controllers\PublicacaoController')->middleware(['auth']);
+
+Route::post('votar', [PublicacaoController::class, 'votarPublicacao'])->middleware(['auth'])->name(('votar'));
 
 Route::resource('publicarUser', 'App\Http\Controllers\PublicacaoUserController')->middleware(['auth']);
 
