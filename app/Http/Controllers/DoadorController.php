@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DoadorController extends Controller
 {
@@ -41,7 +42,7 @@ class DoadorController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+
         if ($request->get('provincia') && $request->get('municipio') ) {
 
             $request->validate([ 
@@ -53,38 +54,53 @@ class DoadorController extends Controller
                 'municipio' => 'required|string',
                 'data_nasc' => 'required|date',
                 'tipo_doador' => 'required|string',
+                'num_bi' => 'required',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|confirmed|min:8',
             ]);
-    
-            Auth::login($user = User::create([
-                'name' => $request->nome_doador,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]));
-    
-            $pessoa = pessoa::create([ 
-                'usuario_id' => $user->id,
-                'nome_pessoa' => $request->get('nome_doador'),
-                'genero' => $request->get('genero'), 
-                'telefone' => $request->get('telefone'),
-                'num_bi' => $request->get('num_bi'),
-                'data_nascimento' => $request->get('data_nasc'),
-                'pais_id' => $request->get('pais'),
-                'provincia_id' => $request->get('provincia'),
-                'municipio_id' => $request->get('municipio'),
-            ]);
-    
-            // dd($user->id, $pessoa);
-    
-            doador::create([
-                'pessoa_id' => $pessoa->id,
-                'tipo_doador' => $request->get('tipo_doador') 
-            ]);
-    
-            event(new Registered($user));
-    
-            return redirect(RouteServiceProvider::HOME);
+
+            try {
+
+                DB::beginTransaction();
+
+                Auth::login($user = User::create([
+                    'name' => $request->nome_doador,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]));
+        
+                $pessoa = pessoa::create([ 
+                    'usuario_id' => $user->id,
+                    'nome_pessoa' => $request->get('nome_doador'),
+                    'genero' => $request->get('genero'), 
+                    'telefone' => $request->get('telefone'),
+                    'num_bi' => $request->get('num_bi'),
+                    'data_nascimento' => $request->get('data_nasc'),
+                    'pais_id' => $request->get('pais'),
+                    'provincia_id' => $request->get('provincia'),
+                    'municipio_id' => $request->get('municipio'),
+                ]);
+        
+                $doador = doador::create([
+                    'pessoa_id' => $pessoa->id,
+                    'tipo_doador' => $request->get('tipo_doador') 
+                ]);
+
+                if(!$user || !$pessoa || !$doador )
+                {
+                    DB::rollback();
+                } else {
+
+                    DB::commit();
+                }
+        
+                event(new Registered($user));
+        
+                return redirect(RouteServiceProvider::HOME);
+
+            } catch (\Throwable $th) {
+                return redirect('/register')->with('status', 'Ocorreu um erro, por favor tente mais tarde!');
+            }
 
         } else {
 
@@ -94,34 +110,51 @@ class DoadorController extends Controller
                 'genero' => 'required|string',
                 'pais' => 'required|string',
                 'data_nasc' => 'required|date',
+                'num_bi' => 'required',
                 'tipo_doador' => 'required|string',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|confirmed|min:8',
             ]);
-    
-            Auth::login($user = User::create([
-                'name' => $request->nome_doador,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]));
-    
-            $pessoa = pessoa::create([ 
-                'usuario_id' => $user->id,
-                'nome_pessoa' => $request->get('nome_doador'),
-                'genero' => $request->get('genero'), 
-                'telefone' => $request->get('telefone'),
-                'data_nascimento' => $request->get('data_nasc'),
-                'pais_id' => $request->get('pais'),
-            ]);
-    
-            doador::create([
-                'pessoa_id' => $pessoa->id,
-                'tipo_doador' => $request->get('tipo_doador') 
-            ]);
-    
-            event(new Registered($user));
-    
-            return redirect(RouteServiceProvider::HOME);
+
+            try {
+
+                Auth::login($user = User::create([
+                    'name' => $request->nome_doador,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]));
+        
+                $pessoa = pessoa::create([ 
+                    'usuario_id' => $user->id,
+                    'nome_pessoa' => $request->get('nome_doador'),
+                    'genero' => $request->get('genero'), 
+                    'telefone' => $request->get('telefone'),
+                    'data_nascimento' => $request->get('data_nasc'),
+                    'num_bi' => $request->get('num_bi'),
+                    'pais_id' => $request->get('pais')
+                ]);
+        
+                $doador = doador::create([
+                    'pessoa_id' => $pessoa->id,
+                    'tipo_doador' => $request->get('tipo_doador') 
+                ]);
+
+                if(!$user || !$pessoa || !$doador )
+                {
+                    DB::rollback();
+                } else {
+
+                    DB::commit();
+                }
+        
+                event(new Registered($user));
+        
+                return redirect(RouteServiceProvider::HOME);
+
+            } catch (\Throwable $th) {
+                return redirect('/register')->with('status', 'Ocorreu um erro, por favor tente mais tarde!');
+            }
+
         }
         
         

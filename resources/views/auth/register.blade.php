@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
 </head>
 
-<body class="sign-in" oncontextmenu="return false;">
+<body class="sign-in" oncontextmenu="return false;" style="background: #000">
     <div class="wrapper">
         <div class="sign-in-page">
             <center>
@@ -36,8 +36,18 @@
                             </ul>
                             <div class="form-row">
                                 @if($errors->any())
-                                <div class="form-group col-md-12 alert alert-danger" role="alert">
+                                <div class="form-group col-md-12 alert alert-warning" role="alert">
                                     Por favor corriga os erros do formulario
+                                </div>
+                                @endif
+                                @if (session('status'))
+                                    <div class="form-group col-md-12 alert alert-danger" role="alert">
+                                        {{ session('status') }}
+                                    </div>
+                                @endif
+                                @if (session('erro'))
+                                <div class="form-group col-md-12 alert alert-danger" role="alert">
+                                    session('erro')
                                 </div>
                                 @endif
                             </div>
@@ -204,7 +214,6 @@
                             <!-- INSTITUICAO -->
                             <form id="instituicao" method="POST" action="{{ route('instituicao.store') }}">
                                 @csrf
-
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <input type="text"
@@ -468,7 +477,7 @@
         function ocultarForm() {
             $('select[name="provincia"]').empty();
             $('select[name="municipio"]').empty();
-            $('#num_bi').empty();
+            $('#num_bi').attr("placeholder", "Número do Passaporte");
         }
 
         $('select[id="provincia"]').on('change',function(){
