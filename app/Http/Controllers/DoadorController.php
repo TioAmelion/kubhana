@@ -54,7 +54,7 @@ class DoadorController extends Controller
                 'municipio' => 'required|string',
                 'data_nasc' => 'required|date',
                 'tipo_doador' => 'required|string',
-                'num_bi' => 'required',
+                'numero_identificacao' => 'required',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|confirmed|min:8',
             ]);
@@ -74,7 +74,7 @@ class DoadorController extends Controller
                     'nome_pessoa' => $request->get('nome_doador'),
                     'genero' => $request->get('genero'), 
                     'telefone' => $request->get('telefone'),
-                    'num_bi' => $request->get('num_bi'),
+                    'numero_identificacao' => $request->get('numero_identificacao'),
                     'data_nascimento' => $request->get('data_nasc'),
                     'pais_id' => $request->get('pais'),
                     'provincia_id' => $request->get('provincia'),
@@ -110,7 +110,7 @@ class DoadorController extends Controller
                 'genero' => 'required|string',
                 'pais' => 'required|string',
                 'data_nasc' => 'required|date',
-                'num_bi' => 'required',
+                'numero_identificacao' => 'required',
                 'tipo_doador' => 'required|string',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|confirmed|min:8',
@@ -130,7 +130,7 @@ class DoadorController extends Controller
                     'genero' => $request->get('genero'), 
                     'telefone' => $request->get('telefone'),
                     'data_nascimento' => $request->get('data_nasc'),
-                    'num_bi' => $request->get('num_bi'),
+                    'numero_identificacao' => $request->get('numero_identificacao'),
                     'pais_id' => $request->get('pais')
                 ]);
         

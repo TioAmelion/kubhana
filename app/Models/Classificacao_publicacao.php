@@ -10,7 +10,11 @@ class Classificacao_publicacao extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'publicacao_id', 'classificacao']; 
+    protected $fillable = [ 
+        'user_id',
+        'publicacao_id', 
+        'classificacao'
+    ]; 
 
     public function publicacao() {
         return $this->belongsTo(publicacao::class);

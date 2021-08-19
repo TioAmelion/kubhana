@@ -76,6 +76,11 @@ body {
 	font-weight: 400;
 	background-color: #eeeeee;
 }
+
+.maisUrgente, .urgente {
+	cursor: pointer;
+}
+
 ol, ul {
 	list-style: none;
 }

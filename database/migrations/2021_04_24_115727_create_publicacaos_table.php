@@ -24,7 +24,8 @@ class CreatePublicacaosTable extends Migration
             $table->string('localizacao', 50)->nullable();
             $table->date('data_validade', 50)->nullable();
             $table->string('texto');
-            $table->string('imagem')->nullable();  
+            $table->string('imagem')->nullable();
+            $table->date('data')->nullable();
             $table->timestamps();
         });
     }

@@ -116,9 +116,9 @@
                                     </div>
 
                                     <div class="form-group col-sm-4" id="nd">
-                                        <input type="text" class="form-control @error('num_bi') is-invalid @enderror" id="num_bi" name="num_bi" placeholder="Número do B.I"
-                                            value="{{old('num_bi')}}">
-                                        @error('num_bi')
+                                        <input type="text" class="form-control @error('numero_identificacao') is-invalid @enderror" id="numero_identificacao" name="numero_identificacao" placeholder="Número do B.I ou Passaporte"
+                                            value="{{old('numero_identificacao')}}">
+                                        @error('numero_identificacao')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -168,10 +168,10 @@
                                             name="tipo_doador">
                                             <option value="" selected disabled>Selecione o Tipo de Doador</option>
                                             <option value="pessoa_fisica"
-                                                {{ old('tipo_doador') == 'masculino' ? 'selected' : '' }}>Pessoa Fisica
+                                                {{ old('tipo_doador') == 'pessoa_fisica' ? 'selected' : '' }}>Pessoa Fisica
                                             </option>
                                             <option value="pessoa_juridica"
-                                                {{ old('tipo_doador') == 'feminino' ? 'selected' : '' }}>Pessoa Juridica
+                                                {{ old('tipo_doador') == 'pessoa_juridica' ? 'selected' : '' }}>Pessoa Juridica
                                             </option>
                                         </select>
                                         @error('genero')
@@ -416,8 +416,7 @@
                 case "Angola":
                     $('#telefone').attr("placeholder", "(+244) 999 999 999");
                     $('#telefone').mask("(+244) 999-999-999");
-                    $('#num_bi').empty();
-                    $('#num_bi').removeAttr('disabled');
+                    $('#numero_identificacao').empty();
                     break;
 
                 case "Portugal":
@@ -477,7 +476,9 @@
         function ocultarForm() {
             $('select[name="provincia"]').empty();
             $('select[name="municipio"]').empty();
-            $('#num_bi').attr("placeholder", "Número do Passaporte");
+
+            $('#numero_identificacao').unmask();
+
         }
 
         $('select[id="provincia"]').on('change',function(){
@@ -485,11 +486,11 @@
             switch (option.trim()) {
 
                 case "Luanda":
-                    $('#num_bi').mask("999999999LA999");
+                    $('#numero_identificacao').mask("999999999LA999");
                     break;
 
                 case "Malanje":
-                    $('#num_bi').mask("999999999ML999");
+                    $('#numero_identificacao').mask("999999999ML999");
                     break;
 
                 default:
@@ -535,7 +536,7 @@
             if(option.trim() == "Angola") {
                 $('#provincia').show()
                 $('#municipio').show()
-                $('#num_bi').show()
+                $('#numero_identificacao').show()
                 $('#p').show()
                 $('#telefoneI').attr("placeholder", "(+244) 999-999-999")
                 $('#telefoneI').mask("(+244) 999-999-999")

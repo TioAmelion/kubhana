@@ -22,7 +22,6 @@ class HomeController extends Controller
 
         $result = new publicacao;
         $pub = $result->show();
-        // dd($pub);
 
         $estadoPessoa = $result->estadoPessoa(); 
         $doacoes = $result->doacoesSemana();
@@ -32,14 +31,19 @@ class HomeController extends Controller
         $instituicao = instituicao::all();
         $idPessoas = pessoa::all();
 
-        // $d = publicacao::withCount('classiPublicacao')->get();
-        $d = publicacao::with('classiPublicacao')->count();
-
         if(Auth::check()){
             $idPessoas = pessoa::where('usuario_id', Auth::user()->id)->first();
         }
         
-        return view('admin.includes.feedSite')->with(['pub'=> $pub, 'idPessoas' => $idPessoas, 'cat' => $teste, 'estadoPessoa' => $estadoPessoa, 'instituicao' => $instituicao, 'doacoes' => $doacoes, 'instSemAjudas' => $instSemAjudas]);
+        return view('admin.includes.feedSite')->with([
+            'pub'=> $pub,
+            'idPessoas' => $idPessoas,
+            'cat' => $teste, 
+            'estadoPessoa' => $estadoPessoa, 
+            'instituicao' => $instituicao, 
+            'doacoes' => $doacoes, 
+            'instSemAjudas' => $instSemAjudas
+        ]);
     }
 
     /**

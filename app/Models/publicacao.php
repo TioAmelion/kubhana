@@ -23,27 +23,23 @@ class publicacao extends Model
         'quantidade_item',
         'localizacao',
         'data_validade',
-        'imagem'
+        'imagem',
+        'data'
     ];
 
     public function show(){
-        
-        // $query = DB::select('SELECT COUNT(classificacao) as votos, u.name as nomeUser, u.id as idUser, p.*, c.classificacao FROM users as u 
-        // INNER JOIN publicacaos as p ON p.usuario_id = u.id
-        // INNER JOIN classificacao_publicacaos as c ON c.publicacao_id = p.id GROUP BY c.id ORDER BY p.titulo DESC');
-
-        // $query = DB::table('publicacaos')
-        //         ->join('users', 'publicacaos.user_id', '=', 'users.id')
-        //         ->select('users.name', 'publicacaos.*')->orderByDesc('id')->get();
 
         $query = DB::table("publicacaos")
                     ->select("publicacaos.*", 
-                        DB::raw("(SELECT SUM(classificacao_publicacaos.classificacao) 
+
+                        DB::raw("(SELECT COUNT(classificacao_publicacaos.classificacao)
                         FROM classificacao_publicacaos 
                         WHERE classificacao_publicacaos.publicacao_id = publicacaos.id
                         GROUP BY classificacao_publicacaos.publicacao_id) as votos"),
+
                         DB::raw("(SELECT users.name FROM users WHERE users.id = publicacaos.user_id
                         GROUP BY users.name) as name"))
+                        ->orderByDesc('id')
                         ->get();
         return $query;
     }

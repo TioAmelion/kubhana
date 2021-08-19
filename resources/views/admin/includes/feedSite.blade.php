@@ -33,14 +33,16 @@
 									</div><!--post-topbar end-->
 								@endauth
 								<div class="posts-section">
+
 									@foreach($pub as $dados)
+									
 										<div class="post-bar">
 											<div class="post_topbar">
 												<div class="usy-dt">
 													<img src="assets/images/resources/us-pic.png" alt="">
 													<div class="usy-name">
 														<h3>{{$dados->name}}</h3>
-														<span><img src="assets/images/clock.png" alt="">3 min ago</span>
+														<span><img src="assets/images/clock.png" alt="">{{$dados->data}}</span>
 													</div>
 												</div>
 												<div class="ed-opts">
@@ -48,6 +50,7 @@
 														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
 														<ul class="ed-options">
 															<li><a href="#" title="">Editar</a></li>
+															<li><a href="#" title="">Denunciar</a></li>
 														</ul>
 													@endif
 												</div>
@@ -68,13 +71,26 @@
 												@if (Auth::check())
 													<ul class="like-com">
 														<li class="reaction-container">
-															<a href="#"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-															<span>{{$dados->votos ? $dados->votos : 0}}</span>
+
+														{{-- Select para verificar se o usuario logado votou na publicação --}}
+														@php
+															$verificar = App\Models\Classificacao_publicacao::where('publicacao_id', '=', $dados->id)->where('user_id', '=' ,Auth::user()->id)->get();	
+														@endphp
+														{{-- fim --}}
+
+														@if ($verificar->count() < 1)
+
+															<a href="#"><i class="la la-heart"> votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+															<span>{{$dados->votos ? $dados->votos : ''}}</span>
+														
+															@else
+
+														<a href="#"><i class="la la-heart" style="color: red"> {{ $dados->votos > 1 ? 'você e outras pessoas votaram' : 'você votou' }} </i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+														<span>{{$dados->votos ? $dados->votos : ''}}</span>
+														
+														@endif
+															
 															<div class="reaction-box">
-																<div class="reaction-icon">
-																	<label>gostar</label>
-																	<img class="gostar" id="gostar" name="gostar" publicacao-id="{{$dados->id}}" src="assets/images/reactions_love.png" alt="">
-																</div>
 																<div class="reaction-icon">
 																	<label>urgente</label>
 																	<img class="urgente" id="urgente" name="urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_wow.png" alt="">
@@ -85,20 +101,22 @@
 																</div>
 															</div>
 														</li>
-														<li><a href="#" title="" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a></li>
+														<li>
+															<a href="#" title="" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a>
+														</li>
 														<li> </li>
 													</ul>
 												@else
 												<ul class="like-com">
 													<li class="reaction-container">
-														<a href="{{route('login')}}"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-														<span>25</span>
+														<a href="{{route('login')}}"><i class="la la-heart"> Votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+														<span>{{$dados->votos ? $dados->votos : 0}}</span>
 													</li>
 													<li><a href="{{route('login')}}" title="" class="comm post_projectt" style="position: relative; top: -5px;"><img src="assets/images/heart.svg" height="18px"></a></li>
 													<li> </li>
 												</ul>
 												@endif
-												<a><i class="la la-eye"></i>Visualizou 50</a>
+												<a><i class="la la-eye"></i>Ajudas</a>
 											</div>
 										</div><!--post-bar end-->
 									@endforeach

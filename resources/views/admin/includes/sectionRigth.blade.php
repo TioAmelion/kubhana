@@ -13,8 +13,8 @@
 				<h3>{{$ajuda->nome_instituicao}}</h3>
 				<p>Doe alguma coisa para ajudar essa instituição</p>
 			</div>
-			<div class="hr-rate">
-				<!-- <span>250 gostos</span> -->
+			<div class="view-more">
+				<a href="#" title="">Ver mais</a>
 			</div>
 			@endforeach
 		</div><!--job-info end-->

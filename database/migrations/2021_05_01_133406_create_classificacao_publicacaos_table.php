@@ -15,6 +15,7 @@ class CreateClassificacaoPublicacaosTable extends Migration
     {
         Schema::create('classificacao_publicacaos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('publicacao_id')->constrained('publicacaos')->onDelete('cascade');
             $table->integer('classificacao');
             $table->timestamps();

@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use DB;
+use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Date;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class PublicacaoController extends Controller
 {
@@ -36,31 +38,11 @@ class PublicacaoController extends Controller
      */
     public function create()
     {
-        //
-    }
-
-    public function votarPublicacao(Request $request) {
-
-        try {
-            
-            $post = Classificacao_publicacao::firstOrNew([
-                'publicacao_id' => $request->publicacao_id,
-                'classificacao' => $request->classificacao
-            ]);
-
-            $post->save();
-
-            return response()->json(['mensagem' => 'Votação realizada com sucesso', 'dados' => '1', $post]);
-
-        } catch (\Throwable $th) {
-            return response()->json(['mensagem' => 'Ocorreu um erro ao votar na publicação', 'erro' => $th]);
-        }
-
+        
     }
 
     public function store(Request $request)
     {
-
 
         try{
             
@@ -87,21 +69,15 @@ class PublicacaoController extends Controller
                 'titulo' => $request->titulo,
                 'categoria_id' => $request->categoria_id,
                 'texto' => $request->descricao,
-                'imagem' => $imageName
+                'imagem' => $imageName,
+                'data' => Date('Y-m-d')
             ]);
             
             return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
             
           }catch(\Exception $e){
             return response()->json(['falhou' => 'Ocorreu um erro ao publicar']);
-          } 
-
-<<<<<<< HEAD
-         
-=======
           }
-
->>>>>>> 1361112573be71db31e127d8023bb438e1639f32
     }
 
     /**
