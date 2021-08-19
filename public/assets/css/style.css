@@ -76,6 +76,11 @@ body {
 	font-weight: 400;
 	background-color: #eeeeee;
 }
+
+.maisUrgente, .urgente {
+	cursor: pointer;
+}
+
 ol, ul {
 	list-style: none;
 }
@@ -1024,16 +1029,50 @@ main {
 	border-bottom: 1px solid #e4e4e4;
 	margin-bottom: 20px;
 }
+
+.search {
+	position: relative;
+    right: -100px;
+}
+
+.post-bar-search {
+	float: left;
+	width: 30%;
+	background-color: #fff;
+	border-left: 1px solid #e4e4e4;
+	border-right: 1px solid #e4e4e4;
+	border-bottom: 1px solid #e4e4e4;
+	margin-bottom: 20px;
+}
 .post_topbar {
 	float: left;
 	width: 100%;
 	position: relative;
 	padding: 20px 20px 15px 20px;
 }
+.post_topbar-search {
+	float: left;
+	width: 100%;
+	position: relative;
+	padding: 20px 20px 15px 20px;
+}
+
 .usy-dt {
 	float: left;
 }
+
+.usy-dt-search {
+	float: left;
+}
 .usy-dt img {
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	-ms-border-radius: 100px;
+	-o-border-radius: 100px;
+	border-radius: 100px;
+}
+
+.usy-dt img-search {
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	-ms-border-radius: 100px;
@@ -1101,6 +1140,18 @@ main {
 	margin-bottom: 6px;
 	margin-top: 2px;
 }
+
+.usy-name-search h3 {
+	position: absolute;
+    left: 88px;
+	color: #000000;
+	font-size: 16px;
+	text-transform: capitalize;
+	font-weight: 600;
+	margin-bottom: 6px;
+	margin-top: 15px;
+}
+
 .usy-name span {
 	color: #b2b2b2;
 	font-size: 14px;

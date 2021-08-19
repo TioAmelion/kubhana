@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
 </head>
 
-<body class="sign-in" oncontextmenu="return false;">
+<body class="sign-in" oncontextmenu="return false;" style="background: #000">
     <div class="wrapper">
         <div class="sign-in-page">
             <center>
@@ -30,14 +30,24 @@
                             <h3 class="display-4 font-weight-bold">Cadastre-se e comece já a sua campanha!</h3>
                             <br>
                             <ul class="sign-control">
-                                <li data-tab="tab-1"><a onclick="doa()" href="#" title="">Doador</a></li>
-                                <li data-tab="tab-1" class="current"><a onclick="insti()" href="#"
+                                <li data-tab="tab-1" class="current"><a onclick="doa()" href="#" title="">Doador</a></li>
+                                <li data-tab="tab-1" ><a onclick="insti()" href="#"
                                         title="">Instituição</a></li>
                             </ul>
                             <div class="form-row">
                                 @if($errors->any())
-                                <div class="form-group col-md-12 alert alert-danger" role="alert">
+                                <div class="form-group col-md-12 alert alert-warning" role="alert">
                                     Por favor corriga os erros do formulario
+                                </div>
+                                @endif
+                                @if (session('status'))
+                                    <div class="form-group col-md-12 alert alert-danger" role="alert">
+                                        {{ session('status') }}
+                                    </div>
+                                @endif
+                                @if (session('erro'))
+                                <div class="form-group col-md-12 alert alert-danger" role="alert">
+                                    session('erro')
                                 </div>
                                 @endif
                             </div>
@@ -85,7 +95,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-lg-3" id="p">
                                         <select class="form-control @error('provincia') is-invalid @enderror col-12" name="provincia" id="provincia">
-                                            <option selected disabled>Selecione a Provincia</option>
+                                            <option selected disabled id="optionDisabled">Selecione a Provincia</option>
                                         </select>
                                         @error('provincia')
                                         <span class="invalid-feedback" role="alert">
@@ -96,7 +106,7 @@
 
                                     <div class="form-group col-lg-3" id="m">
                                         <select class="form-control @error('municipio') is-invalid @enderror col-12" name="municipio" id="municipio">
-                                            <option selected disabled>Selecione o municipio</option>
+                                            <option selected disabled id="optionDisabled">Selecione o municipio</option>
                                         </select>
                                         @error('municipio')
                                         <spans class="invalid-feedback" role="alert">
@@ -106,19 +116,18 @@
                                     </div>
 
                                     <div class="form-group col-sm-4" id="nd">
-                                        <input type="text" class="form-control @error('num_bi') is-invalid @enderror" id="num_bi" name="num_bi" placeholder="Número do B.I"
-                                            value="{{old('num_bi')}}">
-                                        @error('num_bi')
+                                        <input type="text" class="form-control @error('numero_identificacao') is-invalid @enderror" id="numero_identificacao" name="numero_identificacao" placeholder="Número do B.I ou Passaporte"
+                                            value="{{old('numero_identificacao')}}">
+                                        @error('numero_identificacao')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                 </div>
-
                                 <div class="form-row">
                                     <div class="form-group col-sm-4">
-                                        <input type="date" class="form-control @error('data_nasc') is-invalid @enderror"
+                                        <input type="date" max="<?php echo date('Y-m-d', strtotime('-14 year')); ?>" class="form-control @error('data_nasc') is-invalid @enderror"
                                             name="data_nasc" id="data_nasc" value="{{old('data_nasc')}}">
                                         @error('data_nasc')
                                         <span class="invalid-feedback" role="alert">
@@ -159,10 +168,10 @@
                                             name="tipo_doador">
                                             <option value="" selected disabled>Selecione o Tipo de Doador</option>
                                             <option value="pessoa_fisica"
-                                                {{ old('tipo_doador') == 'masculino' ? 'selected' : '' }}>Pessoa Fisica
+                                                {{ old('tipo_doador') == 'pessoa_fisica' ? 'selected' : '' }}>Pessoa Fisica
                                             </option>
                                             <option value="pessoa_juridica"
-                                                {{ old('tipo_doador') == 'feminino' ? 'selected' : '' }}>Pessoa Juridica
+                                                {{ old('tipo_doador') == 'pessoa_juridica' ? 'selected' : '' }}>Pessoa Juridica
                                             </option>
                                         </select>
                                         @error('genero')
@@ -199,13 +208,12 @@
                                     href="{{ route('login') }}" style="color: #E75348">
                                     {{ __('Já tens registro?') }}
                                 </a> &nbsp;
-                                <button type="submit" class="btn btn-danger" style="background: #E75348">Cadastrar</button>
+                                <button type="submit" class="btn btn-danger" style="background: #E75348; cursor: pointer">Cadastrar</button>
                             </form>
 
                             <!-- INSTITUICAO -->
                             <form id="instituicao" method="POST" action="{{ route('instituicao.store') }}">
                                 @csrf
-
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <input type="text"
@@ -350,16 +358,11 @@
             <div class="footy-sec">
                 <div class="container">
                     <ul>
-                        <li><a href="#" title="">Help Center</a></li>
-                        <li><a href="#" title="">Privacy Policy</a></li>
-                        <li><a href="#" title="">Community Guidelines</a></li>
-                        <li><a href="#" title="">Cookies Policy</a></li>
-                        <li><a href="#" title="">Career</a></li>
-                        <li><a href="#" title="">Forum</a></li>
-                        <li><a href="#" title="">Language</a></li>
-                        <li><a href="#" title="">Copyright Policy</a></li>
+                        <li><a href="#" title="">Centro de ajuda</a></li>
+                        <li><a href="#" title="">Privacidade e politica</a></li>
+                        <li><a href="#" title="">Sobre nós</a></li>
                     </ul>
-                    <p><img src="assets/images/copy-icon.png" alt="">Copyright 2018</p>
+                    <p><img src="assets/images/copy-icon.png" alt="">Copyright 2021</p>
                 </div>
             </div>
             <!--footy-sec end-->
@@ -375,6 +378,7 @@
     var instituicao =  $('#instituicao');
     var doador =  $('#doador')
     var form_atual = ""
+
     $(document).ready(function(){
         
         if(localStorage.getItem('form_atual') === "instituicao"){
@@ -386,12 +390,14 @@
             doador.show() 
         } 
     })
+
     function insti(){
         form_atual = "instituicao"
         localStorage.setItem('form_atual', form_atual)
         doador.hide()
         instituicao.show()
     }
+    
     function doa(){
         localStorage.removeItem('form_atual');
         instituicao.hide()
@@ -408,43 +414,28 @@
             switch (option.trim()) {
                 
                 case "Angola":
-                    $('#provincia').show();
-                    $('#municipio').show();
-                    $('#num_bi').show();
-                    $('#p').show();
-                    $('#m').show();
-                    $('#nb').show();
                     $('#telefone').attr("placeholder", "(+244) 999 999 999");
                     $('#telefone').mask("(+244) 999-999-999");
+                    $('#numero_identificacao').empty();
                     break;
+
                 case "Portugal":
-                    $('#provincia').hide();
-                    $('#municipio').hide();
-                    $('#num_bi').hide();
-                    $('#p').hide();
-                    $('#m').hide();
-                    $('#nb').hide();
+                    ocultarForm();
+
                     $('#telefone').attr("placeholder", "(+351) 999 999 999");
                     $('#telefone').mask("(+351) 999 999 999");
                     break;
+
                 case "Moçambique":
-                    $('#provincia').hide();
-                    $('#municipio').hide();
-                    $('#num_bi').hide();
-                    $('#m').hide()
-                    $('#nb').hide()
-                    $('#p').hide()
+                    ocultarForm();
+                    
                     $('#telefone').attr("placeholder", "(+55) 99 99999 9999")
                     $('#telefone').mask("(+55) 99 99999 9999")
                     break;
+
                 case "Brasil": 
-                    $('#provincia').hide();
-                    $('#municipio').hide();
-                    $('#num_bi').hide();
-                    $('#p').hide();
-                    $('#m').hide();
-                    $('#nb').hide();
-    
+                    ocultarForm();
+
                     $('#telefone').attr("placeholder", "(+258) 99 999 9999");
                     $('#telefone').mask("(+258) 99 999 9999");
                     break;    
@@ -462,11 +453,16 @@
                  success:function(data)
                  {
                     console.log(data);
-                    $('select[name="provincia"]').empty();
-                    $('select[name="provincia"]').append('<option>'+ 'Selecione a Provincia ' +'</option>');
-                    $.each(data, function(key, value){ 
-                       $('select[name="provincia"]').append('<option value="'+ key +'">'+ value+'</option>');
-                    });
+
+                    if(Object.keys(data).length > 0){
+
+                        $('select[name="provincia"]').empty();
+                        $('select[name="provincia"]').append('<option>'+ 'Selecione a Provincia ' +'</option>');
+
+                        $.each(data, function(key, value){ 
+                        $('select[name="provincia"]').append('<option value="'+ key +'">'+ value+'</option>');
+                        });
+                    }
                  }
                  
               });
@@ -476,20 +472,33 @@
               $('select[name="state"]').empty();
            }
         });
+
+        function ocultarForm() {
+            $('select[name="provincia"]').empty();
+            $('select[name="municipio"]').empty();
+
+            $('#numero_identificacao').unmask();
+
+        }
+
         $('select[id="provincia"]').on('change',function(){
             var option = $('#provincia').find(":selected").text();
             switch (option.trim()) {
+
                 case "Luanda":
-                    $('#num_bi').mask("999999999LA999");
+                    $('#numero_identificacao').mask("999999999LA999");
                     break;
+
                 case "Malanje":
-                    
-                    $('#num_bi').mask("999999999ML999");
+                    $('#numero_identificacao').mask("999999999ML999");
                     break;
+
                 default:
                     break;
             }
+
            var provincia_id = jQuery(this).val();
+
            if(provincia_id)
            {
               $.ajax({
@@ -499,11 +508,16 @@
                  success:function(data) 
                  { 
                     console.log(data); 
-                    $('select[name="municipio"]').empty();
-                    $('select[name="municipio"]').append('<option style="width:100px">'+ 'Selecione o municipio' +'</option>');
-                    $.each(data, function(key, value){ 
-                       $('select[name="municipio"]').append('<option style="width:100px" value="'+ key +'">'+ value +'</option>');
-                    });
+
+                    if(Object.keys(data).length > 0){
+
+                        $('select[name="municipio"]').empty();
+                        $('select[name="municipio"]').append('<option style="width:100px">'+ 'Selecione o municipio' +'</option>');
+
+                        $.each(data, function(key, value){ 
+                        $('select[name="municipio"]').append('<option style="width:100px" value="'+ key +'">'+ value +'</option>');
+                        });
+                    }
                  }
               });
            } 
@@ -512,6 +526,7 @@
               $('select[name="state"]').empty();
            }
         });
+
         //DADOS DA INSTITUICAO
         $('select[id="paisI"]').on('change',function(){
             var Pais_id = $(this).val();  
@@ -521,7 +536,7 @@
             if(option.trim() == "Angola") {
                 $('#provincia').show()
                 $('#municipio').show()
-                $('#num_bi').show()
+                $('#numero_identificacao').show()
                 $('#p').show()
                 $('#telefoneI').attr("placeholder", "(+244) 999-999-999")
                 $('#telefoneI').mask("(+244) 999-999-999")
@@ -548,6 +563,7 @@
               $('select[name="state"]').empty();
            }
         });
+
         $('select[id="provinciaI"]').on('change',function(){
             var option = $('#provinciaI').find(":selected").text();
            var Provincia_id = jQuery(this).val();

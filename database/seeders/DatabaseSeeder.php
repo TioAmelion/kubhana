@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             PaisSeeder::class, 
             ProvinciaSeeder::class,
             CategoriaSeeder::class,
-            MunicipioSeeder::class
+            MunicipioSeeder::class,
+            UserSeeder::class,
+            PublicacaoSeeder::class
             ]);
     }
 }

@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\publicacao;
 use App\Models\pessoa;
-use App\Models\Classificacao_publicacao;
 use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use Illuminate\Support\Facades\DB;
+use DB;
 
-use Illuminate\Support\Facades\Date;
-use Symfony\Component\VarDumper\Cloner\Data;
-
-class PublicacaoController extends Controller
+class PublicacaoUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,12 +19,7 @@ class PublicacaoController extends Controller
      */
     public function index()
     {
-        $idPessoas = pessoa::all();
-
-        $pub = DB::table('publicacaos')
-            ->join('users', 'publicacaos.usuario_id', '=', 'users.id')
-            ->select('users.name', 'publicacaos.*')->get();
-            return view('welcome')->with(['pub'=> $pub, 'idPessoas' => $idPessoas]);
+        //
     }
 
     /**
@@ -38,45 +29,60 @@ class PublicacaoController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
+        // return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $request->all()]);
 
         try{
-            
+
             $validacao = array(
-                'titulo'       => 'required|max:50',
-                'categoria_id' => 'required',
-                'descricao' => 'required',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'titulo_doacao' => 'required|max:50',
+                'categoria_id_doador' => 'required',
+                'local_doacao' => 'required',
+                'quantidade_doacao' => 'required',
+                // 'data_expiracao' => 'required',
+                'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'descricao_doacao' => 'required',
+                'local_doacao' => 'required',
+                'classificacao' => 'required'
             );
             
             $erro = Validator::make($request->all(), $validacao);
-
+    
             if ($erro->fails()) {
                 return response()->json(['erro' => $erro->errors()->all()]);
             }
-
-            if($request->image) {
-                $imageName = time().'.'.$request->image->extension();
-                $request->image->move(public_path('images'), $imageName);
+    
+            if($request->imagem) {
+                $imageName = time().'.'.$request->imagem->extension();
+                $request->imagem->move(public_path('images'), $imageName);
             }
 
             $post = publicacao::create([
                 'user_id' => Auth::user()->id,
-                'titulo' => $request->titulo,
-                'categoria_id' => $request->categoria_id,
-                'texto' => $request->descricao,
-                'imagem' => $imageName,
-                'data' => Date('Y-m-d')
+                'titulo' => $request->titulo_doacao,
+                'categoria_id' => $request->categoria_id_doador,
+                'texto' => $request->descricao_doacao, 
+                'estado_item' => $request->classificacao,
+                'quantidade_item' => $request->quantidade_doacao,
+                'localizacao' => $request->local_doacao,
+                // 'data_validade' => $request->data_expiracao,
+                'imagem' => $request->imagemName
             ]);
-            
+
             return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
             
           }catch(\Exception $e){
-            return response()->json(['falhou' => 'Ocorreu um erro ao publicar']);
+            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e]);
           }
     }
 
@@ -88,8 +94,7 @@ class PublicacaoController extends Controller
      */
     public function show($id)
     {
-        $pub = publicacao::all();
-        return view('welcome')->with('pub', $pub);
+        //
     }
 
     /**

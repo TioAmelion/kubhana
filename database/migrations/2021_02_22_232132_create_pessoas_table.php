@@ -25,7 +25,7 @@ class CreatePessoasTable extends Migration
             $table->enum('genero', ['masculino', 'feminino']); 
             $table->string('telefone');
             $table->date('data_nascimento');
-            $table->string('num_bi', 30)->nullable();
+            $table->string('numero_identificacao', 30)->nullable();
             $table->timestamps();
         });
     }

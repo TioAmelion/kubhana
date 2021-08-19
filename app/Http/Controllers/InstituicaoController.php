@@ -9,12 +9,12 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class InstituicaoController extends Controller
 {
      public function store(Request $request)
      {
-        // dd($request->all());
 
         $request->validate([
             'nome_instituicao' => 'required|string|min:5|max:40',
@@ -29,27 +29,40 @@ class InstituicaoController extends Controller
             'password' => 'required|string|confirmed|min:8',
         ]);
 
-        Auth::login($user = User::create([
-            'name' => $request->nome_instituicao,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]));
+        try {
 
-        $instituicao = instituicao::create([ 
-            'usuario_id' => $user->id,
-            'nome_instituicao' => $request->get('nome_instituicao'),
-            'sigla' => $request->get('sigla'),
-            'telefone' => $request->get('telefoneI'),
-            'pais_id' => $request->get('paisI'),
-            'objectivo' => $request->get('objectivo'),
-            'municipio_id' => $request->get('municipioI'), 
-            'provincia_id' => $request->get('provinciaI'),
-            'nif' => $request->get('nif')
-        ]);
+            DB::beginTransaction();
 
-        event(new Registered($user));
+            Auth::login($user = User::create([
+                'name' => $request->nome_instituicao,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]));
+    
+            $instituicao = instituicao::create([ 
+                'usuario_id' => $user->id,
+                'nome_instituicao' => $request->get('nome_instituicao'),
+                'sigla' => $request->get('sigla'),
+                'telefone' => $request->get('telefoneI'),
+                'pais_id' => $request->get('paisI'),
+                'objectivo' => $request->get('objectivo'),
+                'municipio_id' => $request->get('municipioI'), 
+                'provincia_id' => $request->get('provinciaI'),
+                'nif' => $request->get('nif')
+            ]);
 
-        return redirect(RouteServiceProvider::HOME);
-        // return redirect("/doador");
+            if (!$user || !$instituicao)
+            {
+                DB::rollBack();
+            } else {
+                DB::commit();
+            }
+    
+            event(new Registered($user));
+    
+            return redirect(RouteServiceProvider::HOME);
+        } catch (\Throwable $th) {
+            return redirect('/register')->with('status', 'Ocorreu um erro, por favor tente mais tarde!');
+        }
     }
 }

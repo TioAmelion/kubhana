@@ -9,5 +9,12 @@ class doacao extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['descricao' ,'doador_id', 'instituicao_id', 'data', 'quantidade'];
+    protected $fillable = [
+        'descricao',
+        'doador_id',
+        'instituicao_id',
+        'data', 
+        'quantidade',
+        'estado'
+    ];
 }

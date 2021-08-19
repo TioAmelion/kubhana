@@ -53,8 +53,6 @@
                                                     <x-label for="email" :value="__('Email')" />
 
                                                     <x-input id="email" class="block mt-1 w-full text-dark" type="email" name="email" :value="old('email')" required autofocus />
-                                                    <!-- <input type="text" name="username" placeholder="Username">
-                                                    <i class="la la-user"></i> -->
                                                 </div><!--sn-field end-->
                                             </div>
                                             <div class="col-lg-12 no-pdd">
@@ -65,25 +63,17 @@
                                                         type="password"
                                                         name="password"
                                                         required autocomplete="current-password" />
-                                                    <!-- <input type="password" name="password" placeholder="Password">
-                                                    <i class="la la-lock"></i> -->
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 no-pdd">
                                                 <div class="checky-sec">
                                                     <div class="fgt-sec">
-                                                        <input type="checkbox" name="cc" id="c1">
-                                                        <label for="c1">
-                                                            <span></span>
-                                                            <a href="{{('register')}}"></a>
-                                                        </label>
-                                                        <small>{{ __('Cadastra-se') }}</small>
-                                                    </div><!--fgt-sec end-->
-                                                    @if (Route::has('password.request'))
-                                                        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                                                    {{ __('Esqueceu a senha?') }}
-                                                        </a>
-                                                    @endif
+                                                        @if (Route::has('password.request'))
+                                                            <a class="text-dark" href="{{ route('password.request') }}">
+                                                            {{ __('Esqueceu a senha?') }}
+                                                            </a>
+                                                        @endif
+                                                </div><!--fgt-sec end-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 no-pdd">

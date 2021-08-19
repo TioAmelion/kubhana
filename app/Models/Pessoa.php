@@ -18,7 +18,7 @@ class pessoa extends Model
         'telefone',
         'data_nascimento',
         'genero',
-        'num_bi'
+        'numero_identificacao'
     ];
     
     use HasFactory;
