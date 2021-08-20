@@ -8,7 +8,7 @@ use App\Http\Controllers\ClassificarPublicacaoController;
 
 ///////////////// GRUPO DE ROTAS /////////////////////////
 
-Route::group(['middleware' => ['auth'], 'prefix' => 'kubhana'], function(){
+Route::group(['middleware' => ['auth']], function(){
 
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -27,43 +27,41 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'kubhana'], function(){
     Route::resource('publicarUser', 'App\Http\Controllers\PublicacaoUserController');
 });
 
-///////////////// GRUPO DE ROTAS ACESSADAS SEM O MIDDLEWARE DE AUTENTICAÇÃO /////////////////////////
+///////////////// ROTAS ACESSADAS SEM O MIDDLEWARE DE AUTENTICAÇÃO /////////////////////////
 
-Route::group(['prefix' => 'kubhana'], function(){
 
-    Route::get('send-mail', function () {
-   
-        $details = [
-            'title' => 'Mail from ItSolutionStuff.com',
-            'body' => 'This is for testing email using smtp'
-        ];
-       
-        \Mail::to('amelionjorge2012@gmail.com')->send(new \App\Mail\MyTestMail($details));
-       
-        dd("Email is Sent.");
-    });
+Route::get('send-mail', function () {
+
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
     
-    Route::resource('/feed', 'App\Http\Controllers\HomeController');
+    \Mail::to('amelionjorge2012@gmail.com')->send(new \App\Mail\MyTestMail($details));
     
-    Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
-    
-    Route::get('/perfil', function () {
-        return view('auth/profile');
-    });
-    
-    Route::get('/logout', 'App\Http\Controllers\Auth\AuthenticatedSessionController@destroy');
-    
-    Route::resource('doador', 'App\Http\Controllers\DoadorController');
-    
-    Route::get('municipio/{id}', [MunicipioController::class, 'getMunicipio']);
-    
-    Route::get('provincia/{id}', [ProvinciaController::class, 'getProvincia']);
-    
-    Route::resource('instituicao', 'App\Http\Controllers\InstituicaoController');
-    
-    Route::resource('fornecedor', 'App\Http\Controllers\FornecedorController'); 
-    
-    Route::resource('/', 'App\Http\Controllers\HomeController');
+    dd("Email is Sent.");
 });
+
+Route::resource('/feed', 'App\Http\Controllers\HomeController');
+
+Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
+
+Route::get('/perfil', function () {
+    return view('auth/profile');
+});
+
+Route::get('/logout', 'App\Http\Controllers\Auth\AuthenticatedSessionController@destroy');
+
+Route::resource('doador', 'App\Http\Controllers\DoadorController');
+
+Route::get('municipio/{id}', [MunicipioController::class, 'getMunicipio']);
+
+Route::get('provincia/{id}', [ProvinciaController::class, 'getProvincia']);
+
+Route::resource('instituicao', 'App\Http\Controllers\InstituicaoController');
+
+Route::resource('fornecedor', 'App\Http\Controllers\FornecedorController'); 
+
+Route::resource('/', 'App\Http\Controllers\HomeController');
 
 require __DIR__ . '/auth.php';
