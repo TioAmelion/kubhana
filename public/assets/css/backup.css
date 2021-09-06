@@ -857,7 +857,13 @@ main {
 }
 .sgt-text span {
 	color: #686868;
-	font-size: 14px;
+    font-size: 14px;
+    float: left;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    width: 150px;
 }
 .suggestion-usd > span {
 	float: right;

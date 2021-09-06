@@ -15,7 +15,7 @@ class CreateInstituicaosTable extends Migration
     {
         Schema::create('instituicaos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
             $table->foreignId('pais_id')->constrained('pais')->onDelete('cascade');
 

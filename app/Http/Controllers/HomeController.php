@@ -32,7 +32,7 @@ class HomeController extends Controller
         $idPessoas = pessoa::all();
 
         if(Auth::check()){
-            $idPessoas = pessoa::where('usuario_id', Auth::user()->id)->first();
+            $idPessoas = pessoa::where('user_id', Auth::user()->id)->first();
         }
         
         return view('admin.includes.feedSite')->with([

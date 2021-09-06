@@ -23,6 +23,19 @@ class DoadorController extends Controller
     {
         return view('admin.cadastro_doador');
     }
+    public function all_doadors()
+    {
+        $date = DB::table('pessoas')
+            ->join('doadors', 'doadors.pessoa_id', '=', 'pessoas.id')
+            ->join('users', 'users.id', '=', 'pessoas.user_id')
+            ->join('provincias', 'provincias.id', '=', 'pessoas.provincia_id')
+            ->join('municipios', 'municipios.id', '=', 'pessoas.municipio_id')
+            ->select('provincias.*','pessoas.*','municipios.*','users.*')
+            ->get();
+        // $date = doador::with('pessoa.user')->get();
+        
+        return view('admin.includes.all_doadors',['dates' => $date]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -70,7 +83,7 @@ class DoadorController extends Controller
                 ]));
         
                 $pessoa = pessoa::create([ 
-                    'usuario_id' => $user->id,
+                    'user_id' => $user->id,
                     'nome_pessoa' => $request->get('nome_doador'),
                     'genero' => $request->get('genero'), 
                     'telefone' => $request->get('telefone'),
@@ -125,7 +138,7 @@ class DoadorController extends Controller
                 ]));
         
                 $pessoa = pessoa::create([ 
-                    'usuario_id' => $user->id,
+                    'user_id' => $user->id,
                     'nome_pessoa' => $request->get('nome_doador'),
                     'genero' => $request->get('genero'), 
                     'telefone' => $request->get('telefone'),

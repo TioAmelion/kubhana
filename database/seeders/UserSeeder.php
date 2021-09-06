@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
         //DADOS DA PESSOA
         $pessoas = array(
             [
-                "usuario_id" => 3,
+                "user_id" => 3,
                 "pais_id" => 1, 
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
                 "numero_identificacao" => "000049264LA018"
             ],
             [
-                "usuario_id" => 4,
+                "user_id" => 4,
                 "pais_id" => 1, 
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
         foreach($pessoas as $pessoa){
 
             DB::table('pessoas')->insert([
-                "usuario_id" => $pessoa["usuario_id"],
+                "user_id" => $pessoa["user_id"],
                 "pais_id" => $pessoa["pais_id"], 
                 "provincia_id" => $pessoa["provincia_id"], 
                 "municipio_id" => $pessoa["municipio_id"], 
@@ -97,7 +97,7 @@ class UserSeeder extends Seeder
         //DADOS INSTITUICAO
         $instituicoes = array(
             [
-                "usuario_id" => 1, 
+                "user_id" => 1, 
                 "pais_id" => 1, 
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
@@ -108,7 +108,7 @@ class UserSeeder extends Seeder
                 "nif" => "05825"
             ],
             [
-                "usuario_id" => 2, 
+                "user_id" => 2, 
                 "pais_id" => 1, 
                 "provincia_id" => 2, 
                 "municipio_id" => 2, 
@@ -124,7 +124,7 @@ class UserSeeder extends Seeder
         foreach($instituicoes as $instituico){
 
             DB::table('instituicaos')->insert([
-                "usuario_id" => $instituico["usuario_id"], 
+                "user_id" => $instituico["user_id"], 
                 "pais_id" => $instituico["pais_id"], 
                 "provincia_id" => $instituico["provincia_id"], 
                 "municipio_id" => $instituico["municipio_id"], 

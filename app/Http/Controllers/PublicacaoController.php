@@ -26,7 +26,7 @@ class PublicacaoController extends Controller
         $idPessoas = pessoa::all();
 
         $pub = DB::table('publicacaos')
-            ->join('users', 'publicacaos.usuario_id', '=', 'users.id')
+            ->join('users', 'publicacaos.user_id', '=', 'users.id')
             ->select('users.name', 'publicacaos.*')->get();
             return view('welcome')->with(['pub'=> $pub, 'idPessoas' => $idPessoas]);
     }

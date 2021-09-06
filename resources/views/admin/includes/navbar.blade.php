@@ -4,12 +4,12 @@
 					<div class="logo">
 						<a href="#" title=""><img src="assets/images/logo.png" alt=""></a>
 					</div><!--logo end-->
-					<div class="search-bar">
+					<div class="">
 						<form>
 							<input type="text" name="search" placeholder="Search...">
 							<button type="submit"><i class="la la-search"></i></button>
 						</form>
-					</div><!--search-bar end-->
+					</div><!-- end-->
 					<nav>
 						<ul>
 							<li>

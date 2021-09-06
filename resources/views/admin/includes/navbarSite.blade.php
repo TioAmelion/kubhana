@@ -14,20 +14,17 @@
 			<nav>
 				<ul>
 					<li>
-						<a href="#" title="">
+						<a href="/" title="">
 							<span><img src="assets/images/icon1.png" alt=""></span>
 							Home
 						</a>
 					</li>
 					<li>
-						<a href="/instituicoes" title="">
+						<a href="/insitituicoes" title="">
 							<span><img src="assets/images/icon2.png" alt=""></span>
 							Instituições
 						</a>
-						<ul>
-							<li><a href="#" title="">Lares</a></li>
-							<li><a href="assets/company-profile.html" title="">Centros</a></li>
-						</ul> 
+						 
 					</li>
 							<li>
 								<a href="/" title="">
@@ -41,7 +38,7 @@
 								</ul> 
 							</li>
 							<li>
-								<a href="#" title="">
+								<a href="/doadores" title="">
 									<span><img src="assets/images/icon3.png" alt=""></span>
 									Doadores
 								</a>

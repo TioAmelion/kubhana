@@ -8,9 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class pessoa extends Model
 {
     protected $guarded = ['id'];
-    
     protected $fillable = [
-        'usuario_id',
+        'user_id',
         'pais_id',
         'provincia_id',
         'municipio_id',
@@ -20,10 +19,21 @@ class pessoa extends Model
         'genero',
         'numero_identificacao'
     ];
-    
+
     use HasFactory;
+
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function doador()
+    {
+        return $this->hasOne(doador::class);
+    }
+
+    public function provincia()
+    {
+        return $this->hasOne(provincia::class);
     }
 }

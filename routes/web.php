@@ -5,6 +5,8 @@ use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\ProvinciaController;
 use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\ClassificarPublicacaoController;
+use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\DoadorController;
 
 ///////////////// GRUPO DE ROTAS /////////////////////////
 
@@ -13,6 +15,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
+    Route::get('/perfil', function () {
+        return view('admin.includes.perfilDoador');
+    });
+
+    Route::get('/doadores',[DoadorController::class, 'all_doadors']);
 
     Route::resource('doacao', 'App\Http\Controllers\DoacaoController');
 
@@ -46,11 +53,10 @@ Route::resource('/feed', 'App\Http\Controllers\HomeController');
 
 Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
 
-Route::get('/perfil', function () {
-    return view('auth/profile');
-});
+
 
 Route::get('/logout', 'App\Http\Controllers\Auth\AuthenticatedSessionController@destroy');
+Route::get('/insitituicoes',[InstituicaoController::class, 'index']);
 
 Route::resource('doador', 'App\Http\Controllers\DoadorController');
 
