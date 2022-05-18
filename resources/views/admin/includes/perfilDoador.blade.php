@@ -1,167 +1,898 @@
 @extends('admin.layout')
 
 @section('conteudo')
-<main>
-	<div class="main-section">
-		<div class="container">
-			<div class="main-section-data">
-				<div class="row">
-						@include('admin.includes.sectionLeft')
-						<div class="col-lg-6 col-md-6 no-pd">
-						<div class="main-ws-sec">
-					@auth
-						<div class="post-topbar">
-							<div class="user-picy">
-								<img src="assets/images/resources/user-pic.png" alt="">
-							</div>
-				
-							<div class="post-st">
-								<ul>									
-									@if($idPessoas != null)
-										<li>
-											<a class="post-jb active" href="#" title="">
-												<img src="assets/images/tap.svg" height="18px"> Doe um item
-											</a>
-										</li>
-									@else
-										<li><a class="post-jbd active" href="#" title=""><img src="assets/images/tap.svg" height="18px"> Publique uma Necessidade</a></li>
-									@endif
-									
-								</ul>
-							</div><!--post-st end-->
-				
-						</div><!--post-topbar end-->
-					@endauth
-				<div class="posts-section">
-			@foreach($pub as $dados)
-			<div class="post-bar">
-				<div class="post_topbar">
-					<div class="usy-dt">
-						<img src="assets/images/resources/us-pic.png" alt="">
-						<div class="usy-name">
-							<h3>{{$dados->name}}</h3>
-							<span><img src="assets/images/clock.png" alt="">3 min ago</span>
-						</div>
-					</div>
-					<div class="ed-opts">
-						@if (Auth::check())
-							<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-							<ul class="ed-options">
-								<li><a href="#" title="">Editar</a></li>
-							</ul>
-						@endif
-					</div>
-				</div> 
-				<div class="epi-sec">
-					<ul class="descp">
-						<li><img src="images/icon8.png" alt=""><span>{{--$dados->classificacao--}}</span></li>
-					</ul>
-					<ul class="bk-links">
-						<!-- <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
-						<li><a href="#" title=""><i class="la la-envelope"></i></a></li> -->
-					</ul>
-				</div>
-				<div class="job_descp">
-					<h3>{{$dados->titulo}}</h3>
-					<p>{{$dados->texto}}</p>
-					<img src="images/{{$dados->image}}" alt="">
-				</div>
-				<div class="job-status-bar">
-					@if (Auth::check())
-						<ul class="like-com">
-							<li class="reaction-container">
-								<a href="#"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-								<span>25</span>
-								<div class="reaction-box">
-									<div class="reaction-icon">
-										<label>gostar</label>
-										<img class="teste" name="gostar" src="assets/images/reactions_love.png" alt="">
-									</div>
-									<div class="reaction-icon">
-										<label>urgente</label>
-										<img class="" name="urgente" src="assets/images/reactions_wow.png" alt="">
-									</div>
-									<div class="reaction-icon">
-										<label>mais urgente</label>
-										<img class="" name="mais urgente" src="assets/images/reactions_sad.png" alt="">
-									</div>
-								</div>
-							</li>
-							<li><a href="#" title="" id="{{$dados->usuario_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a></li>
-							<li> </li>
-						</ul>
-					@else
-					<ul class="like-com">
-						<li class="reaction-container">
-							<a href="{{route('login')}}"><i class="la la-heart"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-							<span>25</span>
-						</li>
-						<li><a href="{{route('login')}}" title="" class="comm post_projectt" style="position: relative; top: -5px;"><img src="assets/images/heart.svg" height="18px"></a></li>
-						<li> </li>
-					</ul>
-					@endif
-					<a><i class="la la-eye"></i>Visualizou 50</a>
-				</div>
-			</div><!--post-bar end-->
-			@endforeach
-			<div class="top-profiles">
-				<div class="pf-hd" style="background-color: white">
-					<h3>Instituições Precisando de Ajuda</h3>
-					<i class="la la-ellipsis-v"></i>
-				</div>
-				<div class="profiles-slider">
-					@foreach ($instituicao as $item)
-						<div class="user-profy">
-							<img src="images/resources/user1.png" alt="">
-							<h3>{{$item->nome_instituicao}}</h3>
-							<span>Lar de Idosos</span>
-							<ul>
-								<li><a href="#" title="" class="followw">Doar</a></li>
-							</ul>
-							<a href="#" title="">Ver mais</a>
-						</div><!--user-profy end-->
-					@endforeach
-				</div><!--profiles-slider end-->
-			</div><!--top-profiles end-->
-			<div class="posty">
-				
-			</div><!--posty end-->
-			<div class="process-comm">
-				<div class="spinner">
-					<div class="bounce1"></div>
-					<div class="bounce2"></div>
-					<div class="bounce3"></div>
-				</div>
-			</div><!--process-comm end-->
-			</div><!--posts-section end-->
-		</div><!--main-ws-sec end-->
-	</div>
+    <section class="cover-sec">
+        <img src="assets/images/resources/cover-img.jpg" alt="">
+        <a href="#" title="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-camera" ></i> Trocar Imagem</a>
+    </section>
+    <main>
+        <div class="main-section">
+            <div class="container">
+                <div class="main-section-data">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="main-left-sidebar">
+                                <div class="user_profile">
+                                    <div class="user-pro-img">
+                                        {{-- <img src="assets/images/resources/user-pro-img.png" alt=""> --}}
+                                        <img src="{{Auth::user()->image ? 'images/'.Auth::user()->image : Avatar::create(Auth::user()->name)->toBase64()}}" alt="">
+                                        <a href="#" title="" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-camera"></i></a>
+                                    </div><!--user-pro-img end-->
+                                    <div class="user_pro_status">
+                                        <ul class="flw-hr">
+                                            <li><a href="#" title="" class="flww"><i class="la la-plus"></i> Pedir Ajuda</a></li>
+                                            {{-- <li><a href="#" title="" class="hre">Hire</a></li> --}}
+                                        </ul>
+                                        <ul class="flw-status">
+                                            <li>
+                                                <span>Publicações</span>
+                                                <b>{{ $totalPubli }}</b>
+                                            </li>
+                                            <li>
+                                                <span>Doações</span>
+                                                <b>{{ $totalDoacoes }}</b>
+                                            </li>
+                                        </ul>
+                                    </div><!--user_pro_status end-->
+                                    <ul class="social_links">
+                                        <li><a href="#" title=""><i class="fa fa-facebook-square"></i> Http://www.facebook.com/john...</a></li>
+                                        <li><a href="#" title=""><i class="fa fa-instagram"></i> Http://www.instagram.com/john...</a></li>
+                                    </ul>
+                                </div><!--user_profile end-->
+                                <div class="suggestions full-width">
+                                    <div class="sd-title">
+                                        <h3>Pessoas Ajudadas</h3>
+                                        <i class="la la-ellipsis-v"></i>
+                                    </div><!--sd-title end-->
+                                    <div class="suggestions-list">
+                                        <div class="suggestion-usd">
+                                            @foreach ($pessoas as $pessoa)
+                                                <img src="assets/images/resources/s1.png" alt="">
+                                                <div class="sgt-text">
+                                                    <h4>{{ $pessoa->name }}</h4>
+                                                    <span>Graphic Designer</span>
+                                                </div>
+                                                <span><i class="la la-plus"></i></span>
+                                            @endforeach
+                                        </div>
+                                        <div class="view-more">
+                                            <a href="#" title="">View More</a>
+                                        </div>
+                                    </div><!--suggestions-list end-->
+                                </div><!--suggestions end-->
+                            </div><!--main-left-sidebar end-->
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="main-ws-sec">
+                                <div class="user-tab-sec">
+                                    <h3 style="color: white">{{ $nome }}</h3>
+                                    <div class="tab-feed st2">
+                                        <ul>
+                                            <li data-tab="feed-dd" class="active">
+                                                <a href="#" title="">
+                                                    <img src="assets/images/ic1.png" alt="">
+                                                    <span>Publicações</span>
+                                                </a>
+                                            </li>
+                                            <li data-tab="info-dd">
+                                                <a href="#" title="">
+                                                    <img src="assets/images/ic2.png" alt="">
+                                                    <span>Informações</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div><!-- tab-feed end-->
+                                </div><!--user-tab-sec end-->
+                                <div class="product-feed-tab current" id="feed-dd">
+                                    <div class="posts-section">
+                                        @foreach($pub as $dados)
+										<div class="post-bar">
+											<div class="post_topbar">
+												<div class="usy-dt">
+													<img src="assets/images/resources/us-pic.png" alt="">
+													<div class="usy-name">
+														<h3>{{$dados->name}}</h3>
+														<span><img src="assets/images/clock.png" alt="">{{$dados->data}}</span>
+													</div>
+												</div>
+												<div class="ed-opts">
+														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+														<ul class="ed-options">
+															<li><a href="#" title="">Editar</a></li>
+															<li><a href="#" title="">Denunciar</a></li>
+														</ul>
+												</div>
+											</div> 
+											<div class="epi-sec">
+												<ul class="descp">
+													<li><img src="images/icon8.png" alt=""><span>{{--$dados->classificacao--}}</span></li>
+												</ul>
+												<ul class="bk-links">
+												</ul>
+											</div>
+											<div class="job_descp">
+												<h3>{{$dados->titulo}}</h3>
+												<p>{{$dados->texto}}</p>
+												@if($dados->imagem) <img class="img-publicacao" src="images/{{$dados->imagem}}" style="object-fit: fill;height: 400px;width: 500px;" alt=""> @endif
+											</div>
+											<div class="job-status-bar">
+													<ul class="like-com">
+														<li class="reaction-container">
 
-	{{-- @guest --}}
-		@include('admin.includes.sectionRigth')
-	{{-- @endguest --}}
+														{{-- Select para verificar se o usuario logado votou na publicação --}}
+														@php
+															$verificar = App\Models\Classificacao_publicacao::where('publicacao_id', '=', $dados->id)->where('user_id', '=' ,Auth::user()->id)->get();	
+														@endphp
+														{{-- fim --}}
 
-@include('admin.includes.script')
-<script>
-	$(function() {
-		$('#search').hide();
-		
-		$(".reaction-container").hover(function() {
-			_this = $(this);
-			_this.find(".reaction-box .reaction-icon").each( function(index, element) {
-				setTimeout(function() {
-					$(element).addClass("show");
-				}, index * 100);
-			});
-		}, function() {
-			$(".reaction-icon").removeClass("show")
-		});
-	})
-</script>
-							
-				</div>
-			</div><!-- main-section-data end-->
-		</div>
-	</div>
-</main>
+														@if ($verificar->count() < 1)
+
+															<a href="#"><i class="la la-heart"> votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+															<span>{{$dados->votos ? $dados->votos : ''}}</span>
+														
+															@else
+
+														<a href="#"><i class="la la-heart" style="color: red"> {{ $dados->votos > 1 ? 'você e outras pessoas votaram' : 'você votou' }} </i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+														<span>{{$dados->votos ? $dados->votos : ''}}</span>
+														
+														@endif
+															
+															<div class="reaction-box">
+																<div class="reaction-icon">
+																	<label>urgente</label>
+																	<img class="urgente" id="urgente" name="urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_wow.png" alt="">
+																</div>
+																<div class="reaction-icon">
+																	<label>mais urgente</label>
+																	<img class="maisUrgente" id="mais urgente" name="mais urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_sad.png" alt="">
+																</div>
+															</div>
+														</li>
+														<li>
+															<a href="#" title="" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a>
+														</li>
+														<li> </li>
+													</ul>
+												<a><i class="la la-eye"></i>Ajudas</a>
+											</div>
+										</div><!--post-bar end-->
+									@endforeach
+                                        <div class="process-comm">
+                                            <div class="spinner">
+                                                <div class="bounce1"></div>
+                                                <div class="bounce2"></div>
+                                                <div class="bounce3"></div>
+                                            </div>
+                                        </div><!--process-comm end-->
+                                    </div><!--posts-section end-->
+                                </div><!--product-feed-tab end-->
+                                <div class="product-feed-tab" id="info-dd">
+                                    <div class="user-profile-ov">
+                                        <h3><a href="#" title="" class="overview-open">Sobre</a> <a href="#" title="" class="overview-openn"><i class="fa fa-pencil"></i></a></h3>
+                                        <p>{{ $nome }}</p>
+                                    </div><!--user-profile-ov end-->
+                                    <div class="user-profile-ov st2">
+                                        <h3><a href="#" title="" class="exp-bx-open">Dados Pessoais </a><a href="#" title="" class="exp-bx-open"><i class="fa fa-pencil"></i></a> <a href="#" title="" class="exp-bx-open"><i class="fa fa-plus-square"></i></a></h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam lectus commodo viverra.</p>
+                                    </div><!--user-profile-ov end-->
+                                </div><!--product-feed-tab end-->
+                                <div class="product-feed-tab" id="saved-jobs">
+                                    <div class="posts-section">
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Senior Wordpress Developer</h3>
+                                                <ul class="job-dt">
+                                                    <li><a href="#" title="">Full Time</a></li>
+                                                    <li><span>$30 / hr</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Senior Wordpress Developer</h3>
+                                                <ul class="job-dt">
+                                                    <li><a href="#" title="">Full Time</a></li>
+                                                    <li><span>$30 / hr</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pc2.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Senior Wordpress Developer</h3>
+                                                <ul class="job-dt">
+                                                    <li><a href="#" title="">Full Time</a></li>
+                                                    <li><span>$30 / hr</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Senior Wordpress Developer</h3>
+                                                <ul class="job-dt">
+                                                    <li><a href="#" title="">Full Time</a></li>
+                                                    <li><span>$30 / hr</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="process-comm">
+                                            <a href="#" title=""><img src="images/process-icon.png" alt=""></a>
+                                        </div><!--process-comm end-->
+                                    </div><!--posts-section end-->
+                                </div><!--product-feed-tab end-->
+                                <div class="product-feed-tab" id="my-bids">
+                                    <div class="posts-section">
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Frontend Developer</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                    <li><a href="#" title="" class="bid_now">Bid Now</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Simple Classified Site</h3>
+                                                <ul class="job-dt">
+                                                    <li><span>$300 - $350</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                    <li><a href="#" title="">Photoshop</a></li> 	
+                                                    <li><a href="#" title="">Illustrator</a></li> 	
+                                                    <li><a href="#" title="">Corel Draw</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Frontend Developer</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                    <li><a href="#" title="" class="bid_now">Bid Now</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Ios Shopping mobile app</h3>
+                                                <ul class="job-dt">
+                                                    <li><span>$300 - $350</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                    <li><a href="#" title="">Photoshop</a></li> 	
+                                                    <li><a href="#" title="">Illustrator</a></li> 	
+                                                    <li><a href="#" title="">Corel Draw</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Frontend Developer</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                    <li><a href="#" title="" class="bid_now">Bid Now</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Simple Classified Site</h3>
+                                                <ul class="job-dt">
+                                                    <li><span>$300 - $350</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                    <li><a href="#" title="">Photoshop</a></li> 	
+                                                    <li><a href="#" title="">Illustrator</a></li> 	
+                                                    <li><a href="#" title="">Corel Draw</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>John Doe</h3>
+                                                        <span><img src="images/clock.png" alt="">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit Post</a></li>
+                                                        <li><a href="#" title="">Unsaved</a></li>
+                                                        <li><a href="#" title="">Unbid</a></li>
+                                                        <li><a href="#" title="">Close</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon8.png" alt=""><span>Frontend Developer</span></li>
+                                                    <li><img src="images/icon9.png" alt=""><span>India</span></li>
+                                                </ul>
+                                                <ul class="bk-links">
+                                                    <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
+                                                    <li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+                                                    <li><a href="#" title="" class="bid_now">Bid Now</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h3>Ios Shopping mobile app</h3>
+                                                <ul class="job-dt">
+                                                    <li><span>$300 - $350</span></li>
+                                                </ul>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="#" title="">HTML</a></li>
+                                                    <li><a href="#" title="">PHP</a></li>
+                                                    <li><a href="#" title="">CSS</a></li>
+                                                    <li><a href="#" title="">Javascript</a></li>
+                                                    <li><a href="#" title="">Wordpress</a></li> 	
+                                                    <li><a href="#" title="">Photoshop</a></li> 	
+                                                    <li><a href="#" title="">Illustrator</a></li> 	
+                                                    <li><a href="#" title="">Corel Draw</a></li> 	
+                                                </ul>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="#"><i class="la la-heart"></i> Like</a>
+                                                        <img src="images/liked-img.png" alt="">
+                                                        <span>25</span>
+                                                    </li> 
+                                                    <li><a href="#" title="" class="com"><img src="images/com.png" alt=""> Comment 15</a></li>
+                                                </ul>
+                                                <a><i class="la la-eye"></i>Views 50</a>
+                                            </div>
+                                        </div><!--post-bar end-->
+                                        <div class="process-comm">
+                                            <a href="#" title=""><img src="images/process-icon.png" alt=""></a>
+                                        </div><!--process-comm end-->
+                                    </div><!--posts-section end-->
+                                </div><!--product-feed-tab end-->
+                                <div class="product-feed-tab" id="portfolio-dd">
+                                    <div class="portfolio-gallery-sec">
+                                        <h3>Produtos Doados</h3>
+                                        <div class="gallery_pf">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img1.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img2.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img3.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img4.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img5.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img6.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img7.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img8.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img9.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                    <div class="gallery_pt">
+                                                        <img src="images/resources/pf-img10.jpg" alt="">
+                                                        <a href="#" title=""><img src="images/all-out.png" alt=""></a>
+                                                    </div><!--gallery_pt end-->
+                                                </div>
+                                            </div>
+                                        </div><!--gallery_pf end-->
+                                    </div><!--portfolio-gallery-sec end-->
+                                </div><!--product-feed-tab end-->
+                                <div class="product-feed-tab" id="payment-dd">
+                                    <div class="billing-method">
+                                        <ul>
+                                            <li>
+                                                <h3>Add Billing Method</h3>
+                                                <a href="#" title=""><i class="fa fa-plus-circle"></i></a>
+                                            </li>
+                                            <li>
+                                                <h3>See Activity</h3>
+                                                <a href="#" title="">View All</a>
+                                            </li>
+                                            <li>
+                                                <h3>Total Money</h3>
+                                                <span>$0.00</span>
+                                            </li>
+                                        </ul>
+                                        <div class="lt-sec">
+                                            <img src="images/lt-icon.png" alt="">
+                                            <h4>All your transactions are saved here</h4>
+                                            <a href="#" title="">Click Here</a>
+                                        </div>
+                                    </div><!--billing-method end-->
+                                    <div class="add-billing-method">
+                                        <h3>Add Billing Method</h3>
+                                        <h4><img src="images/dlr-icon.png" alt=""><span>With workwise payment protection , only pay for work delivered.</span></h4>
+                                        <div class="payment_methods">
+                                            <h4>Credit or Debit Cards</h4>
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="cc-head">
+                                                            <h5>Card Number</h5>
+                                                            <ul>
+                                                                <li><img src="images/cc-icon1.png" alt=""></li>
+                                                                <li><img src="images/cc-icon2.png" alt=""></li>
+                                                                <li><img src="images/cc-icon3.png" alt=""></li>
+                                                                <li><img src="images/cc-icon4.png" alt=""></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="inpt-field pd-moree">
+                                                            <input type="text" name="cc-number" placeholder="">
+                                                            <i class="fa fa-credit-card"></i>
+                                                        </div><!--inpt-field end-->
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="cc-head">
+                                                            <h5>First Name</h5>
+                                                        </div>
+                                                        <div class="inpt-field">
+                                                            <input type="text" name="f-name" placeholder="">
+                                                        </div><!--inpt-field end-->
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="cc-head">
+                                                            <h5>Last Name</h5>
+                                                        </div>
+                                                        <div class="inpt-field">
+                                                            <input type="text" name="l-name" placeholder="">
+                                                        </div><!--inpt-field end-->
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="cc-head">
+                                                            <h5>Expiresons</h5>
+                                                        </div>
+                                                        <div class="rowwy">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 pd-left-none no-pd">
+                                                                    <div class="inpt-field">
+                                                                        <input type="text" name="f-name" placeholder="">
+                                                                    </div><!--inpt-field end-->
+                                                                </div>
+                                                                <div class="col-lg-6 pd-right-none no-pd">
+                                                                    <div class="inpt-field">
+                                                                        <input type="text" name="f-name" placeholder="">
+                                                                    </div><!--inpt-field end-->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="cc-head">
+                                                            <h5>Cvv (Security Code) <i class="fa fa-question-circle"></i></h5>
+                                                        </div>
+                                                        <div class="inpt-field">
+                                                            <input type="text" name="l-name" placeholder="">
+                                                        </div><!--inpt-field end-->
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <button type="submit">Continue</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <h4>Add Paypal Account</h4>
+                                        </div>
+                                    </div><!--add-billing-method end-->
+                                </div><!--product-feed-tab end-->
+                            </div><!--main-ws-sec end-->
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="right-sidebar">
+                                <div class="message-btn">
+                                    <a href="#" title=""><i class="fa fa-envelope"></i> Enviar Menssagem</a>
+                                </div>
+                                <div class="widget widget-portfolio">
+                                    <div class="wd-heady">
+                                        <h3>Produtos Doados</h3>
+                                        <img src="images/photo-icon.png" alt="">
+                                    </div>
+                                    <div class="pf-gallery">
+                                        <ul>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery1.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery2.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery3.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery4.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery5.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery6.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery7.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery8.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery9.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery10.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery11.png" alt=""></a></li>
+                                            <li><a href="#" title=""><img src="assets/images/resources/pf-gallery12.png" alt=""></a></li>
+                                        </ul>
+                                    </div><!--pf-gallery end-->
+                                </div><!--widget-portfolio end-->
+                            </div><!--right-sidebar end-->
+                        </div>
+                    </div>
+                </div><!-- main-section-data end-->
+            </div> 
+        </div>
+    </main>
+
+    {{-- modal --}}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{route('atualizar')}}" enctype="multipart/form-data">
+                  @csrf
+                {{-- <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Nome:</label>
+                  <input type="text" class="form-control" id="recipient-name">
+                </div> --}}
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Imagem:</label>
+                  <input class="form-control"t type="file" name="image" id="image">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Send message</button>
+                </div>
+              </form>
+              {{-- <form method="POST" action="{{route('atualizar')}}" enctype="multipart/form-data">
+                  @csrf
+              <input type="file" name="image" id="image">
+              <input type="submit" value="testear">
+              </form> --}}
+            </div>
+          </div>
+        </div>
+      </div>
 @endsection

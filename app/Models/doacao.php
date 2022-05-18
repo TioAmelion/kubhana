@@ -17,4 +17,9 @@ class doacao extends Model
         'quantidade',
         'estado'
     ];
+
+    public function doador()
+    {
+        return $this->belongsTo(doador::class);
+    }
 }

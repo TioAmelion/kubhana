@@ -50,4 +50,27 @@ class RegisteredUserController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+    public function updatePhoto(Request $request, User $user)
+    {
+
+        $request->validate([
+            'image' => 'required'
+        ]);
+
+        if($request->image) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        }
+
+        $y = User::find(Auth::user()->id);
+        $y->image =  $imageName;
+        $y->save();
+
+        return redirect()->back();
+        // $r = User::where('id', Auth::user()->id)->update(['image' => $request->imageName]);
+
+        // dd($r);
+
+    }
 }

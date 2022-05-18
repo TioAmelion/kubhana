@@ -9,10 +9,18 @@ class instituicao extends Model
 {
     use HasFactory;
 
-    protected $guardad = [ 'id' ];
-
+    protected $guardad = ['id'];
     protected $fillable = [
-    	'usuario_id', 'pais_id', 'provincia_id', 'municipio_id', 'nome_instituicao', 'sigla', 'telefone', 'objectivo', 'nif'
-    	];
+        'user_id', 'pais_id', 'provincia_id', 'municipio_id', 'nome_instituicao', 'sigla', 'telefone', 'objectivo', 'nif'
+    ];
 
+    public function provincia()
+    {
+        return $this->hasOne(provincia::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

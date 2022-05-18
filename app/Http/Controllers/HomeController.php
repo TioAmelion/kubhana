@@ -26,19 +26,19 @@ class HomeController extends Controller
         $estadoPessoa = $result->estadoPessoa(); 
         $doacoes = $result->doacoesSemana();
         $instSemAjudas = $result->instSemAjudas();
-
-        $teste = Categoria::all();
+        
+        $categorias = Categoria::all();
         $instituicao = instituicao::all();
         $idPessoas = pessoa::all();
 
         if(Auth::check()){
-            $idPessoas = pessoa::where('usuario_id', Auth::user()->id)->first();
+            $idPessoas = pessoa::where('user_id', Auth::user()->id)->first();
         }
         
         return view('admin.includes.feedSite')->with([
             'pub'=> $pub,
             'idPessoas' => $idPessoas,
-            'cat' => $teste, 
+            'categorias' => $categorias, 
             'estadoPessoa' => $estadoPessoa, 
             'instituicao' => $instituicao, 
             'doacoes' => $doacoes, 

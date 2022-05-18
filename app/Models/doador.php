@@ -11,4 +11,14 @@ class doador extends Model
 
     protected $guardad = ['id'];
     protected $fillable = ['pessoa_id', 'tipo_doador'];
+
+    public function pessoa()
+    {
+        return $this->belongsTo(pessoa::class);
+    }
+
+    public function doacao()
+    {
+        return $this->hasMany(doacao::class);
+    }
 }

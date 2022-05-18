@@ -26,7 +26,7 @@
 								<div class="inp-field inst">
 									<select class="text-ligth" id="categoria_id" name="categoria_id">
 										<option selected disabled>Selecione uma Necessidade</option>
-										@foreach($cat as $c)
+										@foreach($categorias as $c)
 										<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
 										@endforeach
 									</select>
@@ -50,12 +50,61 @@
 						</div>
 					</form>
 				</div>
-
-				<!--post-project-fields end-->
-				
 				<a href="#" title="Fechar"><i class="la la-times-circle-o"></i></a>
 			</div><!--post-project end-->
-		</div><!--post-project-popup end-->
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Publicar</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="form-publicacao" enctype="multipart/form-data">
+						@csrf
+						<div class="col-lg-12 form-group">
+							<input type="text" class="form-control text-ligth" id="titulo" name="titulo" placeholder="Título">
+							<span id="tituloError" style="color: red"></span>
+						</div>
+						<div class="col-lg-12 form-group">
+							<div class="inp-field inst">
+								<select class="form-control" id="categoria_id" name="categoria_id">
+									<option selected disabled>Selecione uma Necessidade</option>
+									@foreach($categorias as $c)
+									<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
+									@endforeach
+								</select>
+								<span id="classificacaoError" style="color: red"></span>
+							</div>
+						</div>
+						<div class="col-lg-12 form-group">
+							<textarea class="form-control text-dark" name="descricao" id="descricao" placeholder="Descrição"></textarea>
+							<span id="descricaoError" style="color: red"></span>
+						</div>
+						<div class="col-lg-12 form-group">
+							<input class="form-control" type="file" id="image" name="image" value="" placeholder="" onchange="previewFile()">
+							<img id="previewImg" src="/examples/images/transparent.png" style="height: 100px; weight:100px" alt="">
+						</div>
+							<!-- <br>
+							<div class="col-lg-12">
+								<ul>
+									<li><button class="active" id="publicar" type="submit" value="post">Publicar</button></li>
+								</ul>
+							</div> -->
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+					<button type="button" class="btn btn-primary" id="publicar">Salvar</button>
+				</div>
+				</div>
+			</div>
+		</div>
 
 		{{-- MODAL PARA DOAR --}}
 		<div class="post-popup pst-pj">
@@ -116,7 +165,7 @@
 								<div class="inp-field">
 									<select class="text-ligth" id="categoria_id_doador" name="categoria_id_doador">
 										<option selected disabled>Selecione uma Necessidades</option>
-										@foreach($cat as $c)
+										@foreach($categorias as $c)
 											<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
 										@endforeach
 									</select>
@@ -175,8 +224,24 @@
 			</div><!--post-project end-->
 		</div>
         @endauth
-	<!--theme-layout end-->
-</body>
+	@include('admin.includes.script')
+	<script>
+		$(function() {
+			$('#search').hide();
+			
+			$(".reaction-container").hover(function() {
+				_this = $(this);
+				_this.find(".reaction-box .reaction-icon").each( function(index, element) {
+					setTimeout(function() {
+						$(element).addClass("show");
+					}, index * 100);
+				});
+			}, function() {
+				$(".reaction-icon").removeClass("show")
+			});
+		})
+	</script>
+</body>	
 <script>
 	'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'a2plcpnl0235'}) 
 </script>

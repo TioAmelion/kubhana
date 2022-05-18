@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\instituicao;
+use App\Models\provincia;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,19 @@ use Illuminate\Support\Facades\DB;
 
 class InstituicaoController extends Controller
 {
-     public function store(Request $request)
-     {
+    public function index()
+    {
+        $dados = DB::table('instituicaos')
+            ->join('users', 'users.id', '=', 'instituicaos.user_id')
+            ->join('provincias', 'provincias.id', '=', 'instituicaos.provincia_id')
+            ->join('municipios', 'municipios.id', '=', 'instituicaos.municipio_id')
+            ->select('provincias.*','instituicaos.*','municipios.*')
+            ->get();
+        // $dados = provincia::where('instituicao.provincia_id','id')->get();
+        return view('admin.includes.all_instituicoes', ['dados' => $dados]);
+    }
+    public function store(Request $request)
+    {
 
         $request->validate([
             'nome_instituicao' => 'required|string|min:5|max:40',
@@ -38,28 +50,27 @@ class InstituicaoController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]));
-    
-            $instituicao = instituicao::create([ 
-                'usuario_id' => $user->id,
+
+            $instituicao = instituicao::create([
+                'user_id' => $user->id,
                 'nome_instituicao' => $request->get('nome_instituicao'),
                 'sigla' => $request->get('sigla'),
                 'telefone' => $request->get('telefoneI'),
                 'pais_id' => $request->get('paisI'),
                 'objectivo' => $request->get('objectivo'),
-                'municipio_id' => $request->get('municipioI'), 
+                'municipio_id' => $request->get('municipioI'),
                 'provincia_id' => $request->get('provinciaI'),
                 'nif' => $request->get('nif')
             ]);
 
-            if (!$user || !$instituicao)
-            {
+            if (!$user || !$instituicao) {
                 DB::rollBack();
             } else {
                 DB::commit();
             }
-    
+
             event(new Registered($user));
-    
+
             return redirect(RouteServiceProvider::HOME);
         } catch (\Throwable $th) {
             return redirect('/register')->with('status', 'Ocorreu um erro, por favor tente mais tarde!');

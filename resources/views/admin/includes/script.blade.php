@@ -11,3 +11,5 @@
 <script type="text/javascript" src="js/cadastrarPublicacaoDoador.js"></script>
 <script type="text/javascript" src="js/cadastrarPublicacaoInstituicao.js"></script>
 <script type="text/javascript" src="js/votarPublicacao.js"></script>
+<script type="text/javascript" src="js/pesquisar.js"></script>
+<script type="text/javascript" src="js/perfil.js"></script>

@@ -20,8 +20,8 @@ class CreateDoacaosTable extends Migration
             $table->string('estado'); 
             $table->date('data');
 
-            $table->foreignId('doador_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('instituicao_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('doador_id')->constrained('doadors')->onDelete('cascade');
+            $table->foreignId('instituicao_id')->constrained('instituicaos')->onDelete('cascade');
             $table->timestamps();
         });
     }

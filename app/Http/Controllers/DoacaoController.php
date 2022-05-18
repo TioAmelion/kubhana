@@ -7,6 +7,9 @@ use Validator;
 use App\Models\doacao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use App\Models\Categoria;
+use Exception;
+use Nexmo\Laravel\Facade\Nexmo;
 
 class DoacaoController extends Controller
 {
@@ -17,8 +20,10 @@ class DoacaoController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $categorias = Categoria::all();
+
+        return view('admin.includes.doacao', ['categorias' => $categorias]);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -61,6 +66,36 @@ class DoacaoController extends Controller
         ]);
 
         return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'dados' => $dados ]);
+
+
+        // $basic  = new \Nexmo\Client\Credentials\Basic('569ecd86', 'EAe66YBv7ZwDo0dy');
+        // $client = new \Nexmo\Client($basic);
+ 
+        // $message = $client->message()->send([
+        //     'to' => '921940679',
+        //     'from' => '921940679',
+        //     'text' => 'O utilizador predente fazer uma doação pra voce.'
+        // ]);
+
+        // $basic  = new \Vonage\Client\Credentials\Basic("569ecd86", "EAe66YBv7ZwDo0dy");
+        // $client = new \Vonage\Client($basic);
+
+        // $response = $client->sms()->send(
+        //     new \Vonage\SMS\Message\SMS("244925773431", KUBHANA, 'O utilizador predente fazer uma doação pra voce.')
+        // );
+        
+        // $message = $response->current();
+        
+        // if ($message->getStatus() == 0) {
+        //     // echo "The message was sent successfully\n";
+        //     return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'dados' => $dados ]);
+
+        // } else {
+        //     return response()->json([ 'mensagem' => 'The message failed with status:']);
+
+        //     // echo "The message failed with status: " . $message->getStatus() . "\n";
+        // }
+
     }
 
     /**

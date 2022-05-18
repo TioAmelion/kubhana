@@ -1,10 +1,10 @@
-$(function () {
+
     $(document).ready(function () {
         fetch_data();
         
         function fetch_data(query = '') {
             $.ajax({
-                url: '{{ route('autocomplete') }}',
+                url: '/autocomplete',
                 type: "GET",
                 data: {query: query},
                 dataType: "json",
@@ -22,4 +22,3 @@ $(function () {
             fetch_data(query);
         });	
     });
-});

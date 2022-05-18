@@ -36,7 +36,7 @@ class FornecedorController extends Controller
         ]));
 
         $pessoa = pessoa::create([ 
-            'usuario_id' => $user->id,
+            'user_id' => $user->id,
             'nome_pessoa' => $request->get('nome_doador'),
             'genero' => $request->get('genero'),
             'telefone' => $request->get('telemovel'),

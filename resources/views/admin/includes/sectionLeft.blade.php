@@ -10,8 +10,8 @@
 					<div class="suggestion-usd">
 					<img src="assets/images/resources/s1.png" alt="">
 					<div class="sgt-text">
-						<h4>{{$doacao->descricao}}</h4>
-						<span>Centro Infantil</span>
+						<h4>Centro Infantil</h4>
+						<span>{{$doacao->descricao}}</span>
 					</div>
 				</div>
 				<div class="view-more">

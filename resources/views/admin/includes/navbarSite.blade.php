@@ -14,23 +14,20 @@
 			<nav>
 				<ul>
 					<li>
-						<a href="#" title="">
+						<a href="/" title="">
 							<span><img src="assets/images/icon1.png" alt=""></span>
-							Home
+							Início
 						</a>
 					</li>
 					<li>
-						<a href="/instituicoes" title="">
+						<a href="/insitituicoes" title="">
 							<span><img src="assets/images/icon2.png" alt=""></span>
 							Instituições
 						</a>
-						<ul>
-							<li><a href="#" title="">Lares</a></li>
-							<li><a href="assets/company-profile.html" title="">Centros</a></li>
-						</ul> 
+						 
 					</li>
 							<li>
-								<a href="/" title="">
+								<a href="/doacao" title="">
 									<span><img src="assets/images/icon4.png" alt=""></span>
 									Doações
 								</a>
@@ -41,7 +38,7 @@
 								</ul> 
 							</li>
 							<li>
-								<a href="#" title="">
+								<a href="/doadores" title="">
 									<span><img src="assets/images/icon3.png" alt=""></span>
 									Doadores
 								</a>
@@ -93,8 +90,11 @@
 			@auth
 				<div class="user-account">
 				<div class="user-info" style="width: 260px">
-					<img src="assets/images/resources/user.png" alt="">
-					<a href="#" class="dropdown-toggle" title="">{{ Auth::user()->name}}</a>
+					<div class="img-avatar" style="float: left">
+						{!! Avatar::create( Auth::user()->name)->setFontSize(15)->setDimension(40, 40)->setBackground('#000')->setForeground('#fff')->toSvg(); !!}
+					</div>
+					{{-- <img src="assets/images/resources/user.png" alt=""> --}}
+					<a href="#" class="dropdown-toggle" title="">zenildo</a>
 					{{-- <i class="la la-sort-down"></i> --}}
 				</div>
 				<div class="user-account-settingss">

@@ -848,6 +848,7 @@ main {
 	border-radius: 100px;
 }
 .sgt-text {
+	text-align: justify;
 	float: left;
 	padding-left: 10px;
 }
@@ -859,7 +860,13 @@ main {
 }
 .sgt-text span {
 	color: #686868;
-	font-size: 14px;
+    font-size: 14px;
+    float: left;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 150px;
 }
 .suggestion-usd > span {
 	float: right;
@@ -1270,6 +1277,7 @@ main {
 	font-weight: 600;
 }
 .job_descp > p {
+	text-align: justify;
 	color: #686868;
 	font-size: 16px;
 	line-height: 24px;
@@ -2639,6 +2647,9 @@ footer {
 	border-radius: 100px;
 	float: none;
 	border: 5px solid #fff;
+	background: #fff;
+	width: 170px;
+	height: 170px;
 }
 .user_pro_status {
 	float: left;

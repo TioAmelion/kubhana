@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Categoria;
 use App\Models\Classificacao_publicacao;
+use Illuminate\Support\Facades\Auth;
 use DB;
 
 class publicacao extends Model
@@ -44,8 +45,30 @@ class publicacao extends Model
         return $query;
     }
 
+    public function showProfile(){
+
+        $query = DB::table("publicacaos")
+                    ->select("publicacaos.*", 
+
+                        DB::raw("(SELECT COUNT(classificacao_publicacaos.classificacao)
+                        FROM classificacao_publicacaos 
+                        WHERE classificacao_publicacaos.publicacao_id = publicacaos.id
+                        GROUP BY classificacao_publicacaos.publicacao_id) as votos"),
+
+                        DB::raw("(SELECT users.name FROM users WHERE users.id = publicacaos.user_id
+                        GROUP BY users.name) as name"))
+                        ->where('user_id', Auth::user()->id)
+                        ->orderByDesc('id')
+                        ->get();
+        return $query;
+    }
+
+    public function listarAjudas($id) {
+        return DB::select("SELECT us.name FROM doacaos doac, instituicaos inst, users us WHERE doac.instituicao_id = us.id AND us.id = inst.user_id  AND doac.doador_id = $id ");
+    }
+
     public function doacoesSemana() {
-        $doacoes = DB::select('SELECT * FROM doacaos WHERE WEEK(data, 1) = WEEK(NOW())');
+        $doacoes = DB::select('SELECT * FROM doacaos WHERE WEEK(data) = WEEK(NOW())');
         return $doacoes;
     }
 
