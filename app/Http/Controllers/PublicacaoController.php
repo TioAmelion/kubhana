@@ -10,6 +10,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use File;
 
 use Illuminate\Support\Facades\Date;
 use Symfony\Component\VarDumper\Cloner\Data;
@@ -47,7 +48,7 @@ class PublicacaoController extends Controller
         try{
             
             $validacao = array(
-                'titulo'       => 'required|max:50',
+                'titulo'       => 'required|max:53',
                 'categoria_id' => 'required',
                 'descricao' => 'required',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -55,28 +56,37 @@ class PublicacaoController extends Controller
             
             $erro = Validator::make($request->all(), $validacao);
 
+            $publicacao_id = $request->publicacao_id;
+
             if ($erro->fails()) {
-                return response()->json(['erro' => $erro->errors()->all()]);
+                return response()->json(['erroValidacao' => $erro->errors()->all()]);
             }
 
-            if($request->image) {
-                $imageName = time().'.'.$request->image->extension();
-                $request->image->move(public_path('images'), $imageName);
-            }
-
-            $post = publicacao::create([
+            $dadosPost = [
                 'user_id' => Auth::user()->id,
                 'titulo' => $request->titulo,
                 'categoria_id' => $request->categoria_id,
                 'texto' => $request->descricao,
-                'imagem' => $imageName,
                 'data' => Date('Y-m-d')
-            ]);
+            ];
+
+            if($files = $request->file('image')) {
+
+                //apagar ficheiro antigo
+                \File::delete('public/images/'.$request->hidden_image);
+
+                //inserir novo ficheiro
+                $imageName = time().'.'.$files->getClientOriginalExtension();
+                $files->move(public_path('images'), $imageName);
+                $dadosPost['imagem'] = "$imageName";
+            }
+
+            $post = publicacao::updateOrCreate([ 'id' => $publicacao_id], $dadosPost );
             
-            return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post]);
+            return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $post, 'status' => '200']);
             
           }catch(\Exception $e){
-            return response()->json(['falhou' => 'Ocorreu um erro ao publicar']);
+            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e]);
           }
     }
 
@@ -100,7 +110,10 @@ class PublicacaoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $editarId = array('id' => $id);
+        $publicacao  = publicacao::where($editarId)->first();
+      
+        return response()->json($publicacao);
     }
 
     /**
@@ -123,6 +136,10 @@ class PublicacaoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = publicacao::where('id',$id)->first(['imagem']);
+        \File::delete('public/images/'.$data->imagem);
+        $publicacao = publicacao::where('id',$id)->delete();
+      
+        return response()->json($publicacao);
     }
 }

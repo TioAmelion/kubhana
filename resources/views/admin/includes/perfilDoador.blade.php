@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.layout_instituicao')
 
 @section('conteudo')
     <section class="cover-sec">

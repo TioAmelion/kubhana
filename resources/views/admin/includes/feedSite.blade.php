@@ -23,7 +23,7 @@
 													</a>
 												</li>
 											@else
-												<li><a class="active" href="#" data-toggle="modal" data-target="#exampleModalCenter">Publique uma Necessidade</a></li>
+												<li><a class="post-jbb active" href="javascript:void(0)" id="criar-nova-publicacao">Publique uma Necessidade</a></li>
 											@endif
 										</ul>
 									</div><!--post-st end-->
@@ -36,7 +36,8 @@
 										<div class="post_topbar">
 											<div class="usy-dt">
 												<div class="img-avatar" style="float: left">
-													{!! $dados->imagem ? 'assets/images/resources/us-pic.png' : Avatar::create($dados->name)->setFontSize(15)->setDimension(40, 40)->setBackground('#000')->setForeground('#fff')->toSvg(); !!}
+													{!! Avatar::create($dados->name)->setFontSize(15)->setDimension(40, 40)->setBackground('#000')->setForeground('#fff')->toSvg(); !!}
+													{{-- {!! $dados->imagem ? 'assets/images/resources/us-pic.png' : Avatar::create($dados->name)->setFontSize(15)->setDimension(40, 40)->setBackground('#000')->setForeground('#fff')->toSvg(); !!} --}}
 												</div>
 												{{-- <img src="assets/images/resources/us-pic.png" alt=""> --}}
 												<div class="usy-name" data-id="{{$dados->user_id}}" style="cursor: pointer">
@@ -48,8 +49,9 @@
 												@if (Auth::check())
 													<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
 													<ul class="ed-options">
-														<li><a href="#" title="">Editar</a></li>
-														<li><a href="#" title="">Denunciar</a></li>
+														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="editar-publicacao">Editar</a></li>
+														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="eliminar-publicacao">Eliminar</a></li>
+														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="denunciar-publicacao">Denunciar</a></li>
 													</ul>
 												@endif
 											</div>
@@ -119,6 +121,7 @@
 										</div>
 									</div><!--post-bar end-->
 								@endforeach
+
 								<div class="top-profiles">
 									<div class="pf-hd" style="background-color: white">
 										<h3>Instituições Precisando de Ajuda</h3>

@@ -11,7 +11,7 @@
 
 		@auth
 		{{-- MODAL DA INSTITUIÇÃO --}}
-		<div class="post-popup post-popupi job_post">
+		{{-- <div class="post-popup post-popupi job_post">
 			<div class="post-project">
 				<h3>Publicar</h3>
 				<div class="post-project-fields">
@@ -52,56 +52,70 @@
 				</div>
 				<a href="#" title="Fechar"><i class="la la-times-circle-o"></i></a>
 			</div><!--post-project end-->
-		</div>
+		</div> --}}
 
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<!-- MODAL DA INSTITUIÇÃO-->
+		<div class="modal fade" id="ajax-publicacao-modal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Publicar</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form method="POST" id="form-publicacao" enctype="multipart/form-data">
-						@csrf
-						<div class="col-lg-12 form-group">
-							<input type="text" class="form-control text-ligth" id="titulo" name="titulo" placeholder="Título">
-							<span id="tituloError" style="color: red"></span>
-						</div>
-						<div class="col-lg-12 form-group">
-							<div class="inp-field inst">
+					<div class="modal-header">
+						<h5 class="modal-title" id="publicacaoCrudModal"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form method="POST" id="publicacaoForm" name="publicacaoForm" enctype="multipart/form-data">
+							@csrf
+							<input type="hidden" name="publicacao_id" id="publicacao_id">
+							<div class="form-group">
+								<input type="text" class="form-control text-ligth" id="titulo" name="titulo" placeholder="Título">
+								<span id="tituloError" style="color: red"></span>
+							</div>
+							<div class="form-group">
 								<select class="form-control" id="categoria_id" name="categoria_id">
 									<option selected disabled>Selecione uma Necessidade</option>
 									@foreach($categorias as $c)
-									<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
+										<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
 									@endforeach
 								</select>
 								<span id="classificacaoError" style="color: red"></span>
 							</div>
-						</div>
-						<div class="col-lg-12 form-group">
-							<textarea class="form-control text-dark" name="descricao" id="descricao" placeholder="Descrição"></textarea>
-							<span id="descricaoError" style="color: red"></span>
-						</div>
-						<div class="col-lg-12 form-group">
-							<input class="form-control" type="file" id="image" name="image" value="" placeholder="" onchange="previewFile()">
-							<img id="previewImg" src="/examples/images/transparent.png" style="height: 100px; weight:100px" alt="">
-						</div>
-							<!-- <br>
-							<div class="col-lg-12">
-								<ul>
-									<li><button class="active" id="publicar" type="submit" value="post">Publicar</button></li>
-								</ul>
-							</div> -->
-					</form>
+							<div class="form-group">
+								<textarea class="form-control text-dark" name="descricao" id="descricao" placeholder="Descrição"></textarea>
+								<span id="descricaoError" style="color: red"></span>
+							</div>
+							<div class="form-group">
+								<input id="image" type="file" name="image" accept="image/*" onchange="readURL(this);">
+								<input type="hidden" name="hidden_image" id="hidden_image">
+							</div>
+							<div class="form-group" style="margin-bottom: 8rem;">
+								<img id="modal-preview" src="https://via.placeholder.com/150" alt="Preview" width="100" height="100">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+								<button type="submit" class="btn btn-primary" id="btn-salvar" value="criar">Publicar</button>
+							</div>
+						</form>
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-					<button type="button" class="btn btn-primary" id="publicar">Salvar</button>
-				</div>
+			</div>
+		</div>
+
+		
+		<!-- Modal eliminar -->
+		<div class="modal fade" id="ajax-eliminar-modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="container d-flex pl-0"><img src="https://imgur.com/Kh1gwTq.png">
+							<h5 class="modal-title ml-2" id="exampleModalLabel">Delete the link?</h5>
+						</div> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+					</div>
+					<div class="modal-body">
+						<p class="text-muted">Se você excluir, a publicação desaparecerá para sempre. Tem certeza de que deseja continuar?</p>
+					</div>
+					<div class="modal-footer"> <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button> <button type="button" class="btn btn-danger eliminar">Delete</button> </div>
 				</div>
 			</div>
 		</div>
