@@ -44,23 +44,22 @@ class PublicacaoController extends Controller
 
     public function store(Request $request)
     {
-
         try{
             
             $validacao = array(
-                'titulo'       => 'required|max:53',
+                'titulo'       => 'required|max:120',
                 'categoria_id' => 'required',
-                'descricao' => 'required',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'descricao'    => 'required',
+                'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             );
             
             $erro = Validator::make($request->all(), $validacao);
 
-            $publicacao_id = $request->publicacao_id;
-
             if ($erro->fails()) {
                 return response()->json(['erroValidacao' => $erro->errors()->all()]);
             }
+
+            $publicacao_id = $request->publicacao_id;
 
             $dadosPost = [
                 'user_id' => Auth::user()->id,
@@ -90,24 +89,12 @@ class PublicacaoController extends Controller
           }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $pub = publicacao::all();
         return view('welcome')->with('pub', $pub);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $editarId = array('id' => $id);
@@ -116,24 +103,11 @@ class PublicacaoController extends Controller
         return response()->json($publicacao);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $data = publicacao::where('id',$id)->first(['imagem']);

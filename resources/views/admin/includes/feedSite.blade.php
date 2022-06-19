@@ -18,8 +18,8 @@
 										<ul>									
 											@if($idPessoas != null)
 												<li>
-													<a class="post-jb active" href="#" title="">
-														<img src="assets/images/tap.svg" height="18px"> Doe um item
+													<a class="post-jbb active" href="javascript:void(0)" title="" id="criar-nova-publicacao-doador">
+														Doe um item
 													</a>
 												</li>
 											@else
@@ -49,7 +49,7 @@
 												@if (Auth::check())
 													<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
 													<ul class="ed-options">
-														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="editar-publicacao">Editar</a></li>
+														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="{{$idPessoas != null ? 'editar-publicacao-doador' : 'editar-publicacao'}}">Editar</a></li>
 														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="eliminar-publicacao">Eliminar</a></li>
 														<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="denunciar-publicacao">Denunciar</a></li>
 													</ul>

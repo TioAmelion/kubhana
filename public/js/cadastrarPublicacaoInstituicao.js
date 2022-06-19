@@ -20,6 +20,7 @@ $(function () {
         $("#modal-preview").attr("src", "https://via.placeholder.com/150");
     });
 
+    /*  quando clica no botão Editar */
     $(".editar-publicacao").click(function () {
         var publicacao_id = $(this).data("id");
         $.get("publicar/" + publicacao_id + "/edit", function (data) {
@@ -45,22 +46,23 @@ $(function () {
         publicacao_id_eliminar = $(this).data("id");
     });
 
-    $('.eliminar').click(function(){
+    $('.eliminar').click(function() {
         $.ajax({
             type: "DELETE",
             url: "publicar/" + publicacao_id_eliminar,
             success: function (data) {
-                toastr.success("Publicação Eliminada", {
+                return
+                toastr.success("Publicação Eliminada", "", {
                     showMethod: "slideDown",
                     hideMethod: "slideUp",
-                    timeOut: 2000,
+                    timeOut: 1000,
                     onHidden: function () {
                         window.location.reload();
                     },
                 });
             },
             error: function (data) {
-                toastr.error("Ocorreu um erro ao Eliminar Publicação, contacte o Administrador", {
+                toastr.error("Ocorreu um erro ao Eliminar Publicação, contacte o Administrador", "", {
                     timeOut: 5000,
                 });
             },
@@ -127,7 +129,7 @@ function readURL(input, id) {
 function validarForm(response) {
     var erro1 = jQuery.inArray( "O campo titulo é obrigatório.", response.erroValidacao);
 
-    var erro11 = jQuery.inArray("O campo titulo não pode conter mais de 53 caracteres.", response.erroValidacao);
+    var erro11 = jQuery.inArray("O campo titulo não pode conter mais de 120 caracteres.", response.erroValidacao);
 
     var erro2 = jQuery.inArray( "O campo categoria id é obrigatório.", response.erroValidacao);
 
@@ -139,7 +141,7 @@ function validarForm(response) {
     }
 
     if (erro11 > -1) {
-        $("#tituloError").html("O campo titulo não pode conter mais de 53 caracteres.");
+        $("#tituloError").html("O campo titulo não pode conter mais de 120 caracteres.");
     }
 
     if (erro2 > -1) {
