@@ -30,9 +30,9 @@ $(function () {
             $("#publicacao_id_doador").val(data.id);
 
             $("#titulo_doacao").val(data.titulo);
-            $("#categoria_id_doador").val(data.categoria_id);
+            $("#categoria").val(data.categoria_id);
             $("#descricao_doacao").val(data.texto);
-			$("input:radio[value="+data.estado_item+"][name='classificacao']").prop('checked',true);
+			$("input:radio[value="+data.estado_item+"][name='estado_produto']").prop('checked',true);
             $("#quantidade_doacao").val(data.quantidade_item);
             $("#local_doacao").val(data.localizacao);
 
@@ -45,17 +45,16 @@ $(function () {
     });
 
     // quando clica no botão eliminar
-    $(".eliminar-publicacao").click(function () {
-        $('#ajax-eliminar-modal').modal("show");
+    $(".eliminar-publicacao-doador").click(function () {
+        $('#ajax-eliminar-modall').modal("show");
         publicacao_id_eliminar = $(this).data("id");
     });
 
-    $('.eliminar').click(function() {
+    $('.eliminar-doador').click(function() {
         $.ajax({
             type: "DELETE",
             url: "publicarUser/" + publicacao_id_eliminar,
             success: function (data) {
-				return
                 toastr.success("Publicação Eliminada", "", {
                     showMethod: "slideDown",
                     hideMethod: "slideUp",
@@ -103,14 +102,14 @@ $(function () {
 				} else if (response.erro) {
                     toastr.error(response.mensagem, { timeOut: 5000 });
 				} else {
-                    validarForm(response);
+                    validarFormulario(response);
                 }
 			}
 		});
 
 	});
 
-    removerClass();
+    removeClass();
 });
 
 //Funcao para previsualizar imagem
@@ -130,51 +129,87 @@ function readURLL(input, id) {
     }
 }
 
-function validarForm(response) {
+function validarFormulario(response) {
     var erro4 = jQuery.inArray("O campo titulo doacao é obrigatório.", response.erroValidacao);
-	var erro5 = jQuery.inArray("O campo categoria id é obrigatório.", response.erroValidacao);
+    var erro11 = jQuery.inArray("O campo titulo doacao não pode conter mais de 120 caracteres.", response.erroValidacao);
+	var erro5 = jQuery.inArray("O campo categoria é obrigatório.", response.erroValidacao);
 	var erro6 = jQuery.inArray("O campo local doacao é obrigatório.", response.erroValidacao);
-	var erro7 = jQuery.inArray("O campo descricao é obrigatório.", response.erroValidacao);
-	var erro8 = jQuery.inArray("O campo quantidade doacao é obrigatório", response.erroValidacao);
+    var erro66 = jQuery.inArray("O campo local doacao não pode conter mais de 120 caracteres.", response.erroValidacao);
+	var erro7 = jQuery.inArray("O campo descricao doacao é obrigatório.", response.erroValidacao);
+	var erro8 = jQuery.inArray("O campo quantidade doacao é obrigatório.", response.erroValidacao);
+	// var erro9 = jQuery.inArray("O campo estado produto é obrigatório.", response.erroValidacao);
 
-	if (erro4 > -1 )
+	if (erro4 > -1 ) {
 		$('#titulo_doacao').addClass('border border-danger');
+		$('#titulo_doacaoError').html('O campo titulo doacao é obrigatório.');
+    }
 
-	if (erro5 > -1 )
-	$('#categoria_id_doador').addClass('border border-danger');	
+    if (erro11 > -1) {
+        $("#titulo_doacaoError").html("O campo titulo não pode conter mais de 120 caracteres.");
+    }
 
-	if (erro6 > -1 )
-		$('#local_doacao').addClass('border border-danger');	
+	if (erro5 > -1 ) {
+	    $('#categoria').addClass('border border-danger');	
+	    $('#categoria_id_doadorError').html('O campo categoria é obrigatório.');	
+    }
 
-	if (erro7 > -1 )
+	if (erro6 > -1 ) {
+		$('#local_doacao').addClass('border border-danger');
+        $('#local_doacaoError').html('O campo local doacao é obrigatório.');	
+    }
+
+    if (erro66 > -1) {
+        $("#local_doacaoError").html("O campo titulo não pode conter mais de 120 caracteres.");
+    }
+
+	if (erro7 > -1 ) {
 		$('#descricao_doacao').addClass('border border-danger');
+        $('#descricao_doacaoError').html('"O campo descricao doacao é obrigatório.')
+    }
 
-	if (erro8 > -1 )
+	if (erro8 > -1 ) {
 		$('#quantidade_doacao').addClass('border border-danger');	
+        $('#quantidade_doacaoError').html('O campo quantidade doacao é obrigatório.')
+    }
 
+	if (erro9 > -1 ) {
+		// $('#estado_erro').html('O campo estado produto é obrigatório.');	
+    }
 }
 
 // Script para Remover a class Danger dos input da modal Instituição 
-function removerClass() {
+function removeClass() {
 
     $('#titulo_doacao').keyup(function(){
         $( "#titulo_doacao" ).removeClass( "border border-danger" );
+        $('#titulo_doacaoError').html("")
+    });
 
+    $('#muito_bom_estado').keyup(function(){
+        alert('ola')
+        $('#estado_erro').html("");
     });
 
     $(function() {
-        $('#categoria_ida').click(function(event) {
-            $( "#categoria_ida" ).removeClass( "border border-danger" );
+        $('#categoria').click(function(event) {
+            $( "#categoria" ).removeClass( "border border-danger" );
+            $('#categoria_id_doadorError').html("");
         });
     });
         
     $('#local_doacao').keyup(function(){
         $( "#local_doacao" ).removeClass( "border border-danger" );
-
+        $('#local_doacaoError').html("");
     });
 
     $('#descricao_doacao').keyup(function(){
-        $( "#descricao_doacao" ).removeClass( "border border-danger" );
+        $("#descricao_doacao" ).removeClass( "border border-danger" );
+        $("#descricao_doacaoError").html("");
+    });
+
+    $('#quantidade_doacao').keyup(function(){
+        $( "#quantidade_doacao" ).removeClass( "border border-danger" );
+        $('#quantidade_doacaoError').html("");
     });
 }
 

@@ -48,7 +48,7 @@ class PublicacaoController extends Controller
             
             $validacao = array(
                 'titulo'       => 'required|max:120',
-                'categoria_id' => 'required',
+                'necessidade' => 'required',
                 'descricao'    => 'required',
                 'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             );
@@ -64,7 +64,7 @@ class PublicacaoController extends Controller
             $dadosPost = [
                 'user_id' => Auth::user()->id,
                 'titulo' => $request->titulo,
-                'categoria_id' => $request->categoria_id,
+                'categoria_id' => $request->necessidade,
                 'texto' => $request->descricao,
                 'data' => Date('Y-m-d')
             ];

@@ -98,10 +98,10 @@ label {
 
 .estado_pergunta > input[type="radio"] {
     position: relative;
-    left: -218px;
-    top: 6px;
+    left: -201px;
+    top: -3px;
     height: 15px;
-    margin: -5px;
+    margin: -7px;
 }
 
 .estado_pergunta > span {

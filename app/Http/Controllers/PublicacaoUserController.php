@@ -27,15 +27,15 @@ class PublicacaoUserController extends Controller
         try{
 
             $validacao = array(
-                'titulo_doacao' => 'required|max:50',
-                'categoria_id_doador' => 'required',
+                'titulo_doacao' => 'required|max:120',
+                'categoria' => 'required',
                 'local_doacao' => 'required',
                 'quantidade_doacao' => 'required',
                 // 'data_expiracao' => 'required',
                 'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'descricao_doacao' => 'required',
-                'local_doacao' => 'required',
-                'classificacao' => 'required'
+                'local_doacao' => 'required|max:120',
+                'estado_produto' => 'nullable'
             );
             
             $erro = Validator::make($request->all(), $validacao);
@@ -49,12 +49,12 @@ class PublicacaoUserController extends Controller
             $dados = [
                 'user_id' => Auth::user()->id,
                 'titulo' => $request->titulo_doacao,
-                'categoria_id' => $request->categoria_id_doador,
+                'categoria_id' => $request->categoria,
                 'texto' => $request->descricao_doacao, 
-                'estado_item' => $request->classificacao,
+                'estado_item' => $request->estado_produto,
                 'quantidade_item' => $request->quantidade_doacao,
                 'localizacao' => $request->local_doacao,
-                // 'data_validade' => $request->data_expiracao,
+                // 'data' => Date('dd-mm-yyyy'),
             ];
 
             if($files = $request->file('image')) {

@@ -51,7 +51,6 @@ $(function () {
             type: "DELETE",
             url: "publicar/" + publicacao_id_eliminar,
             success: function (data) {
-                return
                 toastr.success("Publicação Eliminada", "", {
                     showMethod: "slideDown",
                     hideMethod: "slideUp",
@@ -131,7 +130,7 @@ function validarForm(response) {
 
     var erro11 = jQuery.inArray("O campo titulo não pode conter mais de 120 caracteres.", response.erroValidacao);
 
-    var erro2 = jQuery.inArray( "O campo categoria id é obrigatório.", response.erroValidacao);
+    var erro2 = jQuery.inArray( "O campo necessidade é obrigatório.", response.erroValidacao);
 
     var erro3 = jQuery.inArray("O campo descricao é obrigatório.",response.erroValidacao);
 
@@ -146,7 +145,7 @@ function validarForm(response) {
 
     if (erro2 > -1) {
         $("#categoria_id").addClass("border border-danger");
-        $("#classificacaoError").html("O campo categoria id é obrigatório." );
+        $("#classificacaoError").html("O campo necessidade é obrigatório." );
     }
 
     if (erro3 > -1) {

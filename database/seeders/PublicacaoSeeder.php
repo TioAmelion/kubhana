@@ -22,7 +22,7 @@ class PublicacaoSeeder extends Seeder
                 'texto' => "Precisamos de alimentos, tudo que tinhamos em nosso estoque já terminou.",
                 'estado_item' => "",
                 'quantidade_item' => "",
-                'localizacao' => "",
+                'localizacao' => "Malanje",
                 'data_validade' => "",
                 'imagem' => "",
                 'data' => "2021-08-18"
@@ -34,7 +34,7 @@ class PublicacaoSeeder extends Seeder
                 'texto' => "Precisamos de ajuda para marcar uma cirurgia urgente.",
                 'estado_item' => "",
                 'quantidade_item' => "",
-                'localizacao' => "",
+                'localizacao' => "Huíla, bairro Huíla 1",
                 'data_validade' => "",
                 'imagem' => "",
                 'data' => "2021-08-18"
@@ -46,7 +46,7 @@ class PublicacaoSeeder extends Seeder
                 'texto' => "Temos dois jovens aqui no centro doentes, até o momento os mesmo não fizeram ainda a medicação porque o centro não tem medicamentos e nem valores para comprar, por favor precisamos de ajuda o mais breve possivel.",
                 'estado_item' => "",
                 'quantidade_item' => "",
-                'localizacao' => "",
+                'localizacao' => "Benguela, Baía Farta",
                 'data_validade' => "",
                 'imagem' => "",
                 'data' => "2021-08-18"
@@ -58,7 +58,7 @@ class PublicacaoSeeder extends Seeder
                 'texto' => "Temos dois jovens aqui no centro doentes, até o momento os mesmo não fizeram ainda a medicação porque o centro não tem medicamentos e nem valores para comprar, por favor precisamos de ajuda o mais breve possivel.",
                 'estado_item' => "",
                 'quantidade_item' => "",
-                'localizacao' => "",
+                'localizacao' => "Luanda, Kilamba Edifício X14",
                 'data_validade' => "",
                 'imagem' => "",
                 'data' => "2021-08-18"
@@ -71,7 +71,8 @@ class PublicacaoSeeder extends Seeder
                 'titulo' => $publicacao["titulo"],
                 'categoria_id' => $publicacao["categoria_id"],
                 'texto' => $publicacao["texto"],
-                'data_validade' => $publicacao["data"]             
+                'data' => $publicacao["data"],
+                'localizacao' => $publicacao["localizacao"]
             ]);
         }
 
