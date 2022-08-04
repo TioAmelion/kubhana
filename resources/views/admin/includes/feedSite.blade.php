@@ -42,7 +42,7 @@
 													{{-- <img src="assets/images/resources/us-pic.png" alt=""> --}}
 													<div class="usy-name" data-id="{{$dados->user_id}}" style="cursor: pointer">
 														<h3>{{$dados->name}}</h3>
-														<span><img src="assets/images/clock.png" alt="">{{$dados->data}}</span>
+														<span><img src="assets/images/clock.png" alt=""><?php print_r(explode(" ",$dados->created_at)[0]) ?></span>
 													</div>
 												</div>
 												<div class="ed-opts">
@@ -57,70 +57,95 @@
 														</ul>
 													@endif
 												</div>
-											</div> 
+											</div>
 											<div class="epi-sec">
 												<ul class="descp">
-													<li><img src="images/icon8.png" alt=""><span>{{--$dados->classificacao--}}</span></li>
+													<li><img src="assets/images/placeholder.svg" style="width: 16px;"><span style="float: none">{{$dados->localizacao}}</span></li>
 												</ul>
 												<ul class="bk-links">
+													{{-- <li><a href="#" title=""><i class="la la-bookmark"></i></a></li> --}}
+													<li><a href="#" title=""><i class="la la-envelope"></i></a></li>
 												</ul>
 											</div>
 											<div class="job_descp">
 												<h3>{{$dados->titulo}}</h3>
-												<p><img src="assets/images/placeholder.svg" style="width: 18px;">{{$dados->localizacao}}</p>
+
+												@if ($dados->quantidade_item)
+													<ul class="job-dt">
+														<li><span>Quantidade a Doar: {{$dados->quantidade_item}}</span></li>
+													</ul>
+												@endif
+												
 												<p>{{$dados->texto}}</p>
 												@if($dados->imagem) <img class="img-publicacao" src="images/{{$dados->imagem}}" style="object-fit: fill;height: 400px;width: 500px;" alt=""> @endif
 											</div>
+											
 											<div class="job-status-bar">
-												@if (Auth::check())
-													<ul class="like-com">
-														<li class="reaction-container">
+												<div class="reaction-geral">
+													<div class="like-com">
+														@if (Auth::check())
+															<div class="reaction-container">
+																{{-- Select para verificar se o usuario logado votou na publicação --}}
+																@php
+																	$verificar = App\Models\Classificacao_publicacao::where('publicacao_id', '=', $dados->id)->where('user_id', '=' ,Auth::user()->id)->get();	
+																@endphp
+																{{-- fim --}}
 
-														{{-- Select para verificar se o usuario logado votou na publicação --}}
-														@php
-															$verificar = App\Models\Classificacao_publicacao::where('publicacao_id', '=', $dados->id)->where('user_id', '=' ,Auth::user()->id)->get();	
-														@endphp
-														{{-- fim --}}
+																@if ($verificar->count() < 1)
+																	<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/like.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+																	<a href="#" style="font-weight: 600; font-size: 18px; color:#000"> Gostar</a>
+																@else
+																	@foreach ($verificar as $item)
 
-														@if ($verificar->count() < 1)
+																		@if ($item->classificacao == 1)
+																			<img class="apoio" id="apoio" name="apoio" publicacao-id="{{$dados->id}}" src="assets/images/apoio.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+																			<a href="#" style="color: #BBA9D1; font-weight: 600; font-size: 18px">&nbsp;&nbsp;Apoio</a>
 
-															<a href="#"><i class="la la-heart"> votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-															<span>{{$dados->votos ? $dados->votos : ''}}</span>
-														
-															@else
+																		@elseif($item->classificacao == 2)
+																			<img class="apoio" id="apoio" name="apoio" publicacao-id="{{$dados->id}}" src="assets/images/gosto.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+																			<a href="#" style="color: #1485BD; font-weight: 600; font-size: 18px">&nbsp;&nbsp;Gosto</a>
 
-														<a href="#"><i class="la la-heart" style="color: red"> {{ $dados->votos > 1 ? 'você e outras pessoas votaram' : 'você votou' }} </i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-														<span>{{$dados->votos ? $dados->votos : ''}}</span>
-														
-														@endif
-															
-															<div class="reaction-box">
-																<div class="reaction-icon">
-																	<label>urgente</label>
-																	<img class="urgente" id="urgente" name="urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_wow.png" alt="">
-																</div>
-																<div class="reaction-icon">
-																	<label>mais urgente</label>
-																	<img class="maisUrgente" id="mais urgente" name="mais urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_sad.png" alt="">
+																		@else($item->classificacao == 3)
+																			<img class="apoio" id="apoio" name="apoio" publicacao-id="{{$dados->id}}" src="assets/images/parabens.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+																			<a href="#" style="color: #6DAE4D; font-weight: 600; font-size: 18px">&nbsp;&nbsp;Parabéns</a>
+																		@endif
+																	@endforeach
+																@endif
+																<div class="reaction-box">
+																	<div class="reaction-icon">
+																		<label>Apoio</label>
+																		<img class="apoio" id="apoio" name="apoio" publicacao-id="{{$dados->id}}" src="assets/images/apoio.png" alt="">
+																	</div>
+																	<div class="reaction-icon">
+																		<label>Gostar</label>
+																		<img class="gostar" id="gostar" name="gostar" publicacao-id="{{$dados->id}}" src="assets/images/gosto.png" alt="">
+																	</div>
+																	<div class="reaction-icon">
+																		<label>Parabéns</label>
+																		<img class="parabens" id="parabens" name="parabens" publicacao-id="{{$dados->id}}" src="assets/images/parabens.png" alt="">
+																	</div>
 																</div>
 															</div>
-														</li>
-														<li>
-															<a href="#" title="" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a>
-														</li>
-														<li> </li>
-													</ul>
-												@else
-												<ul class="like-com">
-													<li class="reaction-container">
-														<a href="{{route('login')}}"><i class="la la-heart"> Votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-														<span>{{$dados->votos ? $dados->votos : 0}}</span>
-													</li>
-													<li><a href="{{route('login')}}" title="" class="comm post_projectt" style="position: relative; top: -5px;"><img src="assets/images/heart.svg" height="18px"></a></li>
-													<li> </li>
-												</ul>
-												@endif
-												<a><i class="la la-eye"></i>Ajudas</a>
+														@else
+															<ul class="like-com">
+																<li class="reaction-container">
+																	<a href="{{route('login')}}"><i class="la la-heart"> Votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
+																	<span>{{$dados->votos ? $dados->votos : 0}}</span>
+																</li>
+																<li><a href="{{route('login')}}" title="" class="comm post_projectt" style="position: relative; top: -5px;"><img src="assets/images/heart.svg" height="18px"></a></li>
+																<li> </li>
+															</ul>
+														@endif
+													</div>
+												</div>
+												<div class="ajudar-feed" style="position: relative; left: 30px;">
+													<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+													<a href="#" style="font-weight: 600; font-size: 18px; color:#000"> Ajudar</a>
+												</div>
+												{{-- <div class="ajudar-feed" style="position: relative; left: 30px;">
+													<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/like.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+													<a href="#" style="font-weight: 600; font-size: 18px; color:#000"> Pessoas com interesse</a>
+												</div> --}}
 											</div>
 										</div><!--post-bar end-->
 									@endforeach
@@ -163,7 +188,8 @@
 		</div>		
 	</main>
 
-	@auth 
+	@auth
+	
 		<!-- MODAL DA INSTITUIÇÃO-->
 		<div class="modal fade" id="ajax-publicacao-modal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
@@ -240,7 +266,7 @@
 								<span id="categoria_id_doadorError" style="color: red"></span>
 							</div>
 							<div class="form-group">
-								<input class="form-control" type="number" id="quantidade_doacao" name="quantidade_doacao" placeholder="Quantidade do produto que pretende doar" min="1" autocomplete="off">
+								<input class="form-control" type="text" id="quantidade_doacao" name="quantidade_doacao" placeholder="Quantidade do produto que pretende doar" min="1" autocomplete="off">
 								<span id="quantidade_doacaoError" style="color: red"></span>
 							</div>
 							<div class="form-group estado_pergunta">
@@ -289,6 +315,64 @@
 			</div>
 		</div>
 
+		{{-- MODAL PARA DOAR --}}
+		<div class="modal fade" id="ajax-publicacao-doar-modal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="publicacaoCrudModalll"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form method="POST" id="publicacaoDoarForm" name="publicacaoDoarForm" enctype="multipart/form-data">
+							@csrf
+							<input type="hidden" name="publicacao_id_doar" id="publicacao_id_doar">
+							<input type="hidden" id="instituicao_id" name="instituicao_id" value="">
+							<div class="form-group estado_pergunta">
+								<span id="estadoProduto" class="estado_p text-muted" id="estadoProduto">Em que estado se encontra o produto?</span> <br>
+								<br>
+								<input class="form-control" type="radio" name="estado" id="muito_bom_estado" value="Muito_bom_estado">
+								<span id="estadoProduto" class="text-muted" for="muito_bom_estado">Muito bom estado</span><img src="assets/images/star.svg" height="18px">
+
+								<input class="form-control" id="estadoProduto" type="radio" name="estado" id="boa_condicao" value="Boa_condição">
+								<span id="estadoProduto" class="text-muted" for="boa_condicao">Boa condição</span><img src="assets/images/star4.svg" height="18px">
+
+								<input class="form-control" type="radio" name="estado" id="condicao_intermediaria" value="Condição_intermediária">
+								<span id="estadoProduto" class="text-muted" for="condicao_intermediaria">Condição intermediária</span><img src="assets/images/star2.svg" height="18px">
+
+								<input class="form-control" type="radio" name="estado" id="condição_ruim" value="Condição_ruim">
+								<span id="estadoProduto" class="text-muted" for="condição_ruim">Condição ruim</span><img src="assets/images/star3.svg" height="18px">
+								<br>
+								<span id="estadoProdutoErro" style="color: red; position: relative; left:3px;; top:2px"></span>
+							</div>
+							<div class="form-group">
+								<br>
+								<input class="form-control" type="number" id="quantidade" name="quantidade" placeholder="Quantidade do produto">
+								<span id="quantidadeErro" style="color: red"></span>
+							</div>
+							<div class="form-group">
+								<textarea class="form-control" id="descricaoDoar" name="descricaoDoar" placeholder="O que pretende doar" cols="3" rows="3"></textarea>
+								<span id="descricaoDoarErro" style="color: red"></span>
+							</div>
+							<div class="form-group">
+								<input id="image" type="file" name="image" accept="image/*" onchange="readURLLL(this);">
+								<input type="hidden" name="hidden_image" id="hidden_image">
+							</div>
+							<div class="form-group" style="margin-bottom: 8rem;">
+								<img id="modal-preview-doar" src="https://via.placeholder.com/150" alt="Preview" width="100" height="100">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+								<button type="submit" class="btn btn-primary" id="btn-salvar-doar" value="criar-doacao">Doar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Modal eliminar -->
 		<div class="modal fade" id="ajax-eliminar-modal" aria-hidden="true">
 			<div class="modal-dialog">
@@ -322,49 +406,6 @@
 				</div>
 			</div>
 		</div>
-
-		{{-- MODAL PARA DOAR --}}
-		<div class="post-popup pst-pj">
-			<div class="post-project">
-				<h3>Ajude com a sua doação - <span style="font-weight: bold" id="nome"></span></h3>
-				<div class="post-project-fields">
-					<form method="POST" id="form-doacao" enctype="multipart/form-data">
-						@csrf
-						<div class="row">
-							<div class="col-lg-12 estado_pergunta">
-								<br>
-								<span id="estadoProduto" class="estado_p text-muted" id="estadoProduto">Em que estado se encontra o produto?</span> <br>
-								<input class="text-muted" type="radio" name="estado" id="muito_bom_estado" value="Muito bom estado">
-								<span id="estadoProduto" class="text-muted" for="muito_bom_estado">Muito bom estado</span><img src="assets/images/star.svg" height="18px">
-
-								<input class="text-muted" id="estadoProduto" type="radio" name="estado" id="boa_condicao" value="Boa condição">
-								<span id="estadoProduto" class="text-muted" for="boa_condicao">Boa condição</span><img src="assets/images/star4.svg" height="18px">
-
-								<input class="text-muted" type="radio" name="estado" id="condicao_intermediaria" value="Condição intermediária">
-								<span id="estadoProduto" class="text-muted" for="condicao_intermediaria">Condição intermediária</span><img src="assets/images/star2.svg" height="18px">
-
-								<input class="text-muted" type="radio" name="estado" id="condição_ruim" value="Condição ruim">
-								<span id="estadoProduto" class="text-muted" for="condição_ruim">Condição ruim</span><img src="assets/images/star3.svg" height="18px">
-							</div>
-							<div class="col-lg-6">
-								<br>
-								<input type="number" id="quantidade" name="quantidade" placeholder="Quantidade do produto">
-								<input type="hidden" id="instId" name="instId" value="">
-							</div>
-							<div class="col-lg-12">
-								<textarea id="descricaoDoar" name="descricaoDoar" placeholder="O que pretende doar" cols="3" rows="3"></textarea>
-							</div>
-							<div class="col-lg-12">
-								<br>
-								<ul>
-									<li><button class="active" id="doar" type="submit">Doar</button></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</div><!--post-project-fields end-->
-				<a href="#" title="Fechar"><i class="la la-times-circle-o"></i></a>
-			</div>
-		</div>
+		
 	@endauth
 @endsection

@@ -1,8 +1,25 @@
 //Inicio do Script Ajax para Publicar doação do User para a instituição
-
 $(function() {
 
-    $('#form-doacao').on('submit', function(element){
+    $.ajaxSetup({
+		headers: {
+			"X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+		},
+	});
+    
+    /*  quando clica no icone para fazer a doação */
+	$(".criar-nova-publicacao-doar").click(function (e) {
+		$("#btn-salvar-doar").val("criar-publicacao");
+		$("#btn-salvar-doar").html("Publicar");
+		$("#publicacao_id_doar").val("");
+        $('#instituicao_id').val(e.currentTarget.getAttribute('id'));
+		$("#publicacaoDoarForm").trigger("reset");
+		$("#publicacaoCrudModalll").html("Ajude com a sua doação - " + e.currentTarget.getAttribute('nomeInst'));
+		$("#ajax-publicacao-doar-modal").modal("show");
+		$("#modal-preview-doar").attr("src", "https://via.placeholder.com/150");
+	});
+
+    $('#publicacaoDoarForm').on('submit', function(element){
         element.preventDefault();
          
         $.ajax({
@@ -10,58 +27,94 @@ $(function() {
             type: "POST",
             data: new FormData(this),
             contentType: false,
-               processData: false,
+            processData: false,
             dataType: "json",
             success: function(response) {
 
-                console.log('Dar res: ', response);
+                if(response.status == 200 && response.data) {
 
-                if(response.mensagem && response.dados){
-                    toastr.success(response.mensagem, 'Doação!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
-                        timeOut: 5000, onHidden: function () {
-                            window.location.reload();
-                        }  
-                    });
+                    $("#publicacaoDoarForm").trigger("reset");
+                	$("#btn-salvar-doar").html("Publicado");
 
-                }else if(response.erro) {
+					toastr.success(response.mensagem, 'Publicar!', { 
+						showMethod: "slideDown", 
+						hideMethod: "slideUp", 
+						timeOut: 2000, onHidden: function () {
+							window.location.reload();
+						} 
+					});
 
-                    var erro1 = jQuery.inArray("O campo quantidade é obrigatório.", response.erro);
-                    var erro2 = jQuery.inArray("O campo descricao doar é obrigatório.", response.erro);
-                    var erro3 = jQuery.inArray("O campo estado é obrigatório.", response.erro);
-                    
-                    if (erro1 > -1 )
-                        $('#quantidade').addClass('border border-danger');
+                } else if (response.erro) {
+                    toastr.error(response.mensagem, { timeOut: 5000 });
+                } else {
+                    console.log('Doar: ', response);
 
-                    if(erro2 > -1)
-                        $('#descricaoDoar').addClass('border border-danger');
-                    
-                    if(erro3 > -1)
-                        $('#estadoProduto').addClass('border border-danger');
-
-                    toastr.error('Por favor corriga os erros do Formulario', 'Erro ao publicar!', { "timeOut": 5000 });
+                    validaForm(response);
                 }
-
-                //Script para Remover a class Danger dos input da modal Doação
-
-                $('#quantidade').keyup(function(){
-                    console.log("QTD", $('#quantidade').val());
-                    $( "#quantidade" ).removeClass( "border border-danger" );
-                });
-
-                $('#descricaoDoar').keyup(function(){
-                    $( "#descricaoDoar" ).removeClass( "border border-danger" );
-                });
-
-                $('#estadoProduto').keyup(function(){
-                    $( "#estadoProduto" ).removeClass( "border border-danger" );
-                });
             }
         });
     });
     
     //PEGAR O ID DA INSTITUIÇÃO
-    $('.com').on('click', function(element){
-        $('#instId').val(element.currentTarget.getAttribute('id'));
-        $('#nome').text(element.currentTarget.getAttribute('nomeInst'));
-    });
+    
+    // $('.com').on('click', function(element){
+    //     $('#instId').val(element.currentTarget.getAttribute('id'));
+    //     $('#nome').text(element.currentTarget.getAttribute('nomeInst'));
+    // });
 });
+
+//validar formulario
+function validaForm(response) {
+    console.log('form: ', response, jQuery.inArray("O campo quantidade é obrigatório.", response.erroValidacao));
+    var quantidade = jQuery.inArray("O campo quantidade é obrigatório.", response.erroValidacao);
+    var descricao = jQuery.inArray("O campo descricao doar é obrigatório.", response.erroValidacao);
+    var estado = jQuery.inArray("O campo estado é obrigatório.", response.erroValidacao);
+    
+    if (quantidade > -1 ) {
+        console.log('erro')
+        $('#quantidade').addClass('border border-danger');
+        $('#quantidadeErro').html("Campo quantidade a doar é obrigatório");
+    }
+
+    if(descricao > -1) {
+        $('#descricaoDoar').addClass('border border-danger');
+        $('#descricaoDoarErro').html("Campo descrição obrigatório");
+    }
+
+    if(estado > -1) {
+        $('#estadoProduto').addClass('border border-danger');
+        $('#estadoProdutoErro').html("Selecione o estado em que o produto se encontra");
+    }
+
+    $('#quantidade').keyup(function(){
+        $("#quantidade").removeClass( "border border-danger");
+        $('#quantidadeErro').html("");
+    });
+
+    $('#descricaoDoar').keyup(function(){
+        $("#descricaoDoar").removeClass("border border-danger");
+        $('#descricaoDoarErro').html("");
+    });
+
+    $('#estadoProduto').keyup(function(){
+        $("#estadoProduto").removeClass("border border-danger");
+        $('#estadoProdutoErro').html("");
+    });
+}
+
+//Funcao para previsualizar imagem
+function readURLLL(input, id) {
+    id = id || "#modal-preview-doar";
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $(id).attr("src", e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+        $("#modal-preview-doar").removeClass("hidden");
+        $("#start").hide();
+    }
+}

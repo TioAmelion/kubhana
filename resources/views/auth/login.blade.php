@@ -29,7 +29,9 @@
                         <div class="col-lg-6">
                             <div class="cmp-info">
                                 <div class="cm-logo">
-                                    <img src="assets/images/cm-logo.png" alt="">
+                                    <h1 style="font-weight: 700">KUBHANA</h1>
+                                    <br>
+                                    {{-- <img src="assets/images/cm-logo.png" alt=""> --}}
                                     <p>Doar, Sistema de doaçao online</p>
                                 </div><!--cm-logo end-->    
                                 <img src="assets/images/cm-main-img.png" alt="">           

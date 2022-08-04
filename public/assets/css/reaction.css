@@ -13,11 +13,11 @@
 
 .reaction-box {
     position: absolute;
-    bottom: 35px;
+    bottom: 27px;
     left: -12px;
     width: 157px;
     height: 55px;
-    background: #e0d9d8 !important;
+    background: #A5A5A5 !important;
     border-radius: 28px;
     display: none;
 }

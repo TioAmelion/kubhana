@@ -19,6 +19,7 @@ class CreateDoacaosTable extends Migration
             $table->integer('quantidade');
             $table->string('estado'); 
             $table->date('data');
+            $table->string('imagem')->nullable();
 
             $table->foreignId('doador_id')->constrained('doadors')->onDelete('cascade');
             $table->foreignId('instituicao_id')->constrained('instituicaos')->onDelete('cascade');

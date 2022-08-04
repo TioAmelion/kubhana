@@ -1,15 +1,21 @@
 //VOTAR NA PUBLICACAO
 $(function () {
 
-    $('.urgente').on('click', function(element) {
+    $('.apoio').on('click', function(element) {
         let id = element.currentTarget.getAttribute('publicacao-id');
         let classificacao = 1;
         listar(id, classificacao);
     });
 
-    $('.maisUrgente').on('click', function(element) {
+    $('.gostar').on('click', function(element) {
         let id = element.currentTarget.getAttribute('publicacao-id');
         let classificacao = 2;
+        listar(id, classificacao);
+    });
+
+    $('.parabens').on('click', function(element) {
+        let id = element.currentTarget.getAttribute('publicacao-id');
+        let classificacao = 3;
         listar(id, classificacao);
     });
 });
@@ -33,15 +39,19 @@ function votarPublicacao(idPublicacao, classificacao) {
 
             console.log('votar publicacao: ', response);
 
-            // if(response.mensagem && response.dados){
-            //     toastr.success(response.mensagem, 'Votação!', { "showMethod": "slideDown", "hideMethod": "slideUp", 
-            //         timeOut: 5000, onHidden: function () {
-            //             window.location.reload();
-            //         }  
-            //     });
-            // }else {
-            //     toastr.error(response.mensagem, 'Erro ao votar!', { "timeOut": 5000 });
-            // }
+            if(response.status == 200 && response.data) {
+
+                toastr.success(response.mensagem, 'Reagir!', { 
+                    showMethod: "slideDown", 
+                    hideMethod: "slideUp", 
+                    timeOut: 2000, onHidden: function () {
+                        window.location.reload();
+                    } 
+                });
+
+            } else if (response.erro) {
+                toastr.error(response.mensagem, { timeOut: 5000 });
+            }
         }
     });
 }
@@ -91,7 +101,19 @@ function editar(id, classificacao) {
         dataType: "json",
         success: function(response) {
 
-            console.log('editar publicacao: ', response);
+            if(response.status == 200 && response.data) {
+
+                toastr.success(response.mensagem, 'Reagir!', { 
+                    showMethod: "slideDown", 
+                    hideMethod: "slideUp", 
+                    timeOut: 2000, onHidden: function () {
+                        window.location.reload();
+                    } 
+                });
+
+            } else if (response.erro) {
+                toastr.error(response.mensagem, { timeOut: 5000 });
+            }
         }
     });
 }

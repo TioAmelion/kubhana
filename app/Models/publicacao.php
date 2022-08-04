@@ -68,7 +68,11 @@ class publicacao extends Model
     }
 
     public function doacoesSemana() {
-        $doacoes = DB::select('SELECT * FROM doacaos WHERE WEEK(data) = WEEK(NOW())');
+        $doacoes = DB::select('SELECT * FROM doacaos d, users u, pessoas p, doadors do 
+        WHERE u.id = p.user_id 
+        AND p.id = do.pessoa_id
+        AND do.id = d.doador_id
+        AND WEEK(d.data) = WEEK(NOW())');
         return $doacoes;
     }
 

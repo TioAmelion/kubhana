@@ -38,7 +38,7 @@ class ClassificarPublicacaoController extends Controller
                 'classificacao' =>  $request->classificacao
             ]);
 
-            return response()->json(['mensagem' => 'Votação realizada com sucesso', 'dados' => $votar]);
+            return response()->json(['mensagem' => 'Operação realizada com sucesso', 'data' => $votar, 'status' => 200]);
 
         } catch (\Throwable $th) {
             return response()->json(['mensagem' => 'Ocorreu um erro ao votar na publicação', 'erro' => $th]);
@@ -63,7 +63,7 @@ class ClassificarPublicacaoController extends Controller
             $dados->classificacao  =  $request->classificacao;
             $dados->update();
 
-            return response()->json(['mensagem' => 'Votação editada com sucesso', 'dados' => $dados]);
+            return response()->json(['mensagem' => 'Operação realizada com sucesso', 'data' => $dados, 'status' => 200]);
 
         } catch (\Throwable $th) {
             return response()->json(['mensagem' => 'Ocorreu um erro ao editar voto na publicação', 'erro' => $dados]);

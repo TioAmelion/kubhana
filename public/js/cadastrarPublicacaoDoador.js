@@ -137,7 +137,6 @@ function validarFormulario(response) {
     var erro66 = jQuery.inArray("O campo local doacao não pode conter mais de 120 caracteres.", response.erroValidacao);
 	var erro7 = jQuery.inArray("O campo descricao doacao é obrigatório.", response.erroValidacao);
 	var erro8 = jQuery.inArray("O campo quantidade doacao é obrigatório.", response.erroValidacao);
-	// var erro9 = jQuery.inArray("O campo estado produto é obrigatório.", response.erroValidacao);
 
 	if (erro4 > -1 ) {
 		$('#titulo_doacao').addClass('border border-danger');
@@ -170,10 +169,6 @@ function validarFormulario(response) {
 	if (erro8 > -1 ) {
 		$('#quantidade_doacao').addClass('border border-danger');	
         $('#quantidade_doacaoError').html('O campo quantidade doacao é obrigatório.')
-    }
-
-	if (erro9 > -1 ) {
-		// $('#estado_erro').html('O campo estado produto é obrigatório.');	
     }
 }
 

@@ -15,7 +15,8 @@ class doacao extends Model
         'instituicao_id',
         'data', 
         'quantidade',
-        'estado'
+        'estado',
+        'imagem'
     ];
 
     public function doador()

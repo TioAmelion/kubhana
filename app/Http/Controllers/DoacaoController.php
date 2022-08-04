@@ -5,69 +5,80 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\doacao;
+use App\Models\pessoa;
+use App\Models\doador;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use App\Models\Categoria;
 use Exception;
 use Nexmo\Laravel\Facade\Nexmo;
+use File;
 
 class DoacaoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $categorias = Categoria::all();
 
         return view('admin.includes.doacao', ['categorias' => $categorias]);
-}
+    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $formDoar = array(
-            'descricaoDoar' => 'required|max:250',
-            'quantidade' => 'required|integer',
-            'instId' => 'required|integer',
-            'estado' => 'required|string'
+        try {
+
+            $formDoar = array(
+                'descricaoDoar' => 'required',
+                'quantidade' => 'required|integer',
+                'instituicao_id' => 'required|integer',
+                'estado' => 'required|string',
+                'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             );
 
-        $erro = Validator::make($request->all(), $formDoar);
+            $erro = Validator::make($request->all(), $formDoar);
 
-        if ($erro->fails()) {
-            return response()->json(['erro' => $erro->errors()->all()]);
+            if ($erro->fails()) {
+                return response()->json(['erroValidacao' => $erro->errors()->all()]);
+            }
+
+            $idPessoa = pessoa::where('user_id', Auth::user()->id)->get();
+            $idDoador = doador::where('pessoa_id', $idPessoa[0]['id'])->get();
+
+            $doacao_id = $request->publicacao_id_doar;
+
+            $dados = [
+                'doador_id' => $idDoador[0]['id'], 
+                'instituicao_id' => $request->instituicao_id,
+                'descricao' => $request->descricaoDoar,
+                'quantidade' => $request->quantidade,
+                'estado' => $request->estado,
+                'data' => date('Y-m-d')
+            ];
+
+            if($files = $request->file('image')) {
+
+                //apagar ficheiro antigo
+                \File::delete('public/images/'.$request->hidden_image);
+
+                //inserir novo ficheiro
+                $imageName = time().'.'.$files->getClientOriginalExtension();
+                $files->move(public_path('images'), $imageName);
+                $dados['imagem'] = "$imageName";
+            }
+        
+            $doacao = doacao::updateOrCreate(['id' => $doacao_id], $dados);
+
+            return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'data' => $doacao, 'status' => 200 ]);
+
+        }catch(\Exception $e){
+            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e]);
         }
-    
-        $dados = doacao::create([
-            'doador_id' => Auth::user()->id, 
-            'instituicao_id' => $request->instId,
-            'descricao' => $request->descricaoDoar,
-            'quantidade' => $request->quantidade,
-            'estado' => $request->estado,
-            'data' => date('Y-m-d')
-        ]);
-
-        return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'dados' => $dados ]);
-
-
         // $basic  = new \Nexmo\Client\Credentials\Basic('569ecd86', 'EAe66YBv7ZwDo0dy');
         // $client = new \Nexmo\Client($basic);
  

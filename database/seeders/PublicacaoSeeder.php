@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\publicacao;
 
 class PublicacaoSeeder extends Seeder
 {
@@ -66,7 +67,7 @@ class PublicacaoSeeder extends Seeder
         );
 
         foreach($publicacoes as $publicacao){
-            DB::table('publicacaos')->insert([
+            publicacao::create([
                 'user_id' => $publicacao["user_id"],
                 'titulo' => $publicacao["titulo"],
                 'categoria_id' => $publicacao["categoria_id"],

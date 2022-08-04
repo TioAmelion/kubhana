@@ -27,8 +27,8 @@
                 <div class="col-lg-7 col-md-8 no-pd">
                     <div class="main-ws-sec">
                         <div class="post-topbar">
-                            <h3 class="display-4 font-weight-bold">Cadastre-se e comece já a sua campanha!</h3>
-                            <br>
+                            {{-- <h3 class="display-4 font-weight-bold">Cadastre-se e comece já a sua campanha!</h3>
+                            <br> --}}
                             <ul class="sign-control">
                                 <li data-tab="tab-1" class="current"><a onclick="doa()" href="#" title="">Doador</a></li>
                                 <li data-tab="tab-1" ><a onclick="insti()" href="#"

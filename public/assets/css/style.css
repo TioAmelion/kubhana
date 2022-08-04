@@ -862,7 +862,7 @@ main {
 	color: #686868;
     font-size: 14px;
     float: left;
-    padding-left: 10px;
+    /* padding-left: 10px; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1316,6 +1316,8 @@ main {
 /* ========== job-status-bar ========== */
 
 .job-status-bar {
+	/* display: flex;
+    justify-content: space-evenly; */
 	float: left;
 	width: 100%;
 	padding: 15px 20px;
@@ -2165,7 +2167,7 @@ select {
 	width: 100%;
 	text-align: right;
 	padding-right: 50px;
-	margin-bottom: 70px;
+	margin-bottom: 40px;
 }
 .sign-control li {
 	display: inline-block;
