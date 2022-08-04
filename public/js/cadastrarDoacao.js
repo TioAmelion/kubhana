@@ -9,6 +9,7 @@ $(function() {
     
     /*  quando clica no icone para fazer a doação */
 	$(".criar-nova-publicacao-doar").click(function (e) {
+        console.log(e.currentTarget.getAttribute('id'), e.currentTarget.getAttribute('nomeInst'));
 		$("#btn-salvar-doar").val("criar-publicacao");
 		$("#btn-salvar-doar").html("Publicar");
 		$("#publicacao_id_doar").val("");

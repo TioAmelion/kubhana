@@ -139,18 +139,22 @@
 														@endif
 													</div>
 												</div>
+
 												@if($dados->tipo_publicacao == "ajuda")
+
 													<div class="ajudar-feed" style="">
 														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
 														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Doar</a>
 													</div>
 													<div class="ajudar-feed" style="">
 														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Doações</a>
+														<a href="#" class="criar-nova-publicacao-doar" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Doações</a>
 													</div>
+
 												@endif
 
 												@if($dados->tipo_publicacao == "doacao")
+
 													<div class="ajudar-feed" style="">
 														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
 														<a href="#" class="chat-sms" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
@@ -159,6 +163,7 @@
 														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/doadores.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
 														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Solicitações</a>
 													</div>
+
 												@endif
 												
 											</div>
