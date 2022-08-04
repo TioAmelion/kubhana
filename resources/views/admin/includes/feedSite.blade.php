@@ -52,8 +52,9 @@
 															@if($dados->user_id == Auth::user()->id)
 																<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="{{$idPessoas != null ? 'editar-publicacao-doador' : 'editar-publicacao'}}">Editar</a></li>
 																<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="{{$idPessoas != null ? 'eliminar-publicacao-doador' : 'eliminar-publicacao'}}">Eliminar</a></li>
+															@else
+																<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="denunciar-publicacao">Denunciar</a></li>
 															@endif
-															<li><a href="javascript:void(0)" data-id="{{$dados->id}}" class="denunciar-publicacao">Denunciar</a></li>
 														</ul>
 													@endif
 												</div>
@@ -138,14 +139,28 @@
 														@endif
 													</div>
 												</div>
-												<div class="ajudar-feed" style="position: relative; left: 30px;">
-													<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-													<a href="#" style="font-weight: 600; font-size: 18px; color:#000"> Ajudar</a>
-												</div>
-												{{-- <div class="ajudar-feed" style="position: relative; left: 30px;">
-													<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/like.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-													<a href="#" style="font-weight: 600; font-size: 18px; color:#000"> Pessoas com interesse</a>
-												</div> --}}
+												@if($dados->tipo_publicacao == "ajuda")
+													<div class="ajudar-feed" style="">
+														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Doar</a>
+													</div>
+													<div class="ajudar-feed" style="">
+														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Doações</a>
+													</div>
+												@endif
+
+												@if($dados->tipo_publicacao == "doacao")
+													<div class="ajudar-feed" style="">
+														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+														<a href="#" class="chat-sms" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
+													</div>
+													<div class="ajudar-feed" style="">
+														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/doadores.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Solicitações</a>
+													</div>
+												@endif
+												
 											</div>
 										</div><!--post-bar end-->
 									@endforeach
@@ -188,8 +203,101 @@
 		</div>		
 	</main>
 
+	<div class="chatbox-list">
+		<div class="chatbox">
+			<div class="chat-mg">
+				<a href="#" title=""><img src="assets/images/resources/usr-img1.png" alt=""></a>
+				<span>2</span>
+			</div>
+			<div class="conversation-box">
+				<div class="con-title mg-3">
+					<div class="chat-user-info">
+						<img src="images/resources/us-img1.png" alt="">
+						<h3>John Doe <span class="status-info"></span></h3>
+					</div>
+					<div class="st-icons">
+						<a href="#" title=""><i class="la la-cog"></i></a>
+						<a href="#" title="" class="close-chat"><i class="la la-minus-square"></i></a>
+						<a href="#" title="" class="close-chat"><i class="la la-close"></i></a>
+					</div>
+				</div>
+				<div class="chat-hist mCustomScrollbar" data-mcs-theme="dark">
+					<div class="chat-msg">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
+						<span>Sat, Aug 23, 1:10 PM</span>
+					</div>
+					<div class="date-nd">
+						<span>Sunday, August 24</span>
+					</div>
+					<div class="chat-msg st2">
+						<p>Cras ultricies ligula.</p>
+						<span>5 minutes ago</span>
+					</div>
+					<div class="chat-msg">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
+						<span>Sat, Aug 23, 1:10 PM</span>
+					</div>
+				</div><!--chat-list end-->
+				<div class="typing-msg">
+					<form>
+						<textarea placeholder="Type a message here"></textarea>
+						<button type="submit"><i class="fa fa-send"></i></button>
+					</form>
+					<ul class="ft-options">
+						<li><a href="#" title=""><i class="la la-smile-o"></i></a></li>
+						<li><a href="#" title=""><i class="la la-camera"></i></a></li>
+						<li><a href="#" title=""><i class="fa fa-paperclip"></i></a></li>
+					</ul>
+				</div><!--typing-msg end-->
+			</div>
+		</div>
+	</div>
+
 	@auth
-	
+		<!-- MODAL MENSAGEM-->
+		<div class="modal fade" id="ajax-mensagem-modal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="publicacaoCrudModal">Nome da pessoa</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="chat-hist mCustomScrollbar" data-mcs-theme="dark">
+							<div class="chat-msg">
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
+								<span>Sat, Aug 23, 1:10 PM</span>
+							</div>
+							<div class="date-nd">
+								<span>Sunday, August 24</span>
+							</div>
+							<div class="chat-msg st2">
+								<p>Cras ultricies ligula.</p>
+								<span>5 minutes ago</span>
+							</div>
+							<div class="chat-msg">
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
+								<span>Sat, Aug 23, 1:10 PM</span>
+							</div>
+						</div><!--chat-list end-->
+						<div class="typing-msg">
+							<form>
+								<textarea placeholder="Type a message here"></textarea>
+								<button type="submit"><i class="fa fa-send"></i></button>
+							</form>
+							<ul class="ft-options">
+								<li><a href="#" title=""><i class="la la-smile-o"></i></a></li>
+								<li><a href="#" title=""><i class="la la-camera"></i></a></li>
+								<li><a href="#" title=""><i class="fa fa-paperclip"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- MODAL DA INSTITUIÇÃO-->
 		<div class="modal fade" id="ajax-publicacao-modal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
@@ -252,6 +360,7 @@
 						<form method="POST" id="publicacaoDoadorForm" name="publicacaoDoadorForm" enctype="multipart/form-data">
 							@csrf
 							<input type="hidden" name="publicacao_id_doador" id="publicacao_id_doador">
+							
 							<div class="form-group">
 								<input type="text" class="form-control" id="titulo_doacao" name="titulo_doacao" placeholder="Título do produto que pretende doar">
 								<span id="titulo_doacaoError" style="color: red"></span>
@@ -297,6 +406,13 @@
 							<div class="form-group">
 								<textarea class="form-control text-dark" name="descricao_doacao" id="descricao_doacao" placeholder="Descreve detalhada do produto que quer doar"></textarea>
 								<span id="descricao_doacaoError" style="color: red"></span>
+							</div>
+							<div class="form-group">
+								<select class="form-control" id="estado_doacao" name="estado_doacao">
+									<option selected disabled>Estado da Doação</option>
+									<option class="alimentos" value="disponivel">Disponível</option>
+									<option class="alimentos" value="indisponivel">Indisponível</option>
+								</select>
 							</div>
 							<div class="form-group">
 								<input id="image" type="file" name="image" accept="image/*" onchange="readURLL(this);">

@@ -54,6 +54,8 @@ class PublicacaoUserController extends Controller
                 'estado_item' => $request->estado_produto,
                 'quantidade_item' => $request->quantidade_doacao,
                 'localizacao' => $request->local_doacao,
+                'tipo_publicacao' => "doacao",
+                'estado_doacao' => "disponivel"
             ];
 
             if($files = $request->file('image')) {

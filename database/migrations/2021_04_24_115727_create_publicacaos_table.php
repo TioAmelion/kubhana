@@ -19,6 +19,7 @@ class CreatePublicacaosTable extends Migration
             $table->string('localizacao', 120)->nullable();
             $table->date('data_validade', 30)->nullable();
             $table->enum('estado_doacao', ['disponivel', 'indisponivel'])->nullable();
+            $table->enum('tipo_publicacao', ['doacao', 'ajuda'])->nullable();
             $table->string('texto');
             $table->string('imagem')->nullable();
             $table->date('data')->nullable();

@@ -208,6 +208,11 @@ $(window).on("load", function() {
         $(this).next(".conversation-box").toggleClass("active");
         return false;
     });
+
+    $(".chat-sms").on("click", function(){
+        $("#ajax-mensagem-modal").modal('show');
+        return false;
+    });
     $(".close-chat").on("click", function(){
         $(".conversation-box").removeClass("active");
         return false;

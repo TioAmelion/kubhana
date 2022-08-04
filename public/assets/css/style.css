@@ -1316,9 +1316,8 @@ main {
 /* ========== job-status-bar ========== */
 
 .job-status-bar {
-	/* display: flex;
-    justify-content: space-evenly; */
-	float: left;
+	display: flex;
+    justify-content: space-evenly;
 	width: 100%;
 	padding: 15px 20px;
 }

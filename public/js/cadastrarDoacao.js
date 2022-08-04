@@ -46,9 +46,8 @@ $(function() {
 
                 } else if (response.erro) {
                     toastr.error(response.mensagem, { timeOut: 5000 });
+                    
                 } else {
-                    console.log('Doar: ', response);
-
                     validaForm(response);
                 }
             }

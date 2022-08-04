@@ -66,7 +66,8 @@ class PublicacaoController extends Controller
                 'titulo' => $request->titulo,
                 'categoria_id' => $request->necessidade,
                 'texto' => $request->descricao,
-                'data' => Date('Y-m-d')
+                'data' => Date('Y-m-d'),
+                'tipo_publicacao' => "ajuda",
             ];
 
             if($files = $request->file('image')) {

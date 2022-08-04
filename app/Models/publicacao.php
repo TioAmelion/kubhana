@@ -25,7 +25,9 @@ class publicacao extends Model
         'localizacao',
         'data_validade',
         'imagem',
-        'data'
+        'data',
+        'tipo_publicacao',
+        'estado_doacao'
     ];
 
     public function show(){
