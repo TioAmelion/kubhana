@@ -94,7 +94,7 @@
 						{!! Avatar::create( Auth::user()->name)->setFontSize(15)->setDimension(40, 40)->setBackground('#000')->setForeground('#fff')->toSvg(); !!}
 					</div>
 					{{-- <img src="assets/images/resources/user.png" alt=""> --}}
-					<a href="#" class="dropdown-toggle" title="">zenildo</a>
+					{{-- <a href="#" class="dropdown-toggle" title="">zenildo</a> --}}
 					{{-- <i class="la la-sort-down"></i> --}}
 				</div>
 				<div class="user-account-settingss">

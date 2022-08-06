@@ -74,7 +74,7 @@ class PublicacaoUserController extends Controller
             return response()->json(['mensagem' => 'Pubicação realizada com sucesso', 'data' => $publicacao, 'status' => 200]);
             
           }catch(\Exception $e){
-            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e]);
+            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e->getMessage()]);
           }
     }
     

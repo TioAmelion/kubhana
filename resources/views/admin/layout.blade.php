@@ -3,7 +3,8 @@
 <head>
 	@include('admin.includes.head')
 </head>
-<body oncontextmenu="return false;" style="background: #000">
+<body oncontextmenu="return false;">
+	{{-- style="background: #000" --}}
 	<div class="wrapper">
 		@include('admin.includes.navbarSite')
 		@yield('conteudo')

@@ -33,42 +33,38 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('update', [ClassificarPublicacaoController::class, 'update']);
 
     Route::resource('publicarUser', 'App\Http\Controllers\PublicacaoUserController');
+
+
+    Route::get('send-mail', function () {
+
+        $details = [
+            'title' => 'Mail from ItSolutionStuff.com',
+            'body' => 'This is for testing email using smtp'
+        ];
+        
+        \Mail::to('amelionjorge2012@gmail.com')->send(new \App\Mail\MyTestMail($details));
+        
+        dd("Email is Sent.");
+    });
+
+    Route::resource('/feed', 'App\Http\Controllers\HomeController');
+
+    Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
+
+    Route::get('/logout', 'App\Http\Controllers\Auth\AuthenticatedSessionController@destroy');
+    Route::get('/insitituicoes',[InstituicaoController::class, 'index']);
+
+    Route::resource('doador', 'App\Http\Controllers\DoadorController');
+
+    Route::get('municipio/{id}', [MunicipioController::class, 'getMunicipio']);
+
+    Route::get('provincia/{id}', [ProvinciaController::class, 'getProvincia']);
+
+    Route::resource('instituicao', 'App\Http\Controllers\InstituicaoController');
+
+    Route::resource('fornecedor', 'App\Http\Controllers\FornecedorController'); 
+
+    Route::resource('/', 'App\Http\Controllers\HomeController');
 });
-
-///////////////// ROTAS ACESSADAS SEM O MIDDLEWARE DE AUTENTICAÇÃO /////////////////////////
-
-
-Route::get('send-mail', function () {
-
-    $details = [
-        'title' => 'Mail from ItSolutionStuff.com',
-        'body' => 'This is for testing email using smtp'
-    ];
-    
-    \Mail::to('amelionjorge2012@gmail.com')->send(new \App\Mail\MyTestMail($details));
-    
-    dd("Email is Sent.");
-});
-
-Route::resource('/feed', 'App\Http\Controllers\HomeController');
-
-Route::get('autocomplete', [PessoaController::class, 'autocomplete'])->name('autocomplete');
-
-
-
-Route::get('/logout', 'App\Http\Controllers\Auth\AuthenticatedSessionController@destroy');
-Route::get('/insitituicoes',[InstituicaoController::class, 'index']);
-
-Route::resource('doador', 'App\Http\Controllers\DoadorController');
-
-Route::get('municipio/{id}', [MunicipioController::class, 'getMunicipio']);
-
-Route::get('provincia/{id}', [ProvinciaController::class, 'getProvincia']);
-
-Route::resource('instituicao', 'App\Http\Controllers\InstituicaoController');
-
-Route::resource('fornecedor', 'App\Http\Controllers\FornecedorController'); 
-
-Route::resource('/', 'App\Http\Controllers\HomeController');
 
 require __DIR__ . '/auth.php';

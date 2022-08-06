@@ -77,7 +77,7 @@ class DoacaoController extends Controller
             return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'data' => $doacao, 'status' => 200 ]);
 
         }catch(\Exception $e){
-            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e]);
+            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e->getMessage()]);
         }
         // $basic  = new \Nexmo\Client\Credentials\Basic('569ecd86', 'EAe66YBv7ZwDo0dy');
         // $client = new \Nexmo\Client($basic);

@@ -40,8 +40,8 @@ class ClassificarPublicacaoController extends Controller
 
             return response()->json(['mensagem' => 'Operação realizada com sucesso', 'data' => $votar, 'status' => 200]);
 
-        } catch (\Throwable $th) {
-            return response()->json(['mensagem' => 'Ocorreu um erro ao votar na publicação', 'erro' => $th]);
+        } catch (\Exception $e) {
+            return response()->json(['mensagem' => 'Ocorreu um erro ao votar na publicação', 'erro' => $e->getMessage()]);
         }
     }
 

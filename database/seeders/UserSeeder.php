@@ -19,7 +19,11 @@ class UserSeeder extends Seeder
             ["name" => "Lar Kusola", "email" => "larkusola@gmail.com", "password" => "lllllllll"],
             ["name" => "Lar do Beiral", "email" => "beiral@gmail.com", "password" => "lllllllll"],
             ["name" => "Augusto Jõao", "email" => "augusto@gmail.com", "password" => "bbbbbbbbb"],
-            ["name" => "Sandra Mateus", "email" => "sandra@gmail.com", "password" => "bbbbbbbbb"]
+            ["name" => "Sandra Mateus", "email" => "sandra@gmail.com", "password" => "bbbbbbbbb"],
+            ["name" => "Centro de Acolhimento Arnould Jensen", "email" => "arnould@gmail.com", "password" => "lllllllll"],
+            ["name" => "Centro Infantil Madre Trindade", "email" => "centroinfantil@gmail.com", "password" => "lllllllll"],
+            ["name" => "Elizabeth Adão", "email" => "elisabeth@gmail.com", "password" => "bbbbbbbbb"],
+            ["name" => "Aurea Cardoso", "email" => "aurea@gmail.com", "password" => "bbbbbbbbb"]
         );
 
         //INSERIR USERS
@@ -40,7 +44,7 @@ class UserSeeder extends Seeder
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
                 "nome_pessoa" => "Augusto Jõao",
-                "telefone" => 921117047,
+                "telefone" => 926997047,
                 "data_nascimento" => "1997-09-30",
                 "genero" => "masculino",
                 "numero_identificacao" => "000049264LA018"
@@ -51,7 +55,29 @@ class UserSeeder extends Seeder
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
                 "nome_pessoa" => "Sandra Mateus",
-                "telefone" => 921117047,
+                "telefone" => 924117047,
+                "data_nascimento" => "1997-09-30",
+                "genero" => "feminino",
+                "numero_identificacao" => "000049264LA018"
+            ],
+            [
+                "user_id" => 7,
+                "pais_id" => 1, 
+                "provincia_id" => 1, 
+                "municipio_id" => 1, 
+                "nome_pessoa" => "Elizabeth Adão",
+                "telefone" => 921170423,
+                "data_nascimento" => "1997-09-30",
+                "genero" => "masculino",
+                "numero_identificacao" => "000049264LA018"
+            ],
+            [
+                "user_id" => 8,
+                "pais_id" => 1, 
+                "provincia_id" => 1, 
+                "municipio_id" => 1, 
+                "nome_pessoa" => "Aurea Cardoso",
+                "telefone" => 923117047,
                 "data_nascimento" => "1997-09-30",
                 "genero" => "feminino",
                 "numero_identificacao" => "000049264LA018"
@@ -82,6 +108,14 @@ class UserSeeder extends Seeder
             ],
             [
                 "pessoa_id" => 2,
+                "tipo_doador" => "pessoa_juridica"
+            ],
+            [
+                "pessoa_id" => 3,
+                "tipo_doador" => "pessoa_fisica"
+            ],
+            [
+                "pessoa_id" => 4,
                 "tipo_doador" => "pessoa_juridica"
             ]
         );
@@ -117,6 +151,28 @@ class UserSeeder extends Seeder
                 "telefone" => "923265790", 
                 "objectivo" => "Ajudar todas as crianças a nível nacional", 
                 "nif" => "05825"
+            ],
+            [
+                "user_id" => 5, 
+                "pais_id" => 1, 
+                "provincia_id" => 1, 
+                "municipio_id" => 1, 
+                "nome_instituicao" => "Centro de Acolhimento Arnould Jensen", 
+                "sigla" => "CAAJ", 
+                "telefone" => "923265790", 
+                "objectivo" => "Ajudar todas as crianças a nível nacional", 
+                "nif" => "05825"
+            ],
+            [
+                "user_id" => 6, 
+                "pais_id" => 1, 
+                "provincia_id" => 2, 
+                "municipio_id" => 2, 
+                "nome_instituicao" => "Centro Infantil Madre Trindade", 
+                "sigla" => "CIMT", 
+                "telefone" => "994265790", 
+                "objectivo" => "Ajudar todas as crianças a nível nacional", 
+                "nif" => "05825"
             ]
         );
 
@@ -135,6 +191,5 @@ class UserSeeder extends Seeder
                 "nif" => $instituico["nif"]
             ]);
         }
-        
     }
 }

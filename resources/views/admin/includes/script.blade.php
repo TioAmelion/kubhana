@@ -13,3 +13,4 @@
 <script type="text/javascript" src="js/votarPublicacao.js"></script>
 <script type="text/javascript" src="js/pesquisar.js"></script>
 <script type="text/javascript" src="js/perfil.js"></script>
+<script type="text/javascript" src="js/solicitar-doacao.js"></script>

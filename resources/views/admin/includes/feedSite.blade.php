@@ -65,7 +65,7 @@
 												</ul>
 												<ul class="bk-links">
 													{{-- <li><a href="#" title=""><i class="la la-bookmark"></i></a></li> --}}
-													<li><a href="#" title=""><i class="la la-envelope"></i></a></li>
+													<li><a href="#" class="chat-sms"><i class="la la-envelope"></i></a></li>
 												</ul>
 											</div>
 											<div class="job_descp">
@@ -127,15 +127,6 @@
 																	</div>
 																</div>
 															</div>
-														@else
-															<ul class="like-com">
-																<li class="reaction-container">
-																	<a href="{{route('login')}}"><i class="la la-heart"> Votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-																	<span>{{$dados->votos ? $dados->votos : 0}}</span>
-																</li>
-																<li><a href="{{route('login')}}" title="" class="comm post_projectt" style="position: relative; top: -5px;"><img src="assets/images/heart.svg" height="18px"></a></li>
-																<li> </li>
-															</ul>
 														@endif
 													</div>
 												</div>
@@ -144,24 +135,33 @@
 
 													<div class="ajudar-feed" style="">
 														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Doar</a>
+														<a href="#" class="criar-nova-publicacao-doar" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Doar</a>
 													</div>
 													<div class="ajudar-feed" style="">
-														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="criar-nova-publicacao-doar" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Doações</a>
+														<img class="gostar" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+														<a href="#" class="" style="font-weight: 600; font-size: 18px; color:#000"> Doações</a>
 													</div>
 
 												@endif
 
 												@if($dados->tipo_publicacao == "doacao")
+													@if (Auth::check())
+														@if($dados->user_id != Auth::user()->id)
+															<div class="ajudar-feed" style="">
+																<img class="gostar" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+																<a href="#" id="solicitar-doacao" publicacaoId="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
+															</div>
+														@else
+															<div class="ajudar-feed" style="">
+																<img class="gostar" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+																<a href="#" publicacaoId="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
+															</div>
+														@endif
+													@endif
 
 													<div class="ajudar-feed" style="">
-														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="chat-sms" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
-													</div>
-													<div class="ajudar-feed" style="">
 														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/doadores.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Solicitações</a>
+														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Solicitações {{$dados->solicitacoes}} </a>
 													</div>
 
 												@endif
@@ -208,57 +208,45 @@
 		</div>		
 	</main>
 
-	<div class="chatbox-list">
-		<div class="chatbox">
-			<div class="chat-mg">
-				<a href="#" title=""><img src="assets/images/resources/usr-img1.png" alt=""></a>
-				<span>2</span>
-			</div>
-			<div class="conversation-box">
-				<div class="con-title mg-3">
-					<div class="chat-user-info">
-						<img src="images/resources/us-img1.png" alt="">
-						<h3>John Doe <span class="status-info"></span></h3>
+	@auth
+
+		<!-- MODAL SOLICITAR DOAÇÃO-->
+		<div class="modal fade" id="ajax-solicitacao-modal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="solicitacaoCrudModal"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-					<div class="st-icons">
-						<a href="#" title=""><i class="la la-cog"></i></a>
-						<a href="#" title="" class="close-chat"><i class="la la-minus-square"></i></a>
-						<a href="#" title="" class="close-chat"><i class="la la-close"></i></a>
+					<div class="modal-body">
+						<form method="POST" id="solicitacaoForm" name="solicitacaoForm" enctype="multipart/form-data">
+							@csrf
+							<input type="hidden" name="solicitacao_id" id="solicitacao_id">
+							<div class="form-group">
+								
+								<h2 for="exampleFormControlInput1">Enviaremos este texto padrão.</h2>
+								<br> <br>
+								<span id="nomeProprietario"></span> 
+								<span>Solicito encarecidamente da sua doação.</span>
+								<br> <br>
+								<h2>Se deseja alterar o texto, por favor preencha o campo.</h2>
+							</div>
+
+							<div class="form-group">
+								<input type="text" class="form-control" id="solicitacao">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary" id="btn-salvar" value="criar">Enviar Solicitação</button>
 					</div>
 				</div>
-				<div class="chat-hist mCustomScrollbar" data-mcs-theme="dark">
-					<div class="chat-msg">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-						<span>Sat, Aug 23, 1:10 PM</span>
-					</div>
-					<div class="date-nd">
-						<span>Sunday, August 24</span>
-					</div>
-					<div class="chat-msg st2">
-						<p>Cras ultricies ligula.</p>
-						<span>5 minutes ago</span>
-					</div>
-					<div class="chat-msg">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-						<span>Sat, Aug 23, 1:10 PM</span>
-					</div>
-				</div><!--chat-list end-->
-				<div class="typing-msg">
-					<form>
-						<textarea placeholder="Type a message here"></textarea>
-						<button type="submit"><i class="fa fa-send"></i></button>
-					</form>
-					<ul class="ft-options">
-						<li><a href="#" title=""><i class="la la-smile-o"></i></a></li>
-						<li><a href="#" title=""><i class="la la-camera"></i></a></li>
-						<li><a href="#" title=""><i class="fa fa-paperclip"></i></a></li>
-					</ul>
-				</div><!--typing-msg end-->
 			</div>
 		</div>
-	</div>
 
-	@auth
 		<!-- MODAL MENSAGEM-->
 		<div class="modal fade" id="ajax-mensagem-modal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
@@ -308,7 +296,7 @@
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="publicacaoCrudModal"></h5>
+						<h5 class="modal-title" id="publicacaoCrudModal">Adicionar Nova Publicação</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 						</button>

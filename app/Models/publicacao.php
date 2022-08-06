@@ -40,6 +40,11 @@ class publicacao extends Model
                         WHERE classificacao_publicacaos.publicacao_id = publicacaos.id
                         GROUP BY classificacao_publicacaos.publicacao_id) as votos"),
 
+                        DB::raw("(SELECT COUNT(s.id)
+                        FROM solicitacaos s
+                        WHERE s.publicacao_id = publicacaos.id
+                        GROUP BY s.publicacao_id) as solicitacoes"),
+
                         DB::raw("(SELECT users.name FROM users WHERE users.id = publicacaos.user_id
                         GROUP BY users.name) as name"))
                         ->orderByDesc('id')
