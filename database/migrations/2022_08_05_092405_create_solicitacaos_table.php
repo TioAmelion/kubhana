@@ -18,7 +18,6 @@ class CreateSolicitacaosTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('publicacao_id')->constrained('publicacaos')->onDelete('cascade');
             $table->string('texto', 255)->default("Solicito encarecidamente da sua doação.");
-            $table->enum('aceitar', ['sim', 'nao'])->nullable();
             $table->timestamps();
         });
     }

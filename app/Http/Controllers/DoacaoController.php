@@ -7,21 +7,46 @@ use Validator;
 use App\Models\doacao;
 use App\Models\pessoa;
 use App\Models\doador;
+use App\Models\publicacao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use App\Models\Categoria;
 use Exception;
 use Nexmo\Laravel\Facade\Nexmo;
 use File;
+use DB;
 
 class DoacaoController extends Controller
 {
 
     public function index()
     {
-        $categorias = Categoria::all();
+        $idPessoas = pessoa::all();
 
-        return view('admin.includes.doacao', ['categorias' => $categorias]);
+        if(Auth::check()){
+            $idPessoas = pessoa::where('user_id', Auth::user()->id)->first();
+        }
+
+        $categorias = Categoria::all();
+        $dados = new doacao();
+        $doacoes = $dados->doacoes();
+
+        return view('admin.includes.doacao', [
+            'categorias' => $categorias, 
+            'doacoes' => $doacoes,
+            'idPessoas' => $idPessoas
+        ]);
+    }
+
+    public function listarDoacoes($id) {
+        $dados = DB::select("SELECT * FROM doacaos doa, publicacaos pub, doadors d, pessoas p, users u
+        WHERE doa.publicacao_id = pub.id AND doa.publicacao_id = $id
+        AND doa.doador_id = d.id 
+        AND d.pessoa_id = p.id
+        AND p.user_id = u.id;");
+        
+        return response()->json(['data' => $dados, 'status' => 200]);
+        
     }
 
     public function create()
@@ -37,6 +62,7 @@ class DoacaoController extends Controller
                 'descricaoDoar' => 'required',
                 'quantidade' => 'required|integer',
                 'instituicao_id' => 'required|integer',
+                'publicacao_doacao_id' => 'required|integer',
                 'estado' => 'required|string',
                 'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             );
@@ -55,6 +81,7 @@ class DoacaoController extends Controller
             $dados = [
                 'doador_id' => $idDoador[0]['id'], 
                 'instituicao_id' => $request->instituicao_id,
+                'publicacao_id' => $request->publicacao_doacao_id,
                 'descricao' => $request->descricaoDoar,
                 'quantidade' => $request->quantidade,
                 'estado' => $request->estado,

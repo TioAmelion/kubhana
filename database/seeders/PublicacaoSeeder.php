@@ -33,20 +33,6 @@ class PublicacaoSeeder extends Seeder
                 'estado_doacao' => "disponivel"
             ],
             [
-                'user_id' => 3,
-                'titulo' => "Bens alimentares diversos",
-                'categoria_id' => 1,
-                'texto' => "Bens alimentares diversos, batata doce, mandioca e tomate maduro",
-                'estado_item' => "",
-                'quantidade_item' => "",
-                'localizacao' => "Viana, Zango II",
-                'data_validade' => "",
-                'imagem' => "",
-                'data' => "2021-08-18",
-                'tipo_publicacao' => "doacao",
-                'estado_doacao' => "disponivel"
-            ],
-            [
                 'user_id' => 2,
                 'titulo' => "Medicamentos",
                 'categoria_id' => 3,
@@ -61,7 +47,21 @@ class PublicacaoSeeder extends Seeder
                 'estado_doacao' => "disponivel"
             ],
             [
-                'user_id' => 4,
+                'user_id' => 5,
+                'titulo' => "Bens alimentares diversos",
+                'categoria_id' => 1,
+                'texto' => "Bens alimentares diversos, batata doce, mandioca e tomate maduro",
+                'estado_item' => "",
+                'quantidade_item' => "",
+                'localizacao' => "Viana, Zango II",
+                'data_validade' => "",
+                'imagem' => "",
+                'data' => "2021-08-18",
+                'tipo_publicacao' => "doacao",
+                'estado_doacao' => "disponivel"
+            ],
+            [
+                'user_id' => 6,
                 'titulo' => "Produtos de higiene",
                 'categoria_id' => 2,
                 'texto' => "Papel higiénicos, Sabão, sabonete, lixívia, omo, baldes e banheiras.",

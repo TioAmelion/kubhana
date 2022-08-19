@@ -32,6 +32,12 @@
 									Doações
 								</a>
 							</li>
+							<li>
+								<a href="#" title="">
+									<span><img src="assets/images/icon2.png" alt=""></span>
+									Mapa
+								</a>
+							</li>
 								<ul>
 									<li><a href="#" title="">Lares</a></li>
 									<li><a href="assets/images/company-profile.html" title="">Centros</a></li>
@@ -59,12 +65,11 @@
 							  					<img src="images/resources/ny-img1.png" alt="">
 							  				</div>
 							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
+							  					<h3><a href="#" title="">Elisabeth Adão</a> Pretende fazer uma doação.</h3>
 							  				</div><!--notification-info -->
 						  				</div>
 						  				<div class="view-all-nots">
-						  					<a href="#" title="">View All Notification</a>
+						  					<a href="#" title="">Ver Todas aS Notificações</a>
 						  				</div>
 									</div><!--nott-list end-->
 								</div><!--notification-box end-->

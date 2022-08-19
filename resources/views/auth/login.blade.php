@@ -34,7 +34,7 @@
                                     {{-- <img src="assets/images/cm-logo.png" alt=""> --}}
                                     <p>Doar, Sistema de doaçao online</p>
                                 </div><!--cm-logo end-->    
-                                <img src="assets/images/cm-main-img.png" alt="">           
+                                <img src="assets/images/kubhana-login.png" alt="">           
                             </div><!--cmp-info end-->
                         </div>
                         <div class="col-lg-6">

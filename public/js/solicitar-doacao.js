@@ -11,13 +11,71 @@ $(function () {
 
     /*  quando clica no botão Publique uma Necessidade */
     $("#solicitar-doacao").click(function (e) {
-        $("#btn-salvar").val("criar-publicacao");
-        $("#solicitacao_id").val("");
-        $('#instituicao_id').val(e.currentTarget.getAttribute('publicacaoId'));
-		$("#solicitacaoCrudModal").html("Solicitar a doação para " + e.currentTarget.getAttribute('nomeInst'));
-		$("#nomeProprietario").html("O(a) senhor(a) " + e.currentTarget.getAttribute('nomeInst'));
+        $("#btn-salvar-solicitacao").val("enviar-solicitacao");
+        $('#publicacao_solicitar_id').val(e.currentTarget.getAttribute('publicacaoId'));
+		$("#texto_solicitacao_padrao").val("O(a) senhor(a) " + e.currentTarget.getAttribute('nomeDoador') + " Solicito encarecidamente da sua doação.");
+		$("#nomeProprietario").html("Senhor(a) " + e.currentTarget.getAttribute('nomeDoador') + " Solicito encarecidamente da sua doação.");
         $("#solicitacaoForm").trigger("reset");
         $("#ajax-solicitacao-modal").modal("show");
+    });
+    
+    $(".modal-listar-solicitantes").click(function (e) {
+        publicacao_id = e.currentTarget.getAttribute('publicacao-id');
+        
+        $("#ajax-mostrar-solicitacoes").modal("show");
+        
+        $.get("solicitantes/" + publicacao_id, (res)=> {
+            console.log(res.data);
+
+            $('#add-rem > #dados-tabela').remove();
+            
+            res.data.forEach(element => {
+                $('#add-rem').append(
+                '<tbody id="dados-tabela"><tr>'+
+                    '<th scope="row">1</th>'+
+                    '<td>'+element.name+'</td>'+
+                    '<td>'+element.email+'</td>'+
+                    '<td>'+element.telefone+'</td>'+
+                    '<td><button class="btn btn-primary">Entrar em contacto</button></td>'
+                +'</tr></tbody>'
+                );
+            });
+        })
+    });
+
+    $("#solicitacaoForm").on("submit", function (element) {
+        element.preventDefault();
+
+        $.ajax({
+            url: "/solicitar",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: (response) => {
+                console.log("publicar instituicao: ", response);
+
+                if (response.status == 200 && response.data) {
+                    $("#solicitacaoForm").trigger("reset");
+                    $("#btn-salvar-solicitacao").html("Solicitado...");
+
+                    toastr.success(response.mensagem, "Solicitar!", {
+                        showMethod: "slideDown",
+                        hideMethod: "slideUp",
+                        timeOut: 2000,
+                        onHidden: function () {
+                            window.location.reload();
+                        },
+                    });
+                } else if (response.erro) {
+                    toastr.error(response.mensagem, { timeOut: 5000 });
+                } else {
+                    
+                    validarForm(response);
+                }
+            },
+        });
     });
 
     /*  quando clica no botão Editar */
@@ -67,43 +125,6 @@ $(function () {
     //         },
     //     });
     // });
-
-    $("#publicacaoForm").on("submit", function (element) {
-        element.preventDefault();
-
-        $("#btn-salvar").val();
-
-        $.ajax({
-            url: "/publicar",
-            type: "POST",
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            success: (response) => {
-                console.log("publicar instituicao: ", response);
-
-                if (response.status == 200 && response.data) {
-                    $("#publicacaoForm").trigger("reset");
-                    $("#btn-salvar").html("Publicado");
-
-                    toastr.success(response.mensagem, "Publicar!", {
-                        showMethod: "slideDown",
-                        hideMethod: "slideUp",
-                        timeOut: 2000,
-                        onHidden: function () {
-                            window.location.reload();
-                        },
-                    });
-                } else if (response.erro) {
-                    toastr.error(response.mensagem, { timeOut: 5000 });
-                } else {
-                    
-                    validarForm(response);
-                }
-            },
-        });
-    });
 
     removerClass();
 });

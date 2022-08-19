@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
 </head>
 
-<body class="sign-in" oncontextmenu="return false;" style="background: #000">
+<body class="sign-in" oncontextmenu="return false;">
     <div class="wrapper">
         <div class="sign-in-page">
             <center>
@@ -59,7 +59,7 @@
                                         <input type="text"
                                             class="form-control @error('nome_doador') is-invalid @enderror" id="nome"
                                             name="nome_doador" placeholder="Nome Completo do Doador"
-                                            value="{{old('nome_doador')}}">
+                                            value="{{old('nome_doador')}}" autocomplete="off">
                                         @error('nome_doador')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -183,11 +183,11 @@
 
                                 </div>
 
-                                <div class="form-row">
+                                {{-- <div class="form-row">
                                     <div class="form-group bg-dark col-md-12" style="color: white;padding: 10px 10px">
                                         <span>Credências de Acesso ao Sistema</span>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-row">
                                     <div class="form-group col-lg-6">
                                         <input type="password" class="form-control" id="senha" name="password"
@@ -219,7 +219,7 @@
                                         <input type="text"
                                             class="form-control @error('nome_instituicao') is-invalid @enderror"
                                             id="nome_instituicao" name="nome_instituicao"
-                                            placeholder="Nome da Instituicao"
+                                            placeholder="Nome da Instituicao" autocomplete="off"
                                             value="{{old('nome_instituicao')}}">
                                         @error('nome_instituicao')
                                         <span class="invalid-feedback" role="alert">
@@ -323,12 +323,12 @@
                                         @enderror
                                     </div> &nbsp;
                                 </div>
-                                <br>
+                                {{-- <br>
                                 <div class="form-row">
                                     <div class="form-group bg-dark col-md-12" style="color: white;padding: 10px 10px">
                                         <span>Credências de Acesso ao Sistema</span>
                                     </div>
-                                </div> 
+                                </div>  --}}
                                 <div class="form-row">
                                     <div class="form-group col-lg-6">
                                         <input type="password" class="form-control" id="senha" name="password"

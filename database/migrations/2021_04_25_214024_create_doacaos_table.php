@@ -15,6 +15,7 @@ class CreateDoacaosTable extends Migration
     {
         Schema::create('doacaos', function (Blueprint $table) {
             $table->id();
+
             $table->string('descricao');
             $table->integer('quantidade');
             $table->string('estado'); 
@@ -23,6 +24,7 @@ class CreateDoacaosTable extends Migration
 
             $table->foreignId('doador_id')->constrained('doadors')->onDelete('cascade');
             $table->foreignId('instituicao_id')->constrained('instituicaos')->onDelete('cascade');
+            $table->foreignId('publicacao_id')->constrained('publicacaos')->onDelete('cascade');
             $table->timestamps();
         });
     }

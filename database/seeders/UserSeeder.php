@@ -18,10 +18,10 @@ class UserSeeder extends Seeder
         $users = array(
             ["name" => "Lar Kusola", "email" => "larkusola@gmail.com", "password" => "lllllllll"],
             ["name" => "Lar do Beiral", "email" => "beiral@gmail.com", "password" => "lllllllll"],
-            ["name" => "Augusto Jõao", "email" => "augusto@gmail.com", "password" => "bbbbbbbbb"],
-            ["name" => "Sandra Mateus", "email" => "sandra@gmail.com", "password" => "bbbbbbbbb"],
             ["name" => "Centro de Acolhimento Arnould Jensen", "email" => "arnould@gmail.com", "password" => "lllllllll"],
             ["name" => "Centro Infantil Madre Trindade", "email" => "centroinfantil@gmail.com", "password" => "lllllllll"],
+            ["name" => "Augusto Jõao", "email" => "augusto@gmail.com", "password" => "bbbbbbbbb"],
+            ["name" => "Sandra Mateus", "email" => "sandra@gmail.com", "password" => "bbbbbbbbb"],
             ["name" => "Elizabeth Adão", "email" => "elisabeth@gmail.com", "password" => "bbbbbbbbb"],
             ["name" => "Aurea Cardoso", "email" => "aurea@gmail.com", "password" => "bbbbbbbbb"]
         );
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
         //DADOS DA PESSOA
         $pessoas = array(
             [
-                "user_id" => 3,
+                "user_id" => 5,
                 "pais_id" => 1, 
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
@@ -50,7 +50,7 @@ class UserSeeder extends Seeder
                 "numero_identificacao" => "000049264LA018"
             ],
             [
-                "user_id" => 4,
+                "user_id" => 6,
                 "pais_id" => 1, 
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
@@ -153,7 +153,7 @@ class UserSeeder extends Seeder
                 "nif" => "05825"
             ],
             [
-                "user_id" => 5, 
+                "user_id" => 3, 
                 "pais_id" => 1, 
                 "provincia_id" => 1, 
                 "municipio_id" => 1, 
@@ -164,7 +164,7 @@ class UserSeeder extends Seeder
                 "nif" => "05825"
             ],
             [
-                "user_id" => 6, 
+                "user_id" => 4, 
                 "pais_id" => 1, 
                 "provincia_id" => 2, 
                 "municipio_id" => 2, 

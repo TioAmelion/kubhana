@@ -14,7 +14,6 @@ class solicitacao extends Model
     protected $fillable = [
         'user_id',
         'publicacao_id',
-        'texto',
-        'aceitar'
+        'texto'
     ];
 }

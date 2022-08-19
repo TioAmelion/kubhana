@@ -13,6 +13,7 @@ $(function() {
 		$("#btn-salvar-doar").html("Publicar");
 		$("#publicacao_id_doar").val("");
         $('#instituicao_id').val(e.currentTarget.getAttribute('id'));
+        $('#publicacao_doacao_id').val(e.currentTarget.getAttribute('publicacaoDoacaoId'));
 		$("#publicacaoDoarForm").trigger("reset");
 		$("#publicacaoCrudModalll").html("Ajude com a sua doação - " + e.currentTarget.getAttribute('nomeInst'));
 		$("#ajax-publicacao-doar-modal").modal("show");
@@ -53,6 +54,33 @@ $(function() {
             }
         });
     });
+
+    //quando clica em doações no feed de noticias na publicacao
+    $(".modal-listar-doadores").click(function (e) {
+
+        publicacao_id = e.currentTarget.getAttribute('publicacaoDocId');
+                
+        $.get("doacoes/" + publicacao_id, (res)=> {
+            console.log(res.data);
+
+            $('#add-rem-doacao > #dados-tabela-doacao').remove();
+            
+            res.data.forEach(element => {
+                $('#add-rem-doacao').append(
+                '<tbody id="dados-tabela-doacao"><tr>'+
+                    '<th scope="row">1</th>'+
+                    '<td>'+element.name+'</td>'+
+                    '<td>'+element.email+'</td>'+
+                    '<td>'+element.telefone+'</td>'+
+                    '<td><button class="btn btn-primary">Entrar em contacto</button></td>'
+                +'</tr></tbody>'
+                );
+            });
+        })
+
+		$("#ajax-mostrar-doacoes").modal("show");
+	});
+
     
 });
 

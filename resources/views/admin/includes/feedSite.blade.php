@@ -19,7 +19,7 @@
 												@if($idPessoas != null)
 													<li>
 														<a class="post-jbb active" href="javascript:void(0)" title="" id="criar-nova-publicacao-doador">
-															Doe um item
+															Doar
 														</a>
 													</li>
 												@else
@@ -64,8 +64,9 @@
 													<li><img src="assets/images/placeholder.svg" style="width: 16px;"><span style="float: none">{{$dados->localizacao}}</span></li>
 												</ul>
 												<ul class="bk-links">
-													{{-- <li><a href="#" title=""><i class="la la-bookmark"></i></a></li> --}}
-													<li><a href="#" class="chat-sms"><i class="la la-envelope"></i></a></li>
+													@if(Auth::check() && $dados->user_id != Auth::user()->id)
+														<li><a href="#" class="chat-sms"><i class="la la-envelope"></i></a></li>
+													@endif
 												</ul>
 											</div>
 											<div class="job_descp">
@@ -80,11 +81,11 @@
 												<p>{{$dados->texto}}</p>
 												@if($dados->imagem) <img class="img-publicacao" src="images/{{$dados->imagem}}" style="object-fit: fill;height: 400px;width: 500px;" alt=""> @endif
 											</div>
-											
-											<div class="job-status-bar">
-												<div class="reaction-geral">
-													<div class="like-com">
-														@if (Auth::check())
+
+											@if (Auth::check())
+												<div class="job-status-bar">
+													<div class="reaction-geral">
+														<div class="like-com">
 															<div class="reaction-container">
 																{{-- Select para verificar se o usuario logado votou na publicação --}}
 																@php
@@ -127,46 +128,41 @@
 																	</div>
 																</div>
 															</div>
-														@endif
+														</div>
 													</div>
-												</div>
+													@if($dados->tipo_publicacao == "ajuda")
+														<div class="ajudar-feed" style="">
+															<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+															<a href="#" class="criar-nova-publicacao-doar" id="{{$dados->user_id}}" publicacaoDoacaoId="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Doar</a>
+														</div>
+														<div class="ajudar-feed" style="">
+															<img class="gostar" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+															<a href="#" class="modal-listar-doadores" publicacaoDocId="{{$dados->id}}" style="font-weight: 600; font-size: 18px; color:#000"> Doações {{$dados->doacoes}}</a>
+														</div>
 
-												@if($dados->tipo_publicacao == "ajuda")
+													@endif
 
-													<div class="ajudar-feed" style="">
-														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="criar-nova-publicacao-doar" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Doar</a>
-													</div>
-													<div class="ajudar-feed" style="">
-														<img class="gostar" src="assets/images/ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="" style="font-weight: 600; font-size: 18px; color:#000"> Doações</a>
-													</div>
-
-												@endif
-
-												@if($dados->tipo_publicacao == "doacao")
-													@if (Auth::check())
+													@if($dados->tipo_publicacao == "doacao")
 														@if($dados->user_id != Auth::user()->id)
 															<div class="ajudar-feed" style="">
 																<img class="gostar" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-																<a href="#" id="solicitar-doacao" publicacaoId="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
+																<a href="#" id="solicitar-doacao" publicacaoId="{{$dados->id}}" nomeDoador= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
 															</div>
 														@else
 															<div class="ajudar-feed" style="">
 																<img class="gostar" src="assets/images//ajudar-logo.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-																<a href="#" publicacaoId="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
+																<a href="#" style="font-weight: 600; font-size: 18px; color:#000"> Solicitar Doação</a>
 															</div>
 														@endif
+
+														<div class="ajudar-feed" style="">
+															<img class="gostar" src="assets/images/doadores.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
+															<a href="#" class="modal-listar-solicitantes" publicacao-id="{{$dados->id}}" style="font-weight: 600; font-size: 18px; color:#000"> Solicitações {{$dados->solicitacoes}} </a>
+														</div>
+
 													@endif
-
-													<div class="ajudar-feed" style="">
-														<img class="gostar" publicacao-id="{{$dados->id}}" src="assets/images/doadores.png" alt="" style="width: 20px; float: none; position: relative; top:3px">
-														<a href="#" class="criar-nova-publicacao-doar" style="font-weight: 600; font-size: 18px; color:#000"> Solicitações {{$dados->solicitacoes}} </a>
-													</div>
-
-												@endif
-												
-											</div>
+												</div>
+											@endif
 										</div><!--post-bar end-->
 									@endforeach
 
@@ -209,13 +205,12 @@
 	</main>
 
 	@auth
-
 		<!-- MODAL SOLICITAR DOAÇÃO-->
 		<div class="modal fade" id="ajax-solicitacao-modal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="solicitacaoCrudModal"></h5>
+						<h5 class="modal-title">Solicitar Doação</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 						</button>
@@ -223,43 +218,97 @@
 					<div class="modal-body">
 						<form method="POST" id="solicitacaoForm" name="solicitacaoForm" enctype="multipart/form-data">
 							@csrf
-							<input type="hidden" name="solicitacao_id" id="solicitacao_id">
+							<input type="hidden" name="publicacao_solicitar_id" id="publicacao_solicitar_id">
+							<input type="hidden" name="texto_solicitacao_padrao" id="texto_solicitacao_padrao">
 							<div class="form-group">
-								
 								<h2 for="exampleFormControlInput1">Enviaremos este texto padrão.</h2>
 								<br> <br>
-								<span id="nomeProprietario"></span> 
-								<span>Solicito encarecidamente da sua doação.</span>
+								<span id="nomeProprietario" style="color: red"></span> 
 								<br> <br>
-								<h2>Se deseja alterar o texto, por favor preencha o campo.</h2>
+								<h2>Caso desejar alterar o texto, por favor preencha o campo.</h2>
 							</div>
 
 							<div class="form-group">
-								<input type="text" class="form-control" id="solicitacao">
+								<input type="text" class="form-control" name="texto_solicitacao" id="texto_solicitacao" placeholder="Digite o texto aqui" autocomplete="off">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+								<button type="submit" class="btn btn-primary" id="btn-salvar-solicitacao" value="criar">Enviar Solicitação</button>
 							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-						<button type="submit" class="btn btn-primary" id="btn-salvar" value="criar">Enviar Solicitação</button>
-					</div>
+					
 				</div>
 			</div>
 		</div>
 
-		<!-- MODAL MENSAGEM-->
+		<!-- MODAL MOSTRAR SOLICITAÇÕES-->
+		<div class="modal fade" id="ajax-mostrar-solicitacoes" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="publicacaoCrudModal" style="font-size: 1.5rem; font-weight: 500;">Solicitações de Instituições</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<table class="table table-striped" id="add-rem">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nome</th>
+								<th scope="col">E-mail</th>
+								<th scope="col">Telefone</th>
+								<th scope="col">Acções</th>
+							</tr>
+						</thead>
+						<tbody id="dados-tabela">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- MODAL MOSTRAR DOAÇÕES-->
+		<div class="modal fade" id="ajax-mostrar-doacoes" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="publicacaoCrudModal" style="font-size: 1.5rem; font-weight: 500;">Doações a Receber</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<table class="table table-striped" id="add-rem-doacao">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nome</th>
+								<th scope="col">E-mail</th>
+								<th scope="col">Telefone</th>
+								<th scope="col">Acções</th>
+							</tr>
+						</thead>
+						<tbody id="dados-tabela-doacao">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		  <!-- MODAL MENSAGEM-->
 		<div class="modal fade" id="ajax-mensagem-modal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="publicacaoCrudModal">Nome da pessoa</h5>
+						<h5 class="modal-title" id="publicacaoCrudModal">Enviar Mnesagem</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="chat-hist mCustomScrollbar" data-mcs-theme="dark">
-							<div class="chat-msg">
+							{{-- <div class="chat-msg">
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
 								<span>Sat, Aug 23, 1:10 PM</span>
 							</div>
@@ -273,7 +322,7 @@
 							<div class="chat-msg">
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
 								<span>Sat, Aug 23, 1:10 PM</span>
-							</div>
+							</div> --}}
 						</div><!--chat-list end-->
 						<div class="typing-msg">
 							<form>
@@ -310,7 +359,7 @@
 								<span id="tituloError" style="color: red"></span>
 							</div>
 							<div class="form-group">
-								<select class="form-control" id="categoria_id" name="categoria_id">
+								<select class="form-control" id="necessidade" name="necessidade">
 									<option selected disabled>Selecione uma Necessidade</option>
 									@foreach($categorias as $c)
 										<option class="alimentos" value="{{$c->id}}">{{$c->nome_categoria}}</option>
@@ -400,13 +449,13 @@
 								<textarea class="form-control text-dark" name="descricao_doacao" id="descricao_doacao" placeholder="Descreve detalhada do produto que quer doar"></textarea>
 								<span id="descricao_doacaoError" style="color: red"></span>
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<select class="form-control" id="estado_doacao" name="estado_doacao">
 									<option selected disabled>Estado da Doação</option>
 									<option class="alimentos" value="disponivel">Disponível</option>
 									<option class="alimentos" value="indisponivel">Indisponível</option>
 								</select>
-							</div>
+							</div> --}}
 							<div class="form-group">
 								<input id="image" type="file" name="image" accept="image/*" onchange="readURLL(this);">
 								<input type="hidden" name="hidden_image" id="hidden_image">
@@ -439,6 +488,7 @@
 							@csrf
 							<input type="hidden" name="publicacao_id_doar" id="publicacao_id_doar">
 							<input type="hidden" id="instituicao_id" name="instituicao_id" value="">
+							<input type="hidden" id="publicacao_doacao_id" name="publicacao_doacao_id" value="">
 							<div class="form-group estado_pergunta">
 								<span id="estadoProduto" class="estado_p text-muted" id="estadoProduto">Em que estado se encontra o produto?</span> <br>
 								<br>
