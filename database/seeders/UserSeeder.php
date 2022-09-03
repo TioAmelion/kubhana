@@ -16,14 +16,14 @@ class UserSeeder extends Seeder
     {
         //Dados DO USER
         $users = array(
-            ["name" => "Lar Kusola", "email" => "larkusola@gmail.com", "password" => "lllllllll"],
-            ["name" => "Lar do Beiral", "email" => "beiral@gmail.com", "password" => "lllllllll"],
-            ["name" => "Centro de Acolhimento Arnould Jensen", "email" => "arnould@gmail.com", "password" => "lllllllll"],
-            ["name" => "Centro Infantil Madre Trindade", "email" => "centroinfantil@gmail.com", "password" => "lllllllll"],
-            ["name" => "Augusto Jõao", "email" => "augusto@gmail.com", "password" => "bbbbbbbbb"],
-            ["name" => "Sandra Mateus", "email" => "sandra@gmail.com", "password" => "bbbbbbbbb"],
-            ["name" => "Elizabeth Adão", "email" => "elisabeth@gmail.com", "password" => "bbbbbbbbb"],
-            ["name" => "Aurea Cardoso", "email" => "aurea@gmail.com", "password" => "bbbbbbbbb"]
+            ["name" => "Lar Kusola", "email" => "larkusola@gmail.com", "password" => "lllllllll", "tipo_perfil" => "instituicao"],
+            ["name" => "Lar do Beiral", "email" => "beiral@gmail.com", "password" => "lllllllll", "tipo_perfil" => "instituicao"],
+            ["name" => "Centro de Acolhimento Arnould Jensen", "email" => "arnould@gmail.com", "password" => "lllllllll", "tipo_perfil" => "instituicao"],
+            ["name" => "Centro Infantil Madre Trindade", "email" => "centroinfantil@gmail.com", "password" => "lllllllll", "tipo_perfil" => "instituicao"],
+            ["name" => "Augusto Jõao", "email" => "augusto@gmail.com", "password" => "bbbbbbbbb", "tipo_perfil" => "doador"],
+            ["name" => "Sandra Mateus", "email" => "sandra@gmail.com", "password" => "bbbbbbbbb", "tipo_perfil" => "doador"],
+            ["name" => "Elizabeth Adão", "email" => "elisabeth@gmail.com", "password" => "bbbbbbbbb", "tipo_perfil" => "doador"],
+            ["name" => "Aurea Cardoso", "email" => "aurea@gmail.com", "password" => "bbbbbbbbb", "tipo_perfil" => "doador"]
         );
 
         //INSERIR USERS
@@ -33,6 +33,7 @@ class UserSeeder extends Seeder
                 'name' => $user["name"],
                 'email' => $user["email"],
                 'password' => Hash::make($user["password"]),
+                'tipo_perfil' => $user["tipo_perfil"],
             ]);
         }
 

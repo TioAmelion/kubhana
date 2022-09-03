@@ -7,20 +7,25 @@ use Validator;
 use App\Models\doacao;
 use App\Models\pessoa;
 use App\Models\doador;
+use App\Models\User;
 use App\Models\publicacao;
+use App\Models\notificacao;
+use App\Models\instituicao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use App\Models\Categoria;
 use Exception;
 use Nexmo\Laravel\Facade\Nexmo;
 use File;
-use DB;
-
+use Illuminate\Support\Facades\DB;
 class DoacaoController extends Controller
 {
 
     public function index()
     {
+        //listar todoas as doacoes que a instituicao recebeu
+        // $doacoesInst = $dados->doacoesInstituicoes();
+
         $idPessoas = pessoa::all();
 
         if(Auth::check()){
@@ -29,24 +34,50 @@ class DoacaoController extends Controller
 
         $categorias = Categoria::all();
         $dados = new doacao();
+
         $doacoes = $dados->doacoes();
+
+        $publicacoes = new publicacao;
+        $pub = $publicacoes->showProfile();
 
         return view('admin.includes.doacao', [
             'categorias' => $categorias, 
             'doacoes' => $doacoes,
-            'idPessoas' => $idPessoas
+            'idPessoas' => $idPessoas,
+            'publicacoes' => $pub
         ]);
     }
 
+    //listar doações na modal da página home
     public function listarDoacoes($id) {
-        $dados = DB::select("SELECT * FROM doacaos doa, publicacaos pub, doadors d, pessoas p, users u
-        WHERE doa.publicacao_id = pub.id AND doa.publicacao_id = $id
-        AND doa.doador_id = d.id 
-        AND d.pessoa_id = p.id
-        AND p.user_id = u.id;");
+        $dados = DB::select("
+            SELECT * FROM doacaos doa, doadors d, pessoas p, users u
+            WHERE doa.publicacao_id = $id
+            AND d.id = doa.doador_id
+            AND d.pessoa_id = p.id
+            AND u.id = p.user_id
+        ");
         
         return response()->json(['data' => $dados, 'status' => 200]);
+    }
+
+    //listar doações na página listar doações
+    public function lstDoacoes($id) {
+
+        $dados = DB::select("
+            SELECT * FROM doacaos doa, doadors d, pessoas p, users u
+            WHERE doa.publicacao_id = $id
+            AND d.id = doa.doador_id
+            AND d.pessoa_id = p.id
+            AND u.id = p.user_id
+        ");
         
+        return view('admin.includes.listar_doacao', ['doacoesInst' => $dados]);
+    }
+
+    public function mapa(Request $request)
+    {
+        return view('admin.includes.mapa');
     }
 
     public function create()
@@ -58,6 +89,8 @@ class DoacaoController extends Controller
     {
         try {
 
+            DB::beginTransaction();
+            
             $formDoar = array(
                 'descricaoDoar' => 'required',
                 'quantidade' => 'required|integer',
@@ -76,11 +109,13 @@ class DoacaoController extends Controller
             $idPessoa = pessoa::where('user_id', Auth::user()->id)->get();
             $idDoador = doador::where('pessoa_id', $idPessoa[0]['id'])->get();
 
+            $idInstituicao = instituicao::where('user_id', $request->instituicao_id)->get();
+
             $doacao_id = $request->publicacao_id_doar;
 
             $dados = [
                 'doador_id' => $idDoador[0]['id'], 
-                'instituicao_id' => $request->instituicao_id,
+                'instituicao_id' => $idInstituicao[0]['id'],
                 'publicacao_id' => $request->publicacao_doacao_id,
                 'descricao' => $request->descricaoDoar,
                 'quantidade' => $request->quantidade,
@@ -88,8 +123,8 @@ class DoacaoController extends Controller
                 'data' => date('Y-m-d')
             ];
 
-            if($files = $request->file('image')) {
-
+            if($files = $request->file('image'))
+            {
                 //apagar ficheiro antigo
                 \File::delete('public/images/'.$request->hidden_image);
 
@@ -101,11 +136,30 @@ class DoacaoController extends Controller
         
             $doacao = doacao::updateOrCreate(['id' => $doacao_id], $dados);
 
+            $notificacao_id = $request->notificacao_id;
+
+            $notificacao = [
+                'user_id' => Auth::user()->id ,
+                'publicacao_id' => $request->publicacao_doacao_id, 
+                'destino' => $request->instituicao_id, 
+                'texto' => "pretende fazer uma doação."
+            ];
+
+            $dadosNot = notificacao::updateOrCreate(['id' => $notificacao_id], $notificacao);
+
+            if(!$doacao || !$dadosNot)
+            {
+                DB::rollback();
+            } else {
+                DB::commit();
+            }
+
             return response()->json([ 'mensagem' => 'Doação realizada com sucesso', 'data' => $doacao, 'status' => 200 ]);
 
-        }catch(\Exception $e){
-            return response()->json(['mensagem' => 'Ocorreu um erro ao publicar', 'erro' => $e->getMessage()]);
+        } catch(\Exception $e) {
+            return response()->json(['mensagem' => 'Ocorreu um erro ao Solicitar', 'erro' => $e->getMessage()]);
         }
+        
         // $basic  = new \Nexmo\Client\Credentials\Basic('569ecd86', 'EAe66YBv7ZwDo0dy');
         // $client = new \Nexmo\Client($basic);
  
@@ -136,46 +190,21 @@ class DoacaoController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

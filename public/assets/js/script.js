@@ -209,10 +209,6 @@ $(window).on("load", function() {
         return false;
     });
 
-    $(".chat-sms").on("click", function(){
-        $("#ajax-mensagem-modal").modal('show');
-        return false;
-    });
     $(".close-chat").on("click", function(){
         $(".conversation-box").removeClass("active");
         return false;
@@ -237,9 +233,9 @@ $(window).on("load", function() {
 
     //  ============ Notifications Open =============
 
-    $(".not-box-open").on("click", function(){
-        $(this).next(".notification-box").toggleClass("active");
-    });
+    // $(".not-box-open").on("click", function(){
+    //     $(this).next(".notification-box").toggleClass("active");
+    // });
 
     // ============= User Account Setting Open ===========
 

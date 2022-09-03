@@ -4839,7 +4839,7 @@ a:hover {
 	float: left;
 	width: 100%;
 	position: relative;
-	margin-bottom: 15.5px;
+	margin-bottom: 33.5px;
 }
 .messg-usr-img {
 	position: absolute;
@@ -4905,7 +4905,7 @@ a:hover {
 	float: right;
 	width: 60%;
 	background-color: #e44d3a;
-	font-size: 14px;
+	font-size: 20px;
 	line-height: 22px;
 	padding: 10px 35px 10px 35px;
 	color: #fff;
@@ -5473,4 +5473,29 @@ a:hover {
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
+}
+
+svg path{
+    stroke: #eee;
+    stroke-width: .25;
+}
+svg path:hover{
+    fill: #006284;
+    transition: 0.6s;
+    cursor: pointer;
+}
+
+table thead tr th {
+	font-weight: 600;
+	border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table td, .table th {
+	/* font-weight: 600; */
+	border-top: 1px solid #dee2e6;
 }

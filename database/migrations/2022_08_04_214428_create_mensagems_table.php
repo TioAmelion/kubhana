@@ -10,9 +10,9 @@ class CreateMensagemsTable extends Migration
     {
         Schema::create('mensagems', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('de')->constrained('users')->onDelete('cascade');
-            $table->foreignId('para')->constrained('users')->onDelete('cascade');
-            $table->string('texto');
+            $table->foreignId('origem')->constrained('users')->onDelete('cascade');
+            $table->foreignId('destino')->constrained('users')->onDelete('cascade');
+            $table->string('texto')->nullable();
             $table->string('imagem')->nullable();
             $table->timestamps();
         });

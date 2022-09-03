@@ -17,7 +17,7 @@
                                     <h3>{{ $dado->nome_instituicao }}</h3>
                                     <h4>{{ $dado->nome_provincia}} - {{ $dado->nome_municipio}}</h4>
                                     <ul>
-                                        <li><a href="#" title="" class="follow">Seguir</a></li>
+                                        {{-- <li><a href="#" title="" class="follow">Seguir</a></li> --}}
                                         <li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
                                     </ul>
                                 </div>

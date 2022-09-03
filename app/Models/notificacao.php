@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class mensagem extends Model
+class notificacao extends Model
 {
     use HasFactory;
 
     protected $guardad = ['id'];
 
-    protected $fillable = [
-        'origem',
-        'destino',
-        'texto',
-        'imagem'
-    ];
+    protected $fillable = ['user_id' ,'publicacao_id', 'destino', 'texto', 'lida']; 
 }

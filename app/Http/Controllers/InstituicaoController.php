@@ -49,6 +49,7 @@ class InstituicaoController extends Controller
                 'name' => $request->nome_instituicao,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'tipo_perfil' => "instituicao"
             ]));
 
             $instituicao = instituicao::create([

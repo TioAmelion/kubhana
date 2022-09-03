@@ -6,15 +6,15 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-
-    var solicitacao_id; 
-
+    
     /*  quando clica no botão Publique uma Necessidade */
-    $("#solicitar-doacao").click(function (e) {
+    $(".solicitar-doacao").click(function (e) {
         $("#btn-salvar-solicitacao").val("enviar-solicitacao");
         $('#publicacao_solicitar_id').val(e.currentTarget.getAttribute('publicacaoId'));
+        $('#publicacao_user_id').val(e.currentTarget.getAttribute('user-id'));
+
 		$("#texto_solicitacao_padrao").val("O(a) senhor(a) " + e.currentTarget.getAttribute('nomeDoador') + " Solicito encarecidamente da sua doação.");
-		$("#nomeProprietario").html("Senhor(a) " + e.currentTarget.getAttribute('nomeDoador') + " Solicito encarecidamente da sua doação.");
+		$("#nomeProprietario").html("Senhor(a) " + e.currentTarget.getAttribute('nomeDoador') + " Solicita encarecidamente da sua doação.");
         $("#solicitacaoForm").trigger("reset");
         $("#ajax-solicitacao-modal").modal("show");
     });
@@ -29,17 +29,23 @@ $(function () {
 
             $('#add-rem > #dados-tabela').remove();
             
-            res.data.forEach(element => {
-                $('#add-rem').append(
-                '<tbody id="dados-tabela"><tr>'+
-                    '<th scope="row">1</th>'+
-                    '<td>'+element.name+'</td>'+
-                    '<td>'+element.email+'</td>'+
-                    '<td>'+element.telefone+'</td>'+
-                    '<td><button class="btn btn-primary">Entrar em contacto</button></td>'
-                +'</tr></tbody>'
-                );
-            });
+            if (res.data.length) 
+            {
+                res.data.forEach(element => {
+                    $('#add-rem').append(
+                    '<tbody id="dados-tabela"><tr>'+
+                        '<th scope="row">1</th>'+
+                        '<td>'+element.name+'</td>'+
+                        '<td>'+element.telefone+'</td>'+
+                        '<td>'+element.texto+'</td>'+
+                        '<td><button class="btn btn-primary">Entrar em contacto</button></td>'
+                    +'</tr></tbody>'
+                    );
+                });
+
+            } else {
+                // $('#add-rem').append('<div>Sem nenhum registro.</div>');
+            }
         })
     });
 
@@ -54,8 +60,7 @@ $(function () {
             processData: false,
             dataType: "json",
             success: (response) => {
-                console.log("publicar instituicao: ", response);
-
+                
                 if (response.status == 200 && response.data) {
                     $("#solicitacaoForm").trigger("reset");
                     $("#btn-salvar-solicitacao").html("Solicitado...");

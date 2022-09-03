@@ -19,8 +19,9 @@ class CreateDoacaosTable extends Migration
             $table->string('descricao');
             $table->integer('quantidade');
             $table->string('estado'); 
-            $table->date('data');
+            $table->date('data')->nullable();
             $table->string('imagem')->nullable();
+            $table->enum('confirmado', ['sim', 'nao'])->default('nao');
 
             $table->foreignId('doador_id')->constrained('doadors')->onDelete('cascade');
             $table->foreignId('instituicao_id')->constrained('instituicaos')->onDelete('cascade');

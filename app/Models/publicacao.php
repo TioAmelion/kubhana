@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Categoria;
 use App\Models\Classificacao_publicacao;
 use Illuminate\Support\Facades\Auth;
-use DB;
-
+use Illuminate\Support\Facades\DB;
 class publicacao extends Model
 {
     use HasFactory;
@@ -62,13 +61,23 @@ class publicacao extends Model
         $query = DB::table("publicacaos")
                     ->select("publicacaos.*", 
 
-                        DB::raw("(SELECT COUNT(classificacao_publicacaos.classificacao)
-                        FROM classificacao_publicacaos 
-                        WHERE classificacao_publicacaos.publicacao_id = publicacaos.id
-                        GROUP BY classificacao_publicacaos.publicacao_id) as votos"),
+                    DB::raw("(SELECT COUNT(classificacao_publicacaos.classificacao)
+                    FROM classificacao_publicacaos 
+                    WHERE classificacao_publicacaos.publicacao_id = publicacaos.id
+                    GROUP BY classificacao_publicacaos.publicacao_id) as votos"),
 
-                        DB::raw("(SELECT users.name FROM users WHERE users.id = publicacaos.user_id
-                        GROUP BY users.name) as name"))
+                    DB::raw("(SELECT COUNT(s.id)
+                    FROM solicitacaos s
+                    WHERE s.publicacao_id = publicacaos.id
+                    GROUP BY s.publicacao_id) as solicitacoes"),
+
+                    DB::raw("(SELECT COUNT(d.id)
+                    FROM doacaos d
+                    WHERE d.publicacao_id = publicacaos.id
+                    GROUP BY d.publicacao_id) as doacoes"),
+
+                    DB::raw("(SELECT users.name FROM users WHERE users.id = publicacaos.user_id
+                    GROUP BY users.name) as name"))
                         ->where('user_id', Auth::user()->id)
                         ->orderByDesc('id')
                         ->get();

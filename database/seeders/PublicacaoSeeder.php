@@ -19,17 +19,17 @@ class PublicacaoSeeder extends Seeder
         
         $publicacoes = array(
             [
-                'user_id' => 1,
-                'titulo' => "Produtos Alimenticios",
-                'categoria_id' => 1,
-                'texto' => "Precisamos de alimentos, tudo que tinhamos em nosso estoque já terminou.",
+                'user_id' => 6,
+                'titulo' => "Produtos de higiene",
+                'categoria_id' => 2,
+                'texto' => "Papel higiénicos, Sabão, sabonete, lixívia, omo, baldes e banheiras.",
                 'estado_item' => "",
                 'quantidade_item' => "",
-                'localizacao' => "Malanje",
+                'localizacao' => "Luanda, Kilamba Edifício X14",
                 'data_validade' => "",
                 'imagem' => "",
                 'data' => "2021-08-18",
-                'tipo_publicacao' => "ajuda",
+                'tipo_publicacao' => "doacao",
                 'estado_doacao' => "disponivel"
             ],
             [
@@ -61,17 +61,17 @@ class PublicacaoSeeder extends Seeder
                 'estado_doacao' => "disponivel"
             ],
             [
-                'user_id' => 6,
-                'titulo' => "Produtos de higiene",
-                'categoria_id' => 2,
-                'texto' => "Papel higiénicos, Sabão, sabonete, lixívia, omo, baldes e banheiras.",
+                'user_id' => 1,
+                'titulo' => "Produtos Alimenticios",
+                'categoria_id' => 1,
+                'texto' => "Precisamos de alimentos, tudo que tinhamos em nosso estoque já terminou.",
                 'estado_item' => "",
                 'quantidade_item' => "",
-                'localizacao' => "Luanda, Kilamba Edifício X14",
+                'localizacao' => "Malanje",
                 'data_validade' => "",
                 'imagem' => "",
                 'data' => "2021-08-18",
-                'tipo_publicacao' => "doacao",
+                'tipo_publicacao' => "ajuda",
                 'estado_doacao' => "disponivel"
             ]
         );

@@ -13,7 +13,7 @@
 				<h3>{{$ajuda->nome_instituicao}}</h3>
 				<p>Doe alguma coisa para ajudar essa instituição</p>
 			</div>
-			<div class="view-more">
+			<div class="view-more" style="padding: 10px">
 				<a href="#" title="">Ver mais</a>
 			</div>
 			@endforeach

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use DB;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class doacao extends Model
 {
     use HasFactory;
@@ -47,5 +47,23 @@ class doacao extends Model
                         ->orderByDesc('id')
                         ->get();
         return $query;
+    }
+
+    public function doacoesInstituicoes()
+    {
+
+        if(Auth::user()->tipo_perfil == "instituicao")
+        {
+            $dados = instituicao::where('user_id', Auth::user()->id)->get();
+            $idInst = $dados[0]['id'];
+
+            $doacoesInst = DB::select("SELECT * FROM doacaos doa, doadors d, pessoas p, users u
+                WHERE d.id = doa.doador_id
+                AND d.pessoa_id = p.id
+                AND u.id = p.user_id
+                AND doa.instituicao_id = $idInst");
+
+            return $doacoesInst;
+        }
     }
 }

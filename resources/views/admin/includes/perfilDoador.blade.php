@@ -65,7 +65,7 @@
                         <div class="col-lg-6">
                             <div class="main-ws-sec">
                                 <div class="user-tab-sec">
-                                    <h3 style="color: white">{{ $nome }}</h3>
+                                    <h3>{{ $nome }}</h3>
                                     <div class="tab-feed st2">
                                         <ul>
                                             <li data-tab="feed-dd" class="active">

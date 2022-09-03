@@ -15,26 +15,26 @@
 				<ul>
 					<li>
 						<a href="/" title="">
-							<span><img src="assets/images/icon1.png" alt=""></span>
+							<span><img src="{{asset('assets/images/icon1.png')}}" alt=""></span>
 							Início
 						</a>
 					</li>
 					<li>
 						<a href="/insitituicoes" title="">
-							<span><img src="assets/images/icon2.png" alt=""></span>
+							<span><img src="{{asset('assets/images/icon2.png')}}" alt=""></span>
 							Instituições
 						</a>
 						 
 					</li>
 							<li>
 								<a href="/doacao" title="">
-									<span><img src="assets/images/icon4.png" alt=""></span>
+									<span><img src="{{asset('assets/images/icon4.png')}}" alt=""></span>
 									Doações
 								</a>
 							</li>
 							<li>
-								<a href="#" title="">
-									<span><img src="assets/images/icon2.png" alt=""></span>
+								<a href="/mapa" title="">
+									<span><img src="{{asset('assets/images/icon2.png')}}" alt=""></span>
 									Mapa
 								</a>
 							</li>
@@ -45,13 +45,20 @@
 							</li>
 							<li>
 								<a href="/doadores" title="">
-									<span><img src="assets/images/icon3.png" alt=""></span>
+									<span><img src="{{asset('assets/images/icon3.png')}}" alt=""></span>
 									Doadores
 								</a>
 							</li>
+							{{-- <li>
+								<a href="/mensagens" title="">
+									<span><img src="assets/images/icon6.png" alt=""></span>
+									Mensagens
+								</a>
+							</li> --}}
 							<li>
 								<a href="#" title="" class="not-box-open">
 									<span><img src="assets/images/icon7.png" alt=""></span>
+									<span class="qtdNotificacao" style="position: absolute; left: 57px;top: 12px;"></span>
 									Notificações
 								</a>
 								<div class="notification-box">
@@ -59,18 +66,9 @@
 										<h4>Definções</h4>
 										<a href="#" title="">Limpar tudo</a>
 									</div>
-									<div class="nott-list">
-										<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img1.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Elisabeth Adão</a> Pretende fazer uma doação.</h3>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="view-all-nots">
-						  					<a href="#" title="">Ver Todas aS Notificações</a>
-						  				</div>
+									<div class="nott-list add-not">
+										<div class="rem-not"></div>
+										<div class="all-not"></div>
 									</div><!--nott-list end-->
 								</div><!--notification-box end-->
 							</li>

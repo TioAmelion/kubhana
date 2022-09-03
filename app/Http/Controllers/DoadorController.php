@@ -80,6 +80,7 @@ class DoadorController extends Controller
                     'name' => $request->nome_doador,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
+                    'tipo_perfil' => "doador"
                 ]));
         
                 $pessoa = pessoa::create([ 
@@ -135,6 +136,7 @@ class DoadorController extends Controller
                     'name' => $request->nome_doador,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
+                    'tipo_perfil' => "doador"
                 ]));
         
                 $pessoa = pessoa::create([ 

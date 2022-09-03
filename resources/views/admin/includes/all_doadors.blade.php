@@ -38,7 +38,7 @@
                                         <span>0</span>
                                     </li>
                                     <li>
-                                        <a href="#" title="">View Profile</a>
+                                        <a href="#" title="">Ver Perfil</a>
                                     </li>
                                 </ul>
                             </div>
