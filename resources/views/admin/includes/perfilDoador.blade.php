@@ -29,8 +29,13 @@
                                                 <b>{{ $totalPubli }}</b>
                                             </li>
                                             <li>
+                                               @if (Auth::user()->tipo_perfil == "doador")
                                                 <span>Doações</span>
                                                 <b>{{ $totalDoacoes }}</b>
+                                               @else
+                                                <span>Ajudas</span>
+                                                <b>{{ $totalDoacoes }}</b>
+                                               @endif
                                             </li>
                                         </ul>
                                     </div><!--user_pro_status end-->
@@ -65,7 +70,7 @@
                         <div class="col-lg-6">
                             <div class="main-ws-sec">
                                 <div class="user-tab-sec">
-                                    <h3>{{ $nome }}</h3>
+                                    <h3>{{ Auth::user()->name }}</h3>
                                     <div class="tab-feed st2">
                                         <ul>
                                             <li data-tab="feed-dd" class="active">
@@ -85,78 +90,9 @@
                                 </div><!--user-tab-sec end-->
                                 <div class="product-feed-tab current" id="feed-dd">
                                     <div class="posts-section">
-                                        @foreach($pub as $dados)
-										<div class="post-bar">
-											<div class="post_topbar">
-												<div class="usy-dt">
-													<img src="assets/images/resources/us-pic.png" alt="">
-													<div class="usy-name">
-														<h3>{{$dados->name}}</h3>
-														<span><img src="assets/images/clock.png" alt="">{{$dados->data}}</span>
-													</div>
-												</div>
-												<div class="ed-opts">
-														<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-														<ul class="ed-options">
-															<li><a href="#" title="">Editar</a></li>
-															<li><a href="#" title="">Denunciar</a></li>
-														</ul>
-												</div>
-											</div> 
-											<div class="epi-sec">
-												<ul class="descp">
-													<li><img src="images/icon8.png" alt=""><span>{{--$dados->classificacao--}}</span></li>
-												</ul>
-												<ul class="bk-links">
-												</ul>
-											</div>
-											<div class="job_descp">
-												<h3>{{$dados->titulo}}</h3>
-												<p>{{$dados->texto}}</p>
-												@if($dados->imagem) <img class="img-publicacao" src="images/{{$dados->imagem}}" style="object-fit: fill;height: 400px;width: 500px;" alt=""> @endif
-											</div>
-											<div class="job-status-bar">
-													<ul class="like-com">
-														<li class="reaction-container">
+                                        {{-- @foreach($pub as $dados)
 
-														{{-- Select para verificar se o usuario logado votou na publicação --}}
-														@php
-															$verificar = App\Models\Classificacao_publicacao::where('publicacao_id', '=', $dados->id)->where('user_id', '=' ,Auth::user()->id)->get();	
-														@endphp
-														{{-- fim --}}
-
-														@if ($verificar->count() < 1)
-
-															<a href="#"><i class="la la-heart"> votar</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-															<span>{{$dados->votos ? $dados->votos : ''}}</span>
-														
-															@else
-
-														<a href="#"><i class="la la-heart" style="color: red"> {{ $dados->votos > 1 ? 'você e outras pessoas votaram' : 'você votou' }} </i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</a>
-														<span>{{$dados->votos ? $dados->votos : ''}}</span>
-														
-														@endif
-															
-															<div class="reaction-box">
-																<div class="reaction-icon">
-																	<label>urgente</label>
-																	<img class="urgente" id="urgente" name="urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_wow.png" alt="">
-																</div>
-																<div class="reaction-icon">
-																	<label>mais urgente</label>
-																	<img class="maisUrgente" id="mais urgente" name="mais urgente" publicacao-id="{{$dados->id}}" src="assets/images/reactions_sad.png" alt="">
-																</div>
-															</div>
-														</li>
-														<li>
-															<a href="#" title="" id="{{$dados->user_id}}" nomeInst= "{{$dados->name}}" class="com post_project"><img src="assets/images/heart.svg" height="18px"></a>
-														</li>
-														<li> </li>
-													</ul>
-												<a><i class="la la-eye"></i>Ajudas</a>
-											</div>
-										</div><!--post-bar end-->
-									@endforeach
+									    @endforeach --}}
                                         <div class="process-comm">
                                             <div class="spinner">
                                                 <div class="bounce1"></div>
@@ -169,7 +105,7 @@
                                 <div class="product-feed-tab" id="info-dd">
                                     <div class="user-profile-ov">
                                         <h3><a href="#" title="" class="overview-open">Sobre</a> <a href="#" title="" class="overview-openn"><i class="fa fa-pencil"></i></a></h3>
-                                        <p>{{ $nome }}</p>
+                                        <p>{{ Auth::user()->name }}</p>
                                     </div><!--user-profile-ov end-->
                                     <div class="user-profile-ov st2">
                                         <h3><a href="#" title="" class="exp-bx-open">Dados Pessoais </a><a href="#" title="" class="exp-bx-open"><i class="fa fa-pencil"></i></a> <a href="#" title="" class="exp-bx-open"><i class="fa fa-plus-square"></i></a></h3>

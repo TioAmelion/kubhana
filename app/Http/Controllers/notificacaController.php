@@ -14,7 +14,7 @@ class notificacaController extends Controller
     {
         // $notificacao = notificacao::where('user_id', )->where('destino', Auth::user()->id)->where('lida', 0)->orderByDesc('id')->limit(5)->get();
         $user_id = Auth::user()->id;
-        $notificacao = DB::select("SELECT * FROM notificacaos n, users u WHERE n.user_id = u.id AND n.destino = $user_id AND n.lida = 'nao' ");
+        $notificacao = DB::select("SELECT * FROM notificacaos n, users u WHERE n.user_id = u.id AND n.destino = $user_id AND n.lida = 'nao' order by n.id desc ");
         $qtdNotificacao = notificacao::where('destino', Auth::user()->id)->where('lida', 'nao')->count();
         return response()->json(['data' => $notificacao, 'qtdNotificacao' => $qtdNotificacao, 'status' => 200]);
     }

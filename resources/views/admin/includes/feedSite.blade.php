@@ -40,8 +40,8 @@
 														{{-- {!! $dados->imagem ? 'assets/images/resources/us-pic.png' : Avatar::create($dados->name)->setFontSize(15)->setDimension(40, 40)->setBackground('#000')->setForeground('#fff')->toSvg(); !!} --}}
 													</div>
 													{{-- <img src="assets/images/resources/us-pic.png" alt=""> --}}
-													<div class="usy-name" data-id="{{$dados->user_id}}" style="cursor: pointer">
-														<h3>{{$dados->name}}</h3>
+													<div class="usy-name" data-id="{{$dados->user_id}}" style="cursor: pointer;">
+														<h3><a href="{{ route('verificarPerfil', ['id' => $dados->user_id]) }}" style="color:#000">{{$dados->name}}</a></h3>
 														<span><img src="assets/images/clock.png" alt=""><?php print_r(explode(" ",$dados->created_at)[0]) ?></span>
 													</div>
 												</div>
@@ -503,6 +503,38 @@
 								<button type="submit" class="btn btn-primary" id="btn-salvar-doar" value="criar-doacao">Doar</button>
 							</div>
 						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- modal para visualizar a doação --}}
+		<div class="modal fade" id="ajax-ver-doacao-modal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-size: 1.5rem; font-weight: 500;">Visualizar Doação</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<span style="font-size: 17px; font-weight: 600;">Em que estado se encontra o produto:</span> <br> <br>
+							<span id="verEstadoProduto"></span>
+						</div>
+						<div class="form-group">
+							<span style="font-size: 17px; font-weight: 600;">Quantidade da Doação:</span>
+							<span id="verQtdDoacao" ></span>
+						</div> 
+						<div class="form-group">
+							<span style="font-size: 17px; font-weight: 600;">Descrição:</span> <br> <br>
+							<span id="verDescricao" ></span>
+						</div>
+						<div class="form-group" style="margin-bottom: 8rem;">
+							<span style="font-size: 17px; font-weight: 600;">Imagem do Produto</span> <br> <br>
+							<img id="ver-imagem" src="" alt="Preview" width="100" height="100">
+						</div>
 					</div>
 				</div>
 			</div>

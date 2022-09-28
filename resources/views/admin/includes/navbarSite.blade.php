@@ -102,7 +102,8 @@
 				</div>
 				<div class="user-account-settingss">
 					<ul class="us-links">
-						<li><a href="/perfil" title="">Perfil</a></li>
+						{{-- <li><a href="/perfil" title="">Perfil</a></li> --}}
+						<li><a href="{{ route('verificarPerfil', ['id' => Auth::user()->id]) }}" title="">Perfil</a></li>
 						<li><a href="#" title="">Privacidade</a></li>
 						<li><a href="#" title="">Termos & Condições</a></li>
 					</ul>

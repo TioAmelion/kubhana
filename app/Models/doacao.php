@@ -61,7 +61,8 @@ class doacao extends Model
                 WHERE d.id = doa.doador_id
                 AND d.pessoa_id = p.id
                 AND u.id = p.user_id
-                AND doa.instituicao_id = $idInst");
+                AND doa.instituicao_id = $idInst
+                ORDER BY doa.id DESC");
 
             return $doacoesInst;
         }

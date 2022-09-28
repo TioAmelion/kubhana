@@ -23,9 +23,6 @@ class DoacaoController extends Controller
 
     public function index()
     {
-        //listar todoas as doacoes que a instituicao recebeu
-        // $doacoesInst = $dados->doacoesInstituicoes();
-
         $idPessoas = pessoa::all();
 
         if(Auth::check()){
@@ -37,14 +34,18 @@ class DoacaoController extends Controller
 
         $doacoes = $dados->doacoes();
 
+        //listar todoas as doacoes que a instituicao recebeu
+        $todasDoacoes = $dados->doacoesInstituicoes();
+
         $publicacoes = new publicacao;
-        $pub = $publicacoes->showProfile();
+        $pub = $publicacoes->lstPubPerfil();
 
         return view('admin.includes.doacao', [
-            'categorias' => $categorias, 
-            'doacoes' => $doacoes,
-            'idPessoas' => $idPessoas,
-            'publicacoes' => $pub
+            'categorias'   => $categorias, 
+            'doacoes'      => $doacoes,
+            'idPessoas'    => $idPessoas,
+            'publicacoes'  => $pub,
+            'todasDoacoes' => $todasDoacoes
         ]);
     }
 
@@ -61,7 +62,7 @@ class DoacaoController extends Controller
         return response()->json(['data' => $dados, 'status' => 200]);
     }
 
-    //listar doações na página listar doações
+    //listar doações na página listar doações de uma determinada publicação
     public function lstDoacoes($id) {
 
         $dados = DB::select("
@@ -70,9 +71,16 @@ class DoacaoController extends Controller
             AND d.id = doa.doador_id
             AND d.pessoa_id = p.id
             AND u.id = p.user_id
+            order by doa.id desc
         ");
         
         return view('admin.includes.listar_doacao', ['doacoesInst' => $dados]);
+    }
+
+    public function confirmarDoacao($id)
+    {
+        $dados = doacao::where('publicacao_id', $id)->update(['confirmado' => 'sim']);
+        return response()->json(['data' => $dados, 'status' => 200, 'mensagem' => 'Doação Confirmada.']);
     }
 
     public function mapa(Request $request)
@@ -192,7 +200,8 @@ class DoacaoController extends Controller
 
     public function show($id)
     {
-        //
+        $dados = doacao::find($id);
+        return response()->json(['data' => $dados]);
     }
 
     public function edit($id)

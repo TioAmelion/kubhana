@@ -19,7 +19,7 @@
 						</div>
 					</div>
 					<div class="view-more">
-						<a href="#" title="">Ver mais</a>
+						<a href="#" class="ver-doacao" ver-doacao="{{ $doacao->id }}">Ver mais</a>
 					</div>
 				@endforeach
 			</div><!--suggestions-list end-->

@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('perfil', 'App\Http\Controllers\PerfilDoadorController');
 
-    Route::get('verificarPerfil/{id}', [PerfilDoadorController::class, 'verificarPerfil']);
+    Route::get('verificarPerfil/{id}', [PerfilDoadorController::class, 'verificarPerfil'])->name('verificarPerfil');
 
     Route::get('mensagens', [MensagemController::class, 'index']);
 
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('doacao', 'App\Http\Controllers\DoacaoController');
 
-    Route::put('doacao/{id}', [DoadorController::class, 'update'])->name('doacao-doador');
+    Route::get('confirmar-doacao/{id}', [DoacaoController::class, 'confirmarDoacao']);
 
     Route::get('mapa', [DoacaoController::class, 'mapa']);
 

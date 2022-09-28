@@ -14,7 +14,7 @@
 				<p>Doe alguma coisa para ajudar essa instituição</p>
 			</div>
 			<div class="view-more" style="padding: 10px">
-				<a href="#" title="">Ver mais</a>
+				<a href="{{ route('verificarPerfil', ['id' => $ajuda->user_id]) }}" title="Visitar Perfil">Ver Perfil</a>
 			</div>
 			@endforeach
 		</div><!--job-info end-->

@@ -81,41 +81,12 @@ $(function() {
 		$("#ajax-mostrar-doacoes").modal("show");
 	});
 
-    // $('.ver-doadores').click(function (e) { 
-    //     $('.row-filtros-doacoes').hide();
-
-    //     pubDoacoesId = e.currentTarget.getAttribute('publicacaoDocId');
-    //     localStorage.setItem('pagina_id', pubDoacoesId);
-                
-    //     $.get("doacoes/" + localStorage.getItem('pagina_id'), (res)=> {
-    //         console.log("MODAL", res.data);
-
-    //         $('#add-rem-doacoes > #dados-tabela-doacoes').remove();
-            
-    //         res.data.forEach(doacoes => {
-    //             $('#add-rem-doacoes').append(
-    //             '<tbody id="dados-tabela-doacoes"><tr>'+
-    //             '<td><img class="img-publicacao" src="images/'+ doacoes.imagem +'" style="object-fit: fill;height: 100px;width: 100px;" alt=""></td>'+
-    //             '<td>' + doacoes.nome_pessoa + '</td>'+
-    //             '<td>' + doacoes.telefone + '</td>'+
-    //             '<td>' + doacoes.quantidade + '</td>'+
-    //             '<td>' + doacoes.estado + '</td>'+
-    //             '<td>' + doacoes.descricao + '</td>'+
-    //             '<td>'+
-    //                 '<a href="#" class="btn btn-primary btn-confirmar">Confirmar</a> &nbsp;'+
-    //                 '<a href="#" class="btn btn-primary btn-doacoes">Entrar em Contacto</a>'+
-    //             '</td>'
-    //             +'</tr></tbody>'
-    //             );
-    //         });
-    //     });
-    // });
-
     $('.post-doacoes-receber').hide(); 
 
     $('.btn-doacoes-receber').click(function (e) {
         e.preventDefault();
-        $('.post-filtros').hide(); 
+        $('.post-filtros').hide();
+        $('.search-box-div').hide();
         $('.post-doacoes-receber').show();
     });
 
@@ -123,42 +94,57 @@ $(function() {
         e.preventDefault();
         $('.post-doacoes-receber').hide(); 
         $('.post-filtros').show(); 
+        $('.search-box-div').show(); 
     });
 
+    //confirmar Doaoção
     $('.btn-confirmar').click(function (e) { 
         e.preventDefault();
 
         doacao_id = e.currentTarget.getAttribute('doacao');
         
         $.ajax({
-            url: "doacao-doador/" + doacao_id, 
-            type: "PUT",
-            // data: {'publicacao_id_doar': doacao_id},
+            url: "confirmar-doacao/" + doacao_id, 
+            type: "GET",
             dataType: "json",
             success: function(response) {
                 console.log("DOACAO ID", response);
-                // if(response.status == 200 && response.data) {
+                if(response.status == 200 && response.data) {
 
-                //     $("#publicacaoDoarForm").trigger("reset");
-                // 	$("#btn-salvar-doar").html("Publicado");
+                    $("#publicacaoDoarForm").trigger("reset");
+                	$("#btn-salvar-doar").html("Publicado");
 
-				// 	toastr.success(response.mensagem, 'Publicar!', { 
-				// 		showMethod: "slideDown", 
-				// 		hideMethod: "slideUp", 
-				// 		timeOut: 2000, onHidden: function () {
-				// 			window.location.reload();
-				// 		} 
-				// 	});
+					toastr.success('', response.mensagem, { 
+						showMethod: "slideDown", 
+						hideMethod: "slideUp", 
+						timeOut: 2000, onHidden: function () {
+							window.location.reload();
+						} 
+					});
 
-                // } else if (response.erro) {
-                //     toastr.error(response.mensagem, { timeOut: 5000 });
-                    
-                // } else {
-                //     validaForm(response);
-                // }
+                } else if (response.erro) {
+                    toastr.error('', 'Ocorreu um erro', { timeOut: 5000 });
+                } 
             }
         });
         
+    });
+
+    $('.ver-doacao').click(function (e) { 
+        e.preventDefault();
+        ver_doacao = e.currentTarget.getAttribute('ver-doacao');
+        
+        $.get("doacao/" + ver_doacao, (res)=> {
+            if (res.data) {
+                $('#verEstadoProduto').html(res.data.estado.split('_')[0] + " " + res.data.estado.split('_')[1]);
+                $('#verQtdDoacao').html(res.data.quantidade);
+                $('#verDescricao').html(res.data.descricao);
+                $('#ver-imagem').attr('src', "images/"+res.data.imagem);
+                $('#ajax-ver-doacao-modal').modal('show');
+            } else {
+                
+            }
+        });
     });
 });
 

@@ -56,7 +56,7 @@ class publicacao extends Model
         return $query;
     }
 
-    public function showProfile(){
+    public function lstPubPerfil(){
 
         $query = DB::table("publicacaos")
                     ->select("publicacaos.*", 

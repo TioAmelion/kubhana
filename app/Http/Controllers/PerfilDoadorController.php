@@ -15,10 +15,8 @@ use Illuminate\Support\Facades\Redirect;
 
 class PerfilDoadorController extends Controller
 {
-
     public function index()
     {
-        $nome = Auth::user()->name;
         $categorias = Categoria::all();
 
         //total de publicações
@@ -30,15 +28,12 @@ class PerfilDoadorController extends Controller
         //listar pessoas que receberam ajuda
         $publicacao = new publicacao;
         $pessoas = $publicacao->listarAjudas(Auth::user()->id);
-        // dd($pessoas);
 
         $publicacoes = new publicacao;
-        $pub = $publicacoes->showProfile();
+        // $pub = $publicacoes->showProfile();
         
         return view('admin.includes.perfilDoador', [
             'categorias' => $categorias,
-            'nome' => $nome,
-            'pub' => $pub,
             'totalPubli' => $totalPubli,
             'totalDoacoes' => $totalDoacoes,
             'pessoas' => $pessoas
@@ -47,17 +42,52 @@ class PerfilDoadorController extends Controller
 
     public function verificarPerfil($id)
     {
-        $dados = instituicao::where('user_id', $id)->first();
-        $dado = pessoa::where('user_id', $id)->first();
+        // $dados = instituicao::where('user_id', $id)->first();
+        // $dado = pessoa::where('user_id', $id)->first();
 
-        if ($dados != null) {
-            return response()->json($dados);
-        } 
+        // if ($dados != null) {
+        //     return response()->json($dados);
+        // } 
         
-        if($dado != null) {
-            return response()->json($dado);
+        // if($dado != null) {
+        //     return response()->json($dado);
+        // }
 
+        //total de publicações
+        $totalPubli = publicacao::where('user_id', $id)->count();
+        
+        //total de doações do doador
+        $perfil = User::find($id);
+        // dd($perfil['tipo_perfil']);
+        if ($perfil['tipo_perfil'] == "doador") {
+            $pessoa = pessoa::where('user_id', $perfil['id']);
+            $totalDoacoes = doacao::where('doador_id', $id)->count();
+            dd($pessoa);
+        } else {
+            $totalDoacoes = doacao::where('doador_id', $id)->count();
+            dd($totalDoacoes);
         }
+        
+
+        // $totalDoacoes = doacao::where('doador_id', $id)->count();
+
+        //listar pessoas que receberam ajuda do doador
+        $publicacao = new publicacao;
+        $pessoas = $publicacao->listarAjudas($id);
+
+        //listar a quantidade de doação que a instituição recebeu
+        $pessoas = $publicacao->listarAjudas($id);
+
+        $publicacoes = new publicacao;
+        $pub = $publicacoes->lstPubPerfil($id);
+        
+        return view('admin.includes.perfilDoador', [
+            'categorias' => $categorias,
+            'pub' => $pub,
+            'totalPubli' => $totalPubli,
+            'totalDoacoes' => $totalDoacoes,
+            'pessoas' => $pessoas
+        ]);
     }
 
     public function create()

@@ -1,34 +1,13 @@
 @extends('admin.layout')
 
 @section('conteudo')
-    <div class="search-sec">
-        <div class="container">
-            <div class="search-box change-section" style="margin-bottom: 10px">
-
-                @if (Auth::check() && Auth::user()->tipo_perfil == "instituicao")
-
-                    <a href="" class="btn btn-danger btn-filtros">Filtros</a>
-                    <a href="" class="btn btn-primary btn-doacoes-receber">Doações a Receber</a>
-
-                @else
-
-                <a href="" class="btn btn-danger btn-filtros">Filtros</a>
-                <a href="" class="btn btn-primary btn-solicitacoes">Solicitações</a>
-
-                @endif
-
-            </div>
-            <div class="search-box">
-                <form>
-                    <input type="text" name="search" placeholder="pesquisar doações">
-                    <button type="submit">Pesquisar</button>
-                </form>
-            </div><!--search-box end-->
-        </div>
-    </div><!--search-sec end-->
     <main>
         <div class="main-section">
             <div class="container">
+                <div style="text-align: center">
+                    <h1 style="font-size: 1.6rem; font-weight: 500;">Doações a Receber</h1>
+                </div>
+                <br> <br>
                 <div class="main-section-data">
 
                     @if (Auth::user()->tipo_perfil == "instituicao")                    
@@ -54,12 +33,17 @@
                                             <td> {{ $doacoes->nome_pessoa }} </td>
                                             <td> {{ $doacoes->telefone }} </td>
                                             <td> {{ $doacoes->quantidade }} </td>
-                                            <td> {{ $doacoes->estado }} </td>
-                                            <td> {{ $doacoes->id }} </td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-confirmar" doacao="{{ $doacoes->id }}">Confirmar</a> &nbsp;
-                                                <a href="#" class="btn btn-primary btn-doacoes">Entrar em Contacto</a>
-                                            </td>
+                                            <td> <?php print_r(explode("_",$doacoes->estado)[0]) ?> <?php print_r(explode("_",$doacoes->estado)[1]) ?> </td>
+                                            <td> {{ $doacoes->descricao }} </td>
+                                            @if ($doacoes->confirmado == "nao")
+                                                <td>
+                                                    <button class="btn btn-primary btn-confirmar" doacao="{{ $doacoes->publicacao_id }}">Confirmar Doação</button>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <button disabled class="btn btn-warning" doacao="{{ $doacoes->publicacao_id }}">Doação Confirmada</button>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

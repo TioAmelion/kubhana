@@ -30,7 +30,7 @@
                                 <!--user-profile end-->
                                 <ul class="user-fw-status">
                                     <li>
-                                        <h4>Ajudas</h4>
+                                        <h4>Publicações</h4>
                                         <span>0</span>
                                     </li>
                                     <li>
